@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  classictotalizator.api:
-    image: ${DOCKER_REGISTRY-}classictotalizatorapi
-    build:
-      context: .
-      dockerfile: ClassicTotalizator.API/Dockerfile
