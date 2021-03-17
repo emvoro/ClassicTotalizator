@@ -6,9 +6,9 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["ClassicTotalizator/ClassicTotalizator.API/ClassicTotalizator.API.csproj", "ClassicTotalizator.API/"]
-COPY ["ClassicTotalizator/ClassicTotalizator.DAL/ClassicTotalizator.DAL.csproj", "ClassicTotalizator.DAL/"]
-COPY ["ClassicTotalizator/ClassicTotalizator.BLL/ClassicTotalizator.BLL.csproj", "ClassicTotalizator.BLL/"]
+COPY ["ClassicTotalizator/ClassicTotalizator.API/ClassicTotalizator.API.csproj", "ClassicTotalizator/ClassicTotalizator.API/"]
+COPY ["ClassicTotalizator/ClassicTotalizator.DAL/ClassicTotalizator.DAL.csproj", "ClassicTotalizator/ClassicTotalizator.DAL/"]
+COPY ["ClassicTotalizator/ClassicTotalizator.BLL/ClassicTotalizator.BLL.csproj", "ClassicTotalizator/ClassicTotalizator.BLL/"]
 RUN dotnet restore "ClassicTotalizator/ClassicTotalizator.API/ClassicTotalizator.API.csproj"
 COPY . .
 WORKDIR "/src/ClassicTotalizator/ClassicTotalizator.API"
