@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    class Transaction
+    public class Transaction
     {
         [Required]
         public decimal Amount { get; set; }

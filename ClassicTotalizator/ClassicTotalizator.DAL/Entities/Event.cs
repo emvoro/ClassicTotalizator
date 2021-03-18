@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    class Event
+   public class Event
     {
         [Key]
         [Required]

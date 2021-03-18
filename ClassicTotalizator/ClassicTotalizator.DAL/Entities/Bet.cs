@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    class Bet
+   public  class Bet
     {
         [Key]
         public Guid Id { get; set; }

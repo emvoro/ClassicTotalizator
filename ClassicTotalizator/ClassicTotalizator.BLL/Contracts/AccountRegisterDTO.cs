@@ -10,7 +10,7 @@ namespace ClassicTotalizator.BLL.Contracts
     {
         public AccountRegisterDTO()
         {
-            CreationTime = DateTime.UtcNow;
+            CreationTime = DateTimeOffset.UtcNow;
         }
         /// <summary>
         /// User mail by which the user will be remembered
@@ -28,10 +28,10 @@ namespace ClassicTotalizator.BLL.Contracts
         ///  User's date of birth for the ability to play on the platform
         /// </summary>
         [Required]
-        public DateTime BirthDate { get; set; }
+        public DateTimeOffset DOB { get; set; }
         /// <summary>
         ///  Account creation request date
         /// </summary>
-        public DateTime CreationTime { get; set; }
+        public DateTimeOffset AccountCreationTime { get; set; }
     }
 }

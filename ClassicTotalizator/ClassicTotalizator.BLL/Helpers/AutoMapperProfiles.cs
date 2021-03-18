@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,8 @@ namespace ClassicTotalizator.BLL.Helpers
     {
         public AutoMapperProfiles()
         {
-            //   CreateMap<AccountRegisterDTO, Account>.ReverseMap();
-            //   CreateMap<AccountLoginDTO, Account>.ReverseMap();
+             CreateMap<AccountRegisterDTO, Account>().ReverseMap();
+             CreateMap<AccountLoginDTO, Account>().ReverseMap();
         }
     }
 }
