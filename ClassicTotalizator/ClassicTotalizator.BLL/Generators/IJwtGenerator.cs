@@ -1,4 +1,5 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Generators
 {
@@ -12,7 +13,7 @@ namespace ClassicTotalizator.BLL.Generators
         /// </summary>
         /// <param name="registerDTO"></param>
         /// <returns>Jwt token with encrypted [snth to add]</returns>       //ToDo: smth inserted in jwt
-        string GenerateJwt(AccountRegisterDTO registerDTO, string securityKey); // ToDo: delte plug and set user
+        string GenerateJwt(Account registerDTO, string securityKey); // ToDo: delte plug and set user
 
         /*/// <summary>
         /// Creates new Jwt token
