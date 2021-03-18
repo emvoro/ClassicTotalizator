@@ -7,36 +7,23 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Options
 {
-    public class JwtOptions
+    public static class JwtOptions
     {
         /// <summary>
         /// Token issuer (producer).
         /// </summary>
-        public string Issuer { get; set; } = "DemoServer";
-
+        public static string Issuer { get; set; } = "ClassicTotalizator";
         /// <summary>
         /// Token audience (consumer).
         /// </summary>
-        public string Audience { get; set; } = "DemoClient";
-
-        /// <summary>
-        /// Token secret part.
-        /// </summary>
-        public string PrivateKey { get; set; } = "somePrivateKeyValue";
-
+        public static string Audience { get; set; } = "UIClient";
         /// <summary>
         /// Token life time.
         /// </summary>
-        public TimeSpan LifeTime { get; set; } = TimeSpan.FromMinutes(1d);
-
+        public static TimeSpan LifeTime { get; set; } = TimeSpan.FromDays(1d);
         /// <summary>
         /// Require HTTPS.
         /// </summary>
-        public bool RequireHttps { get; set; } = false;
-
-        public SymmetricSecurityKey GetSymmetricSecurityKey()
-        {
-            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(PrivateKey));
-        }
+        public static bool RequireHttps { get; set; } = false;
     }
 }

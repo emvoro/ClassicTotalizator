@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace ClassicTotalizator.API.Controllers
 {
     [ApiController]
-    [Route("api/v1/auth")]
+    [Route("api/v1/")]
     public class AuthController : ControllerBase
     {
         private readonly IAccountService _accounts;
