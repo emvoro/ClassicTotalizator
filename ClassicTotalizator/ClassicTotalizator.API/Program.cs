@@ -20,7 +20,6 @@ namespace ClassicTotalizator.API
                  loggingBuilder.SetMinimumLevel(LogLevel.Information);
                  loggingBuilder.AddSerilog(new LoggerConfiguration()
                      .WriteTo.ColoredConsole()
-                     .WriteTo.File("app.log")
                      .CreateLogger());
              })
                 .ConfigureWebHostDefaults(webBuilder =>
