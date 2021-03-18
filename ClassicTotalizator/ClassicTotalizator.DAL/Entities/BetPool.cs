@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
@@ -16,10 +15,8 @@ namespace ClassicTotalizator.DAL.Entities
 
         public ICollection<Bet> Bets { get; set; }
 
-        [Required]
         public decimal TotalAmount { get; set; }
 
-        [Required]
         public decimal Margin { get; set; }
 
         public BetPool()

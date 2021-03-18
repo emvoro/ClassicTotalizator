@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 
 namespace ClassicTotalizator.DAL.Entities
@@ -10,9 +8,9 @@ namespace ClassicTotalizator.DAL.Entities
     {
         public Guid Id { get; set; }
 
-        public Guid Wallet_Id { get; set; }
+        public Guid Account_Id { get; set; }
 
-        [ForeignKey("Wallet_Id")]
+        [ForeignKey("Account_Id")]
         public virtual Wallet Wallet { get; set; }
 
         public decimal Amount { get; set; }

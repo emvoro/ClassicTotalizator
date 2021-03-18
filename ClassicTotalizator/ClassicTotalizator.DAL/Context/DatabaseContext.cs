@@ -34,12 +34,16 @@ namespace ClassicTotalizator.DAL.Context
 
             builder.Entity<Account>().HasKey(s => s.Id);
 
+            builder.Entity<Account>().HasIndex(s => s.Id).IsUnique();
+
             builder.Entity<Account>()
                 .HasMany(s => s.BetsHistory)
                 .WithOne(s => s.Account)
                 .HasForeignKey(s => s.Account_Id);
 
             builder.Entity<Bet>().HasKey(s => s.Id);
+
+            builder.Entity<Bet>().HasIndex(s => s.Id).IsUnique();
 
             builder.Entity<BetPool>().HasKey(s => s.Event_Id);
 
@@ -50,7 +54,11 @@ namespace ClassicTotalizator.DAL.Context
 
             builder.Entity<Event>().HasKey(s => s.Id);
 
+            builder.Entity<Event>().HasIndex(s => s.Id).IsUnique();
+
             builder.Entity<Participant>().HasKey(s => s.Id);
+
+            builder.Entity<Participant>().HasIndex(s => s.Id).IsUnique();
 
             builder.Entity<Participant>()
                 .HasMany(s => s.Players)
@@ -59,14 +67,18 @@ namespace ClassicTotalizator.DAL.Context
 
             builder.Entity<Player>().HasKey(s => s.Id);
 
+            builder.Entity<Player>().HasIndex(s => s.Id).IsUnique();
+
             builder.Entity<Transaction>().HasKey(s => s.Id);
+
+            builder.Entity<Transaction>().HasIndex(s => s.Id).IsUnique();
 
             builder.Entity<Wallet>().HasKey(s => s.Account_Id);
 
             builder.Entity<Wallet>()
                 .HasMany(s => s.TransactionsHistory)
                 .WithOne(s => s.Wallet)
-                .HasForeignKey(s => s.Wallet_Id);
+                .HasForeignKey(s => s.Account_Id);
         }
     }
 }
