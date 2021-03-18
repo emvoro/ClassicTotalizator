@@ -29,7 +29,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             throw new NotImplementedException();
         }
-        private readonly UserManager
+        //private readonly UserManager
         private readonly IMapper _mapper;
     }
 }

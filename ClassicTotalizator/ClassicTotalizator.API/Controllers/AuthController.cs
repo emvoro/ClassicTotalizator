@@ -11,11 +11,11 @@ namespace ClassicTotalizator.API.Controllers
     [Route("api/v1")]
     public class AuthController : ControllerBase
     {
-        private readonly IAccountService _accounts;
+        private readonly IAuthService _accounts;
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(
-            IAccountService accounts,
+            IAuthService accounts,
             ILogger<AuthController> logger)
         {
             _accounts = accounts;
