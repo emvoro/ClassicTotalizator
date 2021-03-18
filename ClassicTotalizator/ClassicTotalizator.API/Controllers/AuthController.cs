@@ -1,6 +1,5 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,11 +24,22 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Registration action.
         /// </summary>
-        /// <param name="registerDTO">Requested dto for registration on platform</param>
+        /// <param name="registerDto">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
-        [AllowAnonymous]
-        public async Task<ActionResult<string>> RegisterAsync(AccountRegisterDTO registerDTO)
+        public async Task<ActionResult<string>> RegisterAsync(AccountRegisterDTO registerDto)
+        {
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// Login action.
+        /// </summary>
+        /// <param name="loginDto">Requested dto for login on platform</param>
+        /// <returns>Returns JWT</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [HttpPost("Login")]
+        public async Task<ActionResult<string>> LoginAsync(AccountLoginDTO loginDto)
         {
             throw new NotImplementedException();
         }
