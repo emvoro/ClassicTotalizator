@@ -11,27 +11,35 @@ namespace ClassicTotalizator.API.Controllers
     [Route("api/v1")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _accounts;
+        private readonly IAuthService _authService;
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(
-            IAuthService accounts,
+            IAuthService authService,
             ILogger<AuthController> logger)
         {
-            _accounts = accounts;
+            _authService = authService;
             _logger = logger;
         }
+
         /// <summary>
         /// Registration action.
         /// </summary>
         /// <param name="registerDto">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
-        public async Task<ActionResult<string>> RegisterAsync(AccountRegisterDTO registerDto)
+        public async Task<ActionResult<string>> RegisterAsync([FromBody] AccountRegisterDTO registerDto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid || registerDto == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+
+            var token = await _authService.RegisterAsync(registerDto);
+            return CheckTokenAndReturn(token, "Register failed!");
         }
-        
+
         /// <summary>
         /// Login action.
         /// </summary>
@@ -41,7 +49,26 @@ namespace ClassicTotalizator.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> LoginAsync(AccountLoginDTO loginDto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid || loginDto == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+
+            var token = await _authService.LoginAsync(loginDto);
+            return CheckTokenAndReturn(token, "Login failed!");
+        }
+
+        private ActionResult<string> CheckTokenAndReturn(string token, string message)
+        {
+            if (!string.IsNullOrEmpty(token)) 
+                return Ok(token);
+            
+            if (!string.IsNullOrEmpty(message)) 
+                _logger.LogWarning(message);
+                
+            return Forbid();
+
         }
     }
 }
