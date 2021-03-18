@@ -30,7 +30,7 @@ namespace ClassicTotalizator.API
         {
             services.AddTransient<IAuthService,AuthService>();
             services.AddTransient<IUserService, UserService>();
-            ConfigurationServices.ConfigureServices(services, Environment.GetEnvironmentVariable("connectiom_string"));
+            ConfigurationServices.ConfigureServices(services, Environment.GetEnvironmentVariable("connection_string"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
