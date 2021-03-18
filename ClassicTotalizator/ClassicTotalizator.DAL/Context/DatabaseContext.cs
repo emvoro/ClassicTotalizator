@@ -17,15 +17,8 @@ namespace ClassicTotalizator.DAL.Context
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
 
-        public DatabaseContext()
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseNpgsql(Environment.GetEnvironmentVariable("connection_string"));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
