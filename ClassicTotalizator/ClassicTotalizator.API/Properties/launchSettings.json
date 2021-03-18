@@ -22,6 +22,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "SecretKey": "2esfvsle34sfp5523fsfdgg34gs1ebh3egmwsdlggs4",
+        "PostgresKey": "val",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
