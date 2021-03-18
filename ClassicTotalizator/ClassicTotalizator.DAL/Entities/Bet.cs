@@ -12,7 +12,7 @@ namespace ClassicTotalizator.DAL.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public Guid User_Id { get; set; }
+        public Guid Account_Id { get; set; }
 
         [ForeignKey("User_Id")]
         public virtual Account Account { get; set; }
@@ -20,13 +20,13 @@ namespace ClassicTotalizator.DAL.Entities
         [Required]
         public Guid Event_Id { get; set; }
 
-
+        [ForeignKey("Event_Id")]
+        public virtual BetPool BetPool { get; set; }
 
         [Required]
         public string Choice { get; set; }
 
         [Required]
         public decimal Amount { get; set; }
-
     }
 }

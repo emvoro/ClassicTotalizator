@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
     class Transaction
     {
-        [Required]
-        public decimal Amount { get; set; }
+        public Guid Id { get; set; }
 
-        [Required]
         public Guid Wallet_Id { get; set; }
 
-        [Required]
+        [ForeignKey("Wallet_Id")]
+        public virtual Wallet Wallet { get; set; }
+
+        public decimal Amount { get; set; }
+
         public string Type { get; set; }
 
-        [Required]
         public DateTimeOffset DateTime { get; set; }
     }
 }

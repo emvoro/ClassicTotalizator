@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
@@ -10,6 +11,9 @@ namespace ClassicTotalizator.DAL.Entities
         [Key]
         public Guid Event_Id { get; set; }
 
+        [ForeignKey("Event_Id")]
+        public virtual Event Event { get; set; }
+
         public ICollection<Bet> Bets { get; set; }
 
         [Required]
@@ -17,5 +21,10 @@ namespace ClassicTotalizator.DAL.Entities
 
         [Required]
         public decimal Margin { get; set; }
+
+        public BetPool()
+        {
+            Bets = new List<Bet>();
+        }
     }
 }

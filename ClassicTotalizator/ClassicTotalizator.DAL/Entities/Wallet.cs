@@ -9,15 +9,18 @@ namespace ClassicTotalizator.DAL.Entities
     class Wallet
     {
         [Key]
-        [Required]
-        public Guid User_Id { get; set; }
-
-        [Required]
-        public decimal Amount { get; set; }
+        public Guid Account_Id { get; set; }
 
         [ForeignKey("User_Id")]
         public virtual Account Account { get; set; }
 
+        public decimal Amount { get; set; }
+
         public ICollection<Transaction> TransactionsHistory { get; set; }
+
+        public Wallet()
+        {
+            TransactionsHistory = new List<Transaction>();
+        }
     }
 }

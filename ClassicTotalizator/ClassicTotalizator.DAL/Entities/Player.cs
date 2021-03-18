@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
@@ -8,10 +9,13 @@ namespace ClassicTotalizator.DAL.Entities
     class Player
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
 
-        [Required]
+        public Guid Participant_Id { get; set; }
+
+        [ForeignKey("Participant_Id")]
+        public virtual Participant Participant { get; set; }
+
         public string Name { get; set; }
 
         public decimal Height { get; set; }
