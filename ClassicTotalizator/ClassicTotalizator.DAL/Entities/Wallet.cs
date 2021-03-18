@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    class Wallet
+    public class Wallet
     {
         [Key]
         public Guid Account_Id { get; set; }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    class BetPool
+    public class BetPool
     {
         [Key]
         public Guid Event_Id { get; set; }

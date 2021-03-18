@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    class Player
+    public class Player
     {
         [Key]
         public Guid Id { get; set; }
@@ -21,7 +20,7 @@ namespace ClassicTotalizator.DAL.Entities
         public decimal Height { get; set; }
 
         public string Role { get; set; }
-        
+
         public DateTimeOffset DOB { get; set; }
     }
 }

@@ -13,17 +13,17 @@ namespace ClassicTotalizator.BLL.Services
         /// <summary>
         /// Registers user and assigns unique account id.
         /// </summary>
-        /// <param name="registerDTO">Contract for registration.</param>
+        /// <param name="registerDto">Contract for registration.</param>
         /// <returns>Returns jwt token or <c>null</c> if login already existed.</returns>
         /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
-        Task<string> RegisterAsync(AccountRegisterDTO registerDTO);
+        Task<string> RegisterAsync(AccountRegisterDTO registerDto);
       
         /// <summary>
         /// Login user and returns jwt token.
         /// </summary>
-        /// <param name="loginDTO">User login.</param>
+        /// <param name="loginDto">User login.</param>
         /// <returns>Returns user account id or <c>null</c> if user wasn't found or password is invalid.</returns>
-        Task<string> LoginAsync(AccountLoginDTO loginDTO);
+        Task<string> LoginAsync(AccountLoginDTO loginDto);
 
         /// <summary>
         /// Logouts user account from platform
