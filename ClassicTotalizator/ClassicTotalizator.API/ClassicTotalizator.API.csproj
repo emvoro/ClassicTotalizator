@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassicTotalizator.BLL\ClassicTotalizator.BLL.csproj" />
-    <ProjectReference Include="..\ClassicTotalizator.DAL\ClassicTotalizator.DAL.csproj" />
   </ItemGroup>
 
 </Project>

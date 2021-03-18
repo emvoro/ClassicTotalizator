@@ -17,7 +17,7 @@ namespace ClassicTotalizator.BLL.Contracts
         /// User mail by which the user will be remembered
         /// </summary>
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@"^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$")]
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
         public string Email { get; set; }
 
         /// <summary>

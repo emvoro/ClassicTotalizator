@@ -25,11 +25,5 @@ namespace ClassicTotalizator.BLL.Services
         /// <returns>Returns user account id or <c>null</c> if user wasn't found or password is invalid.</returns>
         Task<string> LoginAsync(AccountLoginDTO loginDto);
 
-        /// <summary>
-        /// Logouts user account from platform
-        /// </summary>
-        /// <param name="jwt">JWT of current account session</param>
-        /// <returns></returns>
-        Task<bool> LogoutAsync(string jwt);
     }
 }
