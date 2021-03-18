@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ClassicTotalizator.DAL.Context
 {
-    class DatabaseContext : DbContext
+    public class DatabaseContext : DbContext
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Bet> Bets { get; set; }
