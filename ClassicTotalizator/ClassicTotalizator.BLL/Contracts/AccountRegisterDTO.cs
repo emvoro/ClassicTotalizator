@@ -10,25 +10,29 @@ namespace ClassicTotalizator.BLL.Contracts
     {
         public AccountRegisterDTO()
         {
-            CreationTime = DateTimeOffset.UtcNow;
+            AccountCreationTime = DateTimeOffset.UtcNow;
         }
+        
         /// <summary>
         /// User mail by which the user will be remembered
         /// </summary>
         [Required]
         [RegularExpression(@"^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$")]
         public string Email { get; set; }
+        
         /// <summary>
         /// User password which will be allowed to enter the account
         /// </summary>
         [Required]
         [MinLength(6)]
         public string Password { get; set; }
+        
         /// <summary>
         ///  User's date of birth for the ability to play on the platform
         /// </summary>
         [Required]
         public DateTimeOffset DOB { get; set; }
+        
         /// <summary>
         ///  Account creation request date
         /// </summary>

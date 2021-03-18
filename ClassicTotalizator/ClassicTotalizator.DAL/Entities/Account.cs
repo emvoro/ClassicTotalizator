@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    public class Account:IdentityUser
+    public class Account : IdentityUser
     {
         [Key]
         [Required]
@@ -20,7 +19,7 @@ namespace ClassicTotalizator.DAL.Entities
         [Required]
         public string AccountType { get; set; }
         [Required]
-        public DateTimeOffset DOB { get; set; }
+        public DateTimeOffset Dob { get; set; }
         //public Wallet Wallet { get; set; }
         public DateTimeOffset AccountCreationTime { get; set; }
         public ICollection<Bet> BetsHistory { get; set; }

@@ -12,6 +12,7 @@ namespace ClassicTotalizator.BLL.Contracts
         /// </summary>
         [Required(AllowEmptyStrings = false)]
         public string Login { get; set; }
+        
         /// <summary>
         ///  Current user password for entering the platform
         /// </summary>

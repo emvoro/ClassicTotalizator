@@ -11,4 +11,12 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClassicTotalizator.DAL\ClassicTotalizator.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

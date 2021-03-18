@@ -1,28 +1,25 @@
-﻿using AutoMapper;
-using ClassicTotalizator.BLL.Contracts;
+﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.DAL.Entities;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
     public class AuthService : IAuthService
     {
+        private readonly UserManager<Account> _accManager;
 
-        public AuthService(IMapper mapper,
-            UserManager<Account> accManager)
+        public AuthService(UserManager<Account> accManager)
         {
-            _mapper = mapper;
             _accManager = accManager;
         }
-        public Task<string> LoginAsync(AccountLoginDTO loginDTO)
+
+        public Task<string> LoginAsync(AccountLoginDTO loginDto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> RegisterAsync(AccountRegisterDTO registerDTO)
+        public Task<string> RegisterAsync(AccountRegisterDTO registerDto)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +28,5 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             throw new NotImplementedException();
         }
-        private readonly UserManager<Account> _accManager;
-        private readonly IMapper _mapper;
     }
 }
