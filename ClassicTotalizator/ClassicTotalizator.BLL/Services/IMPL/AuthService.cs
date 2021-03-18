@@ -14,18 +14,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public Task<string> RegisterAsync(AccountRegisterDTO registerDto)
         {
-            //
-
-            //
-
-            //
-
-            return 
-        }
-
-        public Task<bool> LogoutAsync(string jwt)
-        {
-            throw new NotImplementedException();
+            if (registerDto.Email == null || registerDto.Password == null || registerDto.DOB == null)
+                return null;
+            
         }
     }
 }

@@ -1,10 +1,7 @@
 {
   "profiles": {
     "ClassicTotalizator.DAL": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "connection_string": ""
-      }
+      "commandName": "Project"
     }
   }
 }
