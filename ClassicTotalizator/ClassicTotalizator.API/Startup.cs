@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using ClassicTotalizator.API.Middlewares;
 using ClassicTotalizator.API.Options;
+using ClassicTotalizator.BLL.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,8 @@ namespace ClassicTotalizator.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            ConfigurationServices.ConfigureServices(services, Environment.GetEnvironmentVariable("connectiom_string"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

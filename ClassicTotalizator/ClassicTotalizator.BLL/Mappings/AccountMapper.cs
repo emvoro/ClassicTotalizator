@@ -20,5 +20,15 @@ namespace ClassicTotalizator.BLL.Mappings
                     AccountCreationTime = registerDTO.AccountCreationTime
                 };
         }
+        public static Account ToAccount(AccountLoginDTO loginDTO)
+        {
+            return loginDTO == null
+                ? null
+                : new Account
+                {
+                    Email = loginDTO.Login,
+                    PasswordHash = loginDTO.Password
+                };
+        }
     }
 }

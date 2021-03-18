@@ -25,5 +25,6 @@ namespace ClassicTotalizator.BLL.Services
         /// <returns>Returns user account id or <c>null</c> if user wasn't found or password is invalid.</returns>
         Task<string> LoginAsync(AccountLoginDTO loginDto);
 
+        string SecurityKey { get; set; }
     }
 }
