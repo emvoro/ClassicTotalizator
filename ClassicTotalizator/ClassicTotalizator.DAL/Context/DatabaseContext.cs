@@ -25,6 +25,11 @@ namespace ClassicTotalizator.DAL.Context
         
         public DbSet<Wallet> Wallets { get; set; }
 
+        public DatabaseContext(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DatabaseContext"));

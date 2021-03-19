@@ -30,7 +30,7 @@ namespace ClassicTotalizator.API
         {
             services.AddTransient<IAuthService,AuthService>();
             services.AddTransient<IUserService, UserService>();
-            ConfigurationServices.ConfigureServices(services);
+            ConfigurationServices.ConfigureServices(services, Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
