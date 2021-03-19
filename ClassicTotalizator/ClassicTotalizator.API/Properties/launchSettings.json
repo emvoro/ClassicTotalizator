@@ -23,7 +23,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "SecretKey": "2esfvsle34sfp5523fsfdgg34gs1ebh3egmwsdlggs4",
-        "connectiom_string": "",
+        "connection_string": "",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
