@@ -7,8 +7,6 @@ namespace ClassicTotalizator.DAL.Context
 {
     public class DatabaseContext : DbContext
     {
-        public IConfiguration Configuration { get; }
-
         public DbSet<Account> Accounts { get; set; }
 
         public DbSet<Bet> Bets { get; set; }
@@ -25,15 +23,13 @@ namespace ClassicTotalizator.DAL.Context
         
         public DbSet<Wallet> Wallets { get; set; }
 
-        public DatabaseContext(IConfiguration configuration)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            Configuration = configuration;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DatabaseContext"));
-            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
