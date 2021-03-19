@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
 {
+    /// <summary>
+    ///  This controller is used to register and login the user on the platform
+    /// </summary>
     [ApiController]
     [Route("api/v1")]
     public class AuthController : ControllerBase
@@ -66,7 +69,6 @@ namespace ClassicTotalizator.API.Controllers
             return CheckTokenAndReturn(token, "Login failed!");
         }
 
-        //Here we must check token for admins purposes
         private ActionResult<string> CheckTokenAndReturn(string token, string message)
         {
             if (!string.IsNullOrEmpty(token)) 

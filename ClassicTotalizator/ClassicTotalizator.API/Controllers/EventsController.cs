@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
 {
+
+    /// <summary>
+    /// THIS PART ACTUALLY NOT IMPLEMENTED DONT TOUCH THIS
+    /// </summary>
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
