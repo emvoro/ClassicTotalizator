@@ -7,7 +7,7 @@ namespace ClassicTotalizator.DAL.Context
 {
     public class DatabaseContext : DbContext
     {
-        private readonly IConfiguration _configuration;
+        public IConfiguration Configuration { get; }
 
         public DbSet<Account> Accounts { get; set; }
 
@@ -27,7 +27,7 @@ namespace ClassicTotalizator.DAL.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DatabaseContext"));
+            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DatabaseContext"));
             base.OnConfiguring(optionsBuilder);
         }
 
