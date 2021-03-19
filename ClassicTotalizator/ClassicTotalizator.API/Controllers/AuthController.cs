@@ -1,10 +1,10 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
@@ -32,6 +32,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="registerDto">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> RegisterAsync([FromBody] AccountRegisterDTO registerDto)
         {
             if (!ModelState.IsValid || registerDto == null)
@@ -51,6 +52,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>Returns JWT</returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> LoginAsync(AccountLoginDTO loginDto)
         {
             if (!ModelState.IsValid || loginDto == null)
