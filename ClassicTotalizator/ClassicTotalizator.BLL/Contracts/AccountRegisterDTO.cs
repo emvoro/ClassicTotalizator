@@ -17,7 +17,7 @@ namespace ClassicTotalizator.BLL.Contracts
         /// User mail by which the user will be remembered
         /// </summary>
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
+        [RegularExpression(@".+@.+\..+")]
         public string Email { get; set; }
 
         /// <summary>
