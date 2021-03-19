@@ -76,10 +76,9 @@ namespace ClassicTotalizator.API.Middlewares
         }
         private static Encoding GetEncodingFromContentType(string contentTypeStr)
         {
-            if (string.IsNullOrEmpty(contentTypeStr))
-            {
+            if (string.IsNullOrEmpty(contentTypeStr))          
                 return Encoding.UTF8;
-            }
+            
             ContentType contentType;
             try
             {
@@ -90,9 +89,8 @@ namespace ClassicTotalizator.API.Middlewares
                 return Encoding.UTF8;
             }
             if (string.IsNullOrEmpty(contentType.CharSet))
-            {
                 return Encoding.UTF8;
-            }
+            
             return Encoding.GetEncoding(contentType.CharSet, EncoderFallback.ExceptionFallback, DecoderFallback.ExceptionFallback);
         }
         private readonly ILogger<LoggerMiddleware> _logger;
