@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,11 +16,12 @@ namespace ClassicTotalizator.DAL.Entities
         public virtual Participant Participant { get; set; }
 
         public string Name { get; set; }
+        
+        public Dictionary<string, int> Statistics { get; set; }       
 
-        public decimal Height { get; set; }
-
-        public string Role { get; set; }
-
-        public DateTimeOffset DOB { get; set; }
+        public Player()
+        {
+            Statistics = new Dictionary<string, int>();
+        }
     }
 }

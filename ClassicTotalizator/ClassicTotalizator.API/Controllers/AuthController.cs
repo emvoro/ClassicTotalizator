@@ -60,6 +60,7 @@ namespace ClassicTotalizator.API.Controllers
             return CheckTokenAndReturn(token, "Login failed!");
         }
 
+        //Here we must check token for admins purposes
         private ActionResult<string> CheckTokenAndReturn(string token, string message)
         {
             if (!string.IsNullOrEmpty(token)) 
