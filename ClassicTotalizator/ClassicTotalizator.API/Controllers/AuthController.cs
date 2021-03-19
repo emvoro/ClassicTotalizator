@@ -1,8 +1,10 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
@@ -13,6 +15,7 @@ namespace ClassicTotalizator.API.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ILogger<AuthController> _logger;
+        private readonly IConfiguration Configuration;
 
         public AuthController(
             IAuthService authService,
@@ -20,7 +23,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             _authService = authService;
             _logger = logger;
-            _authService.SecurityKey = Environment.GetEnvironmentVariable("SecretKey");
+            _authService.SecurityKey = Configuration.GetSection("AuthKey").GetValue<string>("Secret");
         }
 
         /// <summary>

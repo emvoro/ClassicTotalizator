@@ -1,4 +1,6 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
