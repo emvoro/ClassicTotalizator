@@ -20,7 +20,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             _authService = authService;
             _logger = logger;
-            _authService.SecurityKey = Environment.GetEnvironmentVariable("connectiom_string");
+            _authService.SecurityKey = Environment.GetEnvironmentVariable("SecretKey");
         }
 
         /// <summary>
@@ -70,7 +70,6 @@ namespace ClassicTotalizator.API.Controllers
                 _logger.LogWarning(message);
                 
             return Forbid();
-
         }
     }
 }

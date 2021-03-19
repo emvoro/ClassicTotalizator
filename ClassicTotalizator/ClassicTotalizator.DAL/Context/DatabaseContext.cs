@@ -1,8 +1,6 @@
-﻿using ClassicTotalizator.DAL.Entities;
+﻿using System;
+using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ClassicTotalizator.DAL.Context
 {
@@ -17,8 +15,10 @@ namespace ClassicTotalizator.DAL.Context
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("connection_string"));
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -34,12 +34,15 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (string.IsNullOrEmpty(email))
                 return null;
             
-            return await _context.Accounts.FindAsync(email);
+            return await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<bool> Add(Account account)
         {
             if (account == null)
+                return false;
+            
+            if (await GetByEmail(account.Email) != null)
                 return false;
 
             account.Id = Guid.NewGuid();
