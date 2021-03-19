@@ -19,11 +19,5 @@ namespace ClassicTotalizator.BLL.Contracts
         [Required]
         public string Name { get; set; }
 
-        public Dictionary<string, int> Statistics { get; set; }
-
-        public PlayerDTO()
-        {
-            Statistics = new Dictionary<string, int>();
-        }
     }
 }

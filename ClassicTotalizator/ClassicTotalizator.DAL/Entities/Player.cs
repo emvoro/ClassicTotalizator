@@ -17,11 +17,5 @@ namespace ClassicTotalizator.DAL.Entities
 
         public string Name { get; set; }
         
-        public Dictionary<string, int> Statistics { get; set; }       
-
-        public Player()
-        {
-            Statistics = new Dictionary<string, int>();
-        }
     }
 }
