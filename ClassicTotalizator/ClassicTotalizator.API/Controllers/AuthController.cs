@@ -19,10 +19,11 @@ namespace ClassicTotalizator.API.Controllers
 
         public AuthController(
             IAuthService authService,
-            ILogger<AuthController> logger)
+            ILogger<AuthController> logger, IConfiguration configuration)
         {
             _authService = authService;
             _logger = logger;
+            Configuration = configuration;
             _authService.SecurityKey = Configuration.GetSection("AuthKey").GetValue<string>("Secret");
         }
 
