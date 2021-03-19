@@ -1,23 +1,33 @@
 ﻿using System;
 using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ClassicTotalizator.DAL.Context
 {
     public class DatabaseContext : DbContext
     {
+        private readonly IConfiguration _configuration;
+
         public DbSet<Account> Accounts { get; set; }
+
         public DbSet<Bet> Bets { get; set; }
+        
         public DbSet<BetPool> BetPools { get; set; }
+        
         public DbSet<Event> Events { get; set; }
+        
         public DbSet<Participant> Participants { get; set; }
+        
         public DbSet<Player> Players { get; set; }
+        
         public DbSet<Transaction> Transactions { get; set; }
+        
         public DbSet<Wallet> Wallets { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("connection_string"));
+            optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DatabaseContext"));
             base.OnConfiguring(optionsBuilder);
         }
 

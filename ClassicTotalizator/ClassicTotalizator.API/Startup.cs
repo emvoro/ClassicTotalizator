@@ -51,7 +51,7 @@ namespace ClassicTotalizator.API
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SecretKey"))),
+                            Encoding.ASCII.GetBytes(Configuration.GetSection("AuthKey").GetValue<string>("Secret"))),
                         ValidateIssuer = true,
                         ValidIssuer = JwtOptions.Issuer,
                         ValidateAudience = true,
