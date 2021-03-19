@@ -90,7 +90,8 @@ namespace ClassicTotalizator.API
                             Encoding.ASCII.GetBytes(Configuration.GetSection("AuthKey").GetValue<string>("Secret"))),
                         ValidateIssuer = true,
                         ValidIssuer = JwtOptions.Issuer,
-                        ValidateLifetime = true
+                        ValidateLifetime = true,
+                        ValidateAudience = false
                     };
                 });
 
