@@ -15,7 +15,7 @@ namespace ClassicTotalizator.API.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ILogger<AuthController> _logger;
-        private readonly IConfiguration Configuration;
+        public IConfiguration Configuration { get; }
 
         public AuthController(
             IAuthService authService,
