@@ -98,7 +98,7 @@ namespace ClassicTotalizator.API.Controllers
             if (!string.IsNullOrEmpty(message)) 
                 _logger.LogWarning(message);
                 
-            return NotFound();
+            return BadRequest();
         }
     }
 }

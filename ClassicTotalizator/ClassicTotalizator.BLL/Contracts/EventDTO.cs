@@ -20,10 +20,19 @@ namespace ClassicTotalizator.BLL.Contracts
         [Required]
         public DateTimeOffset StartTime { get; set; }
 
-        public string Sport { get; set; }
+        [Required]
+        public string SportName { get; set; }
 
+        [Required]
         public decimal Margin { get; set; }
 
-        public int[] PossibleResults { get; set; }
+        [Required]
+        public IEnumerable<int> PossibleResults { get; set; }
+
+        [Required]
+        public bool IsEnded { get; set; }
+
+        public int? EventResult { get; set; }
+
     }
 }
