@@ -1,12 +1,10 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
@@ -15,7 +13,7 @@ namespace ClassicTotalizator.API.Controllers
     /// <summary>
     /// THIS PART ACTUALLY NOT IMPLEMENTED DONT TOUCH THIS
     /// </summary>
-    [Authorize(Roles ="ADMIN")]
+    [Authorize(Roles = "ADMIN")]
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
