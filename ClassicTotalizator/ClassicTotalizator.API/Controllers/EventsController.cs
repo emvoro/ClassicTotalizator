@@ -66,9 +66,9 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Getting events pool action
         /// </summary>
-        /// <returns>Lst of all</returns>
+        /// <returns>List of all handled events on the platfrom</returns>
         [HttpGet("getEventsPool")]
         public async Task<ActionResult<EventsPoolDTO>> GetAllEvents()
         {

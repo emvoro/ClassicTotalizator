@@ -2,7 +2,7 @@ using System;
 
 namespace ClassicTotalizator.BLL.Contracts
 {
-    public class BetDto
+    public class BetDTO
     {
         public Guid Id { get; set; }
 
