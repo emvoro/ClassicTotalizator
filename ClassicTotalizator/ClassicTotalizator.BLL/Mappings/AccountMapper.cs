@@ -42,7 +42,7 @@ namespace ClassicTotalizator.BLL.Mappings
                     AccountType = obj.AccountType,
                     AvatarLink = obj.AvatarLink,
                     DOB = obj.DOB,
-                    Wallet = obj.Wallet
+                    Wallet = WalletMapping.Map(obj.Wallet)
                 };
         }
         
@@ -59,7 +59,7 @@ namespace ClassicTotalizator.BLL.Mappings
                     AccountType = obj.AccountType,
                     AvatarLink = obj.AvatarLink,
                     DOB = obj.DOB,
-                    Wallet = obj.Wallet
+                    Wallet = WalletMapping.Map(obj.Wallet)
                 };
         }
     }
