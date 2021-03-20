@@ -1,5 +1,4 @@
 using ClassicTotalizator.API.Middlewares;
-using ClassicTotalizator.API.Options;
 using ClassicTotalizator.BLL.Helpers;
 using ClassicTotalizator.BLL.Services;
 using ClassicTotalizator.BLL.Services.IMPL;
@@ -15,9 +14,12 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using ClassicTotalizator.BLL.Generators;
+using ClassicTotalizator.BLL.Generators.IMPL;
 
 namespace ClassicTotalizator.API
 {
+#pragma warning disable 1591
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -35,7 +37,7 @@ namespace ClassicTotalizator.API
             services.AddTransient<IBetService, BetService>();
             services.AddTransient<IEventService,EventService>();
             services.AddTransient<IParticipantsService,ParticipantsService>();
-
+            services.AddTransient<IHashGenerator, HashGenerator>(provider => new HashGenerator(Configuration.GetSection("HashOptions").GetValue<string>("Salt")));
             ConfigurationServices.ConfigureServices(services, Configuration);
             services.AddControllers();
 
@@ -132,4 +134,5 @@ namespace ClassicTotalizator.API
             });
         }
     }
+#pragma warning restore 1591
 }
