@@ -1,5 +1,4 @@
 using System;
-using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Contracts
 {
@@ -10,8 +9,6 @@ namespace ClassicTotalizator.BLL.Contracts
         public Guid Account_Id { get; set; }
 
         public Guid Event_Id { get; set; }
-        
-        public virtual BetPool BetPool { get; set; }
 
         public string Choice { get; set; }
 
