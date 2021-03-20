@@ -99,10 +99,8 @@ namespace ClassicTotalizator.API
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.ASCII.GetBytes(Configuration.GetSection("AuthKey").GetValue<string>("Secret"))),
-                    ValidateIssuer = true,
-                    ValidIssuer = JwtOptions.Issuer,
-                    ValidateAudience = true,
-                    ValidAudience = JwtOptions.Audience,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateLifetime = true
                 };
             });
