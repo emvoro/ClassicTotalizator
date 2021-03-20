@@ -1,5 +1,4 @@
 using ClassicTotalizator.API.Middlewares;
-using ClassicTotalizator.API.Options;
 using ClassicTotalizator.BLL.Helpers;
 using ClassicTotalizator.BLL.Services;
 using ClassicTotalizator.BLL.Services.IMPL;
@@ -15,6 +14,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+
+using ClassicTotalizator.API.Options;
 
 namespace ClassicTotalizator.API
 {
