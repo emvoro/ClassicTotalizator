@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-    public class Player
+    public class Parameter
     {
         [Key]
         public Guid Id { get; set; }
@@ -14,7 +14,8 @@ namespace ClassicTotalizator.DAL.Entities
         [ForeignKey("Participant_Id")]
         public virtual Participant Participant { get; set; }
 
-        public string Name { get; set; }
-        
+        public string Type { get; set; }
+
+        public string Value { get; set; }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ClassicTotalizator.DAL.Migrations
 {
-    public partial class InitialDatabase : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,11 +31,24 @@ namespace ClassicTotalizator.DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Photo = table.Column<string>(type: "text", nullable: true)
+                    PhotoLink = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Participants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sports", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,33 +71,23 @@ namespace ClassicTotalizator.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Events",
+                name: "Parameters",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Sport = table.Column<string>(type: "text", nullable: true),
-                    Participant1Id = table.Column<Guid>(type: "uuid", nullable: true),
-                    Participant2Id = table.Column<Guid>(type: "uuid", nullable: true),
-                    StartTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    EndTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    EventImage = table.Column<string>(type: "text", nullable: true),
-                    EventResult = table.Column<string>(type: "text", nullable: true)
+                    Participant_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: true),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.PrimaryKey("PK_Parameters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_Participants_Participant1Id",
-                        column: x => x.Participant1Id,
+                        name: "FK_Parameters_Participants_Participant_Id",
+                        column: x => x.Participant_Id,
                         principalTable: "Participants",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Events_Participants_Participant2Id",
-                        column: x => x.Participant2Id,
-                        principalTable: "Participants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,6 +105,43 @@ namespace ClassicTotalizator.DAL.Migrations
                         name: "FK_Players_Participants_Participant_Id",
                         column: x => x.Participant_Id,
                         principalTable: "Participants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Sport_Id = table.Column<int>(type: "integer", nullable: false),
+                    Participant1Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    Participant2Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    StartTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    IsEnded = table.Column<bool>(type: "boolean", nullable: false),
+                    PossibleResults = table.Column<string[]>(type: "text[]", nullable: true),
+                    Result = table.Column<int>(type: "integer", nullable: true),
+                    Margin = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_Participants_Participant1Id",
+                        column: x => x.Participant1Id,
+                        principalTable: "Participants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Events_Participants_Participant2Id",
+                        column: x => x.Participant2Id,
+                        principalTable: "Participants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Events_Sports_Sport_Id",
+                        column: x => x.Sport_Id,
+                        principalTable: "Sports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -131,8 +172,7 @@ namespace ClassicTotalizator.DAL.Migrations
                 columns: table => new
                 {
                     Event_Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    Margin = table.Column<decimal>(type: "numeric", nullable: false)
+                    TotalAmount = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -212,6 +252,22 @@ namespace ClassicTotalizator.DAL.Migrations
                 column: "Participant2Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Events_Sport_Id",
+                table: "Events",
+                column: "Sport_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Parameters_Id",
+                table: "Parameters",
+                column: "Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Parameters_Participant_Id",
+                table: "Parameters",
+                column: "Participant_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Participants_Id",
                 table: "Participants",
                 column: "Id",
@@ -227,6 +283,12 @@ namespace ClassicTotalizator.DAL.Migrations
                 name: "IX_Players_Participant_Id",
                 table: "Players",
                 column: "Participant_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sports_Id",
+                table: "Sports",
+                column: "Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_Account_Id",
@@ -252,6 +314,9 @@ namespace ClassicTotalizator.DAL.Migrations
                 name: "Bets");
 
             migrationBuilder.DropTable(
+                name: "Parameters");
+
+            migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
@@ -271,6 +336,9 @@ namespace ClassicTotalizator.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Participants");
+
+            migrationBuilder.DropTable(
+                name: "Sports");
         }
     }
 }

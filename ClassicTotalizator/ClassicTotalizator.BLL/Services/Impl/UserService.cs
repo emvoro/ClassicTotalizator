@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Mappings;
@@ -17,23 +16,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public UserService(DatabaseContext context)
         {
             _context = context;
-        }
-
-        public async Task<IEnumerable<AccountDTO>> GetAll()
-        {
-            var accounts = await _context.Accounts.ToListAsync();
-
-            return accounts?.Select(AccountMapper.Map).ToList();
-        }
-
-        public async Task<AccountDTO> GetById(Guid id)
-        {
-            if (id == Guid.Empty)
-                return null;
-            
-            var account = await _context.Accounts.FindAsync(id);
-
-            return AccountMapper.Map(account);
         }
 
         public async Task<AccountDTO> GetByEmail(string email)
@@ -55,7 +37,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             var account = AccountMapper.Map(registeredAcc);
             
-            account.Id = Guid.NewGuid();
             account.Wallet = new Wallet
             {
                 Account = account,

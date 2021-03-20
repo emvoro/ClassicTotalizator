@@ -2,13 +2,12 @@
 
 namespace ClassicTotalizator.BLL.Contracts
 {
-    public class SportsDTO
+    public class ParameterDTO
     {
         [Required]
-        public int Id { get; set; }
-
+        public string Type { get; set; }
+    
         [Required]
-        public string Name { get; set; }
-
+        public string Value { get; set; }
     }
 }

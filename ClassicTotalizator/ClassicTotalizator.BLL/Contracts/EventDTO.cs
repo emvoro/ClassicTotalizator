@@ -1,8 +1,6 @@
 ﻿using ClassicTotalizator.DAL.Entities;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ClassicTotalizator.BLL.Contracts
 {
@@ -20,10 +18,20 @@ namespace ClassicTotalizator.BLL.Contracts
         [Required]
         public DateTimeOffset StartTime { get; set; }
 
-        public string Sport { get; set; }
+        [Required]
+        public SportDTO Sport { get; set; }
 
+        [Required]
         public decimal Margin { get; set; }
 
-        public int[] PossibleResults { get; set; }
+        [Required]
+        public string[] PossibleResults { get; set; }
+
+        [Required]
+        public bool IsEnded { get; set; }
+        
+        [Required]
+        public string EventResult { get; set; }
+
     }
 }

@@ -15,7 +15,7 @@ namespace ClassicTotalizator.DAL.Entities
 
         public decimal Amount { get; set; }
 
-        public ICollection<Transaction> TransactionsHistory { get; set; }
+        public IEnumerable<Transaction> TransactionsHistory { get; set; }
 
         public Wallet()
         {

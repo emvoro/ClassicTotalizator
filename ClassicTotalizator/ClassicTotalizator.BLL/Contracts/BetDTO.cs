@@ -4,10 +4,6 @@ namespace ClassicTotalizator.BLL.Contracts
 {
     public class BetDTO
     {
-        public Guid Id { get; set; }
-
-        public Guid Account_Id { get; set; }
-
         public Guid Event_Id { get; set; }
 
         public string Choice { get; set; }

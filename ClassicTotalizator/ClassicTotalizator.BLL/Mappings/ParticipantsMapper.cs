@@ -1,10 +1,6 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.DAL.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClassicTotalizator.BLL.Mappings
 {
@@ -18,7 +14,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Id = obj.Id,
                     Name = obj.Name,
-                    Photo = obj.Photo,
+                    PhotoLink = obj.PhotoLink,
                     Players = obj.Players.Select(PlayerMapper.Map).ToList()
                 };
         }

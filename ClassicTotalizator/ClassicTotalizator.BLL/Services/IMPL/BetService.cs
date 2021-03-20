@@ -24,13 +24,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return @event.BetPool.Bets.Select(BetMapper.Map).ToList();
         }
 
-        public async Task<BetDTO> GetById(Guid id)
-        {
-            var bet = await _context.Bets.FindAsync(id);
-
-            return BetMapper.Map(bet);
-        }
-
         public async Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id)
         {
             var account = await _context.Accounts.FindAsync(id);
@@ -42,6 +35,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (betDto == null)
                 throw new ArgumentNullException(nameof(betDto));
+            if (betDto.Amount <= 0 || betDto.Event_Id == Guid.Empty ||  string.IsNullOrEmpty(betDto.Choice))
+                return false;
 
             var bet = BetMapper.Map(betDto);
             bet.Id = Guid.NewGuid();

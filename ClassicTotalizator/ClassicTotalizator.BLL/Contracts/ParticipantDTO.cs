@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ClassicTotalizator.BLL.Contracts
 {
@@ -14,14 +13,17 @@ namespace ClassicTotalizator.BLL.Contracts
         public string Name { get; set; }
 
         [Required]
-        public ICollection<PlayerDTO> Players { get; set; }
+        public IEnumerable<PlayerDTO> Players { get; set; }
 
         [Required]
-        public string Photo { get; set; }
+        public string PhotoLink { get; set; }
+
+        public IEnumerable<ParameterDTO> Parameters { get; set; }
 
         public ParticipantDTO()
         {
             Players = new List<PlayerDTO>();
+            Parameters = new List<ParameterDTO>();
         }
     }
 }

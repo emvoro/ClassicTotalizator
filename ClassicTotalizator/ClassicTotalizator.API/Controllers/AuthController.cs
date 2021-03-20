@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
@@ -15,11 +14,10 @@ namespace ClassicTotalizator.API.Controllers
     ///  This controller is used to register and login the user on the platform
     /// </summary>
     [ApiController]
-    [Route("api/v1")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        
         private readonly ILogger<AuthController> _logger;
         private IConfiguration Configuration { get; }
 
@@ -42,13 +40,13 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Registration action.
         /// </summary>
-        /// <param name="registerDto">Requested dto for registration on platform</param>
+        /// <param name="registerDTO">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDto)
+        public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDTO)
         {
-            if (!ModelState.IsValid || registerDto == null)
+            if (!ModelState.IsValid || registerDTO == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
@@ -56,9 +54,11 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var token = await _authService.RegisterAsync(registerDto);
-                var jwtReturnedDTO = new JwtDTO();
-                jwtReturnedDTO.JwtString = token;
+                var token = await _authService.RegisterAsync(registerDTO);
+                var jwtReturnedDTO = new JwtDTO
+                {
+                    JwtString = token
+                };
                 return CheckTokenAndReturn(jwtReturnedDTO, "Register failed!");
             }
             catch (ArgumentNullException)
@@ -71,22 +71,24 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Login action.
         /// </summary>
-        /// <param name="loginDto">Requested dto for login on platform</param>
+        /// <param name="loginDTO">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDto)
+        public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDTO)
         {
-            if (!ModelState.IsValid || loginDto == null)
+            if (!ModelState.IsValid || loginDTO == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 
-            var token = await _authService.LoginAsync(loginDto);
-            var jwtReturnedDTO = new JwtDTO();
-            jwtReturnedDTO.JwtString = token;
+            var token = await _authService.LoginAsync(loginDTO);
+            var jwtReturnedDTO = new JwtDTO
+            {
+                JwtString = token
+            };
             return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
         }
 
@@ -98,7 +100,7 @@ namespace ClassicTotalizator.API.Controllers
             if (!string.IsNullOrEmpty(message)) 
                 _logger.LogWarning(message);
                 
-            return NotFound();
+            return BadRequest();
         }
     }
 }

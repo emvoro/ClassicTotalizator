@@ -1,7 +1,6 @@
 ﻿using System;
 using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace ClassicTotalizator.DAL.Context
 {
@@ -22,6 +21,10 @@ namespace ClassicTotalizator.DAL.Context
         public DbSet<Transaction> Transactions { get; set; }
         
         public DbSet<Wallet> Wallets { get; set; }
+
+        public DbSet<Parameter> Parameters { get; set; }
+
+        public DbSet<Sport> Sports { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -65,6 +68,11 @@ namespace ClassicTotalizator.DAL.Context
             builder.Entity<Participant>().HasIndex(s => s.Id).IsUnique();
 
             builder.Entity<Participant>()
+                .HasMany(s => s.Parameters)
+                .WithOne(s => s.Participant)
+                .HasForeignKey(s => s.Participant_Id);
+
+            builder.Entity<Participant>()
                 .HasMany(s => s.Players)
                 .WithOne(s => s.Participant)
                 .HasForeignKey(s => s.Participant_Id);
@@ -83,6 +91,16 @@ namespace ClassicTotalizator.DAL.Context
                 .HasMany(s => s.TransactionsHistory)
                 .WithOne(s => s.Wallet)
                 .HasForeignKey(s => s.Account_Id);
+
+            builder.Entity<Parameter>().HasKey(s => s.Id);
+
+            builder.Entity<Parameter>().HasIndex(s => s.Id).IsUnique();
+
+            builder.Entity<Sport>().HasKey(s => s.Id);
+
+            builder.Entity<Sport>().HasIndex(s => s.Id).IsUnique();
+
+
         }
     }
 }

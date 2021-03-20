@@ -1,16 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
-namespace ClassicTotalizator.DAL.Entities
+namespace ClassicTotalizator.BLL.Contracts
 {
-    public class Transaction
+    public class TransactionDTO
     {
         public Guid Id { get; set; }
 
         public Guid Account_Id { get; set; }
-
-        [ForeignKey("Account_Id")]
-        public virtual Wallet Wallet { get; set; }
 
         public decimal Amount { get; set; }
 

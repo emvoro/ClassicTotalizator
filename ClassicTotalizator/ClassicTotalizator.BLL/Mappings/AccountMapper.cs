@@ -29,7 +29,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 };
         }
 
-        public static Account Map(Contracts.AccountDTO obj)
+        public static Account Map(AccountDTO obj)
         {
             return obj == null
                 ? null
@@ -42,15 +42,15 @@ namespace ClassicTotalizator.BLL.Mappings
                     AccountType = obj.AccountType,
                     AvatarLink = obj.AvatarLink,
                     DOB = obj.DOB,
-                    Wallet = obj.Wallet
+                    Wallet = WalletMapping.Map(obj.Wallet)
                 };
         }
         
-        public static Contracts.AccountDTO Map(Account obj)
+        public static AccountDTO Map(Account obj)
         {
             return obj == null
                 ? null
-                : new Contracts.AccountDTO
+                : new AccountDTO
                 {
                     Id = obj.Id,
                     Email = obj.Email,
@@ -59,7 +59,7 @@ namespace ClassicTotalizator.BLL.Mappings
                     AccountType = obj.AccountType,
                     AvatarLink = obj.AvatarLink,
                     DOB = obj.DOB,
-                    Wallet = obj.Wallet
+                    Wallet = WalletMapping.Map(obj.Wallet)
                 };
         }
     }
