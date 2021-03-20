@@ -1,4 +1,5 @@
-﻿using ClassicTotalizator.BLL.Contracts;
+﻿using ClassicTotalizator.API.Options;
+using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,6 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1")]
-    [Produces(MediaTypeNames.Application.Json)]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -46,7 +46,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> RegisterAsync([FromBody] AccountRegisterDTO registerDto)
+        public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDto)
         {
             if (!ModelState.IsValid || registerDto == null)
             {
@@ -57,7 +57,9 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var token = await _authService.RegisterAsync(registerDto);
-                return CheckTokenAndReturn(token, "Register failed!");
+                var jwtReturnedDTO = new JwtDTO();
+                jwtReturnedDTO.JwtString = token;
+                return CheckTokenAndReturn(jwtReturnedDTO, "Register failed!");
             }
             catch (ArgumentNullException)
             {
@@ -74,7 +76,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> LoginAsync(AccountLoginDTO loginDto)
+        public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDto)
         {
             if (!ModelState.IsValid || loginDto == null)
             {
@@ -83,13 +85,15 @@ namespace ClassicTotalizator.API.Controllers
             }
 
             var token = await _authService.LoginAsync(loginDto);
-            return CheckTokenAndReturn(token, "Login failed!");
+            var jwtReturnedDTO = new JwtDTO();
+            jwtReturnedDTO.JwtString = token;
+            return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
         }
 
-        private ActionResult<string> CheckTokenAndReturn(string token, string message)
+        private ActionResult<JwtDTO> CheckTokenAndReturn(JwtDTO jwt, string message)
         {
-            if (!string.IsNullOrEmpty(token)) 
-                return Ok(token);
+            if (!string.IsNullOrEmpty(jwt.JwtString)) 
+                return Ok(jwt);
             
             if (!string.IsNullOrEmpty(message)) 
                 _logger.LogWarning(message);
