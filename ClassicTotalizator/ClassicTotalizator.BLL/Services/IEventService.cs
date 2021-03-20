@@ -50,11 +50,5 @@ namespace ClassicTotalizator.BLL.Services
         /// <returns>List of current registered sports</returns>
         Task<IEnumerable<SportDTO>> GetCurrentListOfSports();
 
-        /// <summary>
-        /// Producing list of all events on the platfrom
-        /// </summary>
-        /// <returns>List(history of all events on the platform)</returns>
-        Task<IEnumerable<EventDTO>> GetHistoryOfAllEvents();
-
     }
 }

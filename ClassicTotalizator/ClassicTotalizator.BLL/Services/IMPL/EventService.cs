@@ -73,14 +73,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<IEnumerable<SportDTO>> GetCurrentListOfSports()
         {
-            var sports = await _context.Sports.ToListAsync();
+            var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
             return sports.Select(SportMapper.Map).ToList();
-        }
-
-        public async Task<IEnumerable<EventDTO>> GetHistoryOfAllEvents()
-        {
-            var sports = await _context.Events.ToListAsync();
-            return sports.Select(EventMapper.Map).ToList();
         }
     }
 }

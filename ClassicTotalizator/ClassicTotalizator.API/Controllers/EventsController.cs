@@ -70,19 +70,6 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Returns list of all created events.
-        /// </summary>
-        /// <returns>List of Events</returns>
-        [HttpGet("getEventsPool")]
-        public async Task<ActionResult<IEnumerable<EventDTO>>> GetAllEvents()
-        {
-            var eventsHistory = await _eventService.GetCurrentListOfSports();
-            if (eventsHistory == null)
-                return NotFound();
-            return Ok(eventsHistory);
-        }
-
-        /// <summary>
         /// Finding event by id.
         /// </summary>
         /// <returns>Event by id</returns>
