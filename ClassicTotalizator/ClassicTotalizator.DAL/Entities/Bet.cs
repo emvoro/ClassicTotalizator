@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassicTotalizator.DAL.Entities
 {
-   public  class Bet
+    public class Bet
     {
         [Key]
         public Guid Id { get; set; }

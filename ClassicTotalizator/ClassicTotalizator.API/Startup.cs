@@ -1,5 +1,3 @@
-using System;
-using System.Text;
 using ClassicTotalizator.API.Middlewares;
 using ClassicTotalizator.API.Options;
 using ClassicTotalizator.BLL.Helpers;
@@ -13,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
 
 namespace ClassicTotalizator.API
 {
@@ -28,14 +30,49 @@ namespace ClassicTotalizator.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAuthService,AuthService>();
+            services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();
             ConfigurationServices.ConfigureServices(services, Configuration);
             services.AddControllers();
+
+            var documenation = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
+            var documentationPath = Path.Combine(AppContext.BaseDirectory, documenation);
+
             services.AddSwaggerGen(c =>
             {
+                c.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Id = "Bearer",
+                                    Type = ReferenceType.SecurityScheme
+                                },
+                            },
+                            new string[0]
+                        }
+                    });
+
+                c.AddSecurityDefinition(
+                    "Bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        Type = SecuritySchemeType.ApiKey,
+                        In = ParameterLocation.Header,
+                        Scheme = "Bearer",
+                        Name = "Authorization",
+                        Description = "JWT token",
+                        BearerFormat = "JWT"
+                    });
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClassicTotalizator.API", Version = "v1" });
+                if (File.Exists(documentationPath))
+                    c.IncludeXmlComments(documenation, includeControllerXmlComments: true);
             });
+
 
             services.AddCors();
 
@@ -61,6 +98,19 @@ namespace ClassicTotalizator.API
                     ValidateLifetime = true
                 };
             });
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.ASCII.GetBytes(Configuration.GetSection("AuthKey").GetValue<string>("Secret"))),
+                        ValidateIssuer = false,
+                        ValidateLifetime = true,
+                        ValidateAudience = false
+                    };
+                });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
