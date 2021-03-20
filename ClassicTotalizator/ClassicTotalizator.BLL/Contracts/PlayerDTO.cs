@@ -14,9 +14,6 @@ namespace ClassicTotalizator.BLL.Contracts
         public Guid Participant_Id { get; set; }
 
         [Required]
-        public ParticipantDTO Participant { get; set; }
-
-        [Required]
         public string Name { get; set; }
 
     }

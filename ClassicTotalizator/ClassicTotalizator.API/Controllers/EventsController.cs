@@ -22,11 +22,20 @@ namespace ClassicTotalizator.API.Controllers
     {
         private readonly ILogger<EventsController> _logger;
         private readonly IEventService _eventService;
+        private readonly IParticipantsService _participantsService;
 
-        public EventsController(ILogger<EventsController> logger, IEventService eventService)
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="eventService"></param>
+        public EventsController(ILogger<EventsController> logger,
+            IEventService eventService,
+            IParticipantsService participantsService)
         {
             _logger = logger;
             _eventService = eventService;
+            _participantsService = participantsService;
         }
 
         /// <summary>
@@ -36,7 +45,10 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet("participants")]
         public async Task<ActionResult<IEnumerable<ParticipantsDTO>>> GetAllParticipantsAsync()
         {
-            throw new NotImplementedException();
+            var participants = await _participantsService.GetAllParticipantsAsync();
+            if (participants == null)
+                return NotFound();
+            return Ok(participants);
         }
 
         /// <summary>
@@ -57,11 +69,21 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Returns whole list of all created events
         /// </summary>
-        /// <returns>Lst of all</returns>
+        /// <returns>List of all</returns>
         [HttpGet("getEventsPool")]
-        public async Task<ActionResult<EventsPoolDTO>> GetAllEvents()
+        public async Task<ActionResult<IEnumerable<EventDTO>>> GetAllEvents()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Finding event by thats id action
+        /// </summary>
+        /// <returns>Event with this id</returns>
+        [HttpGet("getById")]
+        public async Task<ActionResult<EventDTO>> GetEventById()
         {
             throw new NotImplementedException();
         }

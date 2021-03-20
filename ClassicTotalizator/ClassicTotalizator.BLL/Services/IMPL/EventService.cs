@@ -11,20 +11,13 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
-    class EventService : IEventService
+    public class EventService : IEventService
     {
         private readonly DatabaseContext _context;
 
         public EventService(DatabaseContext context)
         {
             _context = context;
-        }
-
-        public async Task<IEnumerable<Event>> GetEventsAsync()
-        {
-            return await _context.Events
-                .Where(x => x.StartTime < DateTimeOffset.Now)
-                .ToListAsync() ?? new List<Event>();
         }
 
         public async Task<Event> GetById(Guid id)
@@ -80,7 +73,12 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return oldEvent;
         }
 
-
-
+        public async Task<IEnumerable<EventDTO>> GetEventsAsync()
+        {
+            throw new NotImplementedException();
+           /* return await _context.Events
+                .Where(x => x.StartTime < DateTimeOffset.Now)
+                .ToListAsync() ?? new List<Event>();*/
+        }
     }
 }

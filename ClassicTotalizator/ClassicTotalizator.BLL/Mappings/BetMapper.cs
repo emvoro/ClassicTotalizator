@@ -5,11 +5,11 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class BetMapper
     {
-        public static BetDto Map(Bet obj)
+        public static BetDTO Map(Bet obj)
         {
             return obj == null
                 ? null
-                : new BetDto
+                : new BetDTO
                 {
                     Id = obj.Id,
                     Amount = obj.Amount,
@@ -19,7 +19,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 };
         }
         
-        public static Bet Map(BetDto obj)
+        public static Bet Map(BetDTO obj)
         {
             return obj == null
                 ? null
