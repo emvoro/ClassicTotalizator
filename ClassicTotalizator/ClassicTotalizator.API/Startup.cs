@@ -17,6 +17,8 @@ using System.Text;
 using ClassicTotalizator.BLL.Generators;
 using ClassicTotalizator.BLL.Generators.IMPL;
 
+using ClassicTotalizator.API.Options;
+
 namespace ClassicTotalizator.API
 {
 #pragma warning disable 1591
