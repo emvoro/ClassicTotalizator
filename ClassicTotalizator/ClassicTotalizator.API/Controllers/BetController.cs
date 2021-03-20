@@ -13,7 +13,7 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Authorize]
-    [Route("api/v1/bet")]
+    [Route("api/[controller]")]
     public class BetController : ControllerBase
     {
         private readonly IBetService _betService;
