@@ -42,6 +42,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (betDto == null)
                 throw new ArgumentNullException(nameof(betDto));
+            if (betDto.Amount <= 0 || betDto.Account_Id == Guid.Empty || betDto.Event_Id == Guid.Empty ||  string.IsNullOrEmpty(betDto.Choice))
+                return false;
 
             var bet = BetMapper.Map(betDto);
             bet.Id = Guid.NewGuid();
