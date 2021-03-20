@@ -1,10 +1,13 @@
 using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -13,7 +16,7 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Authorize]
-    [Route("api/v1/bet")]
+    [Route("api/[controller]")]
     public class BetController : ControllerBase
     {
         private readonly IBetService _betService;
@@ -32,35 +35,27 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get bet by bet id
-        /// </summary>
-        /// <param name="id">Bet id</param>
-        /// <returns>Bet</returns>
-        [HttpGet("{id}")]
-        [Authorize(Roles = "USER")]
-        public async Task<ActionResult> GetBetById([FromRoute] Guid id)
-        {
-            if (id == Guid.Empty)
-                return BadRequest();
-
-            var bet = await _betService.GetById(id);
-            if (bet == null)
-                return NotFound();
-
-            return Ok(bet);
-        }
-
-        /// <summary>
         /// Get bets on account
         /// </summary>
-        /// <param name="id">Account id</param>
         /// <returns>Bets on account</returns>
         [HttpGet("account")]
         [Authorize(Roles = "USER")]
         public async Task<ActionResult> GetBetsByAccId()
         {
-            var accessToken = Request.Headers.Values;
+            var token = Request.Headers[HeaderNames.Authorization].FirstOrDefault();
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized();
 
+            if (token.Contains("Bearer"))
+            {
+                token = token.Replace("Bearer", "");
+            }
+            
+            var credentialBytes = Convert.FromBase64String(token.Trim());
+            var credentials = Encoding.ASCII.GetString(credentialBytes).Split(new[] { ':' }, 2);
+            var login = credentials[0];
+            var password = credentials[1];
+            
             var bets = await _betService.GetBetsByAccId(Guid.Empty);
             if (bets == null)
                 return NotFound();
@@ -79,9 +74,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (id == Guid.Empty)
                 return BadRequest();
-
             
-
             var bets = await _betService.GetEventBets(id);
             if (bets == null)
                 return NotFound();

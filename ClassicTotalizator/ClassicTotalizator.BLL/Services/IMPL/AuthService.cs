@@ -1,4 +1,5 @@
-﻿using ClassicTotalizator.BLL.Contracts;
+﻿using System;
+using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Generators.IMPL;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Generators;
@@ -41,6 +42,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             var accountForRegister = new AccountDTO
             {
+                Id = Guid.NewGuid(),
                 AccountType = "USER",
                 PasswordHash = _hashGenerator.GenerateHash(registerDto.Password),
                 Email = registerDto.Email,

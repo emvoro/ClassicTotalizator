@@ -10,7 +10,7 @@ namespace ClassicTotalizator.API.Controllers
     /// API for wallet
     /// </summary>
     [ApiController]
-    [Route("api/v1/wallet")]
+    [Route("api/[controller]")]
     public class WalletController : ControllerBase
     {
         private readonly IWalletService _walletService;
