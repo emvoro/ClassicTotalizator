@@ -61,9 +61,12 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all possible sports on the platform</returns>
         [HttpGet("sports")]
-        public async Task<IEnumerable<SportsDTO>> GetAllSportsInPlatform()
+        public async Task<ActionResult<IEnumerable<SportDTO>>> GetAllSportsInPlatform()
         {
-            throw new NotImplementedException();
+            var sports = await _eventService.GetCurrentListOfSports();
+            if (sports == null)
+                return NotFound();
+            return Ok(sports);
         }
 
         /// <summary>
@@ -73,7 +76,10 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet("getEventsPool")]
         public async Task<ActionResult<IEnumerable<EventDTO>>> GetAllEvents()
         {
-            throw new NotImplementedException();
+            var eventsHistory = await _eventService.GetCurrentListOfSports();
+            if (eventsHistory == null)
+                return NotFound();
+            return Ok(eventsHistory);
         }
 
         /// <summary>

@@ -40,7 +40,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return EventMapper.Map(newEvent);
         }
 
-        public async Task<Event> EditEventAsync(EventDTO newEvent)
+        public async Task<EventDTO> EditEventAsync(EventDTO newEvent)
         {
             var oldEvent = await _context.Events.FindAsync(newEvent.Id);
             oldEvent.Participant1 = newEvent.Participant1;
@@ -56,8 +56,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             oldEvent.PossibleResults = newEvent.PossibleResults;
             _context.Update(oldEvent);
             await _context.SaveChangesAsync();
-
-            return oldEvent;
+            return EventMapper.Map(oldEvent);
         }
 
         public async Task<IEnumerable<EventDTO>> GetEventsAsync()
@@ -70,6 +69,18 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<SportDTO>> GetCurrentListOfSports()
+        {
+            var sports = await _context.Sports.ToListAsync();
+            return sports.Select(SportMapper.Map).ToList();
+        }
+
+        public async Task<IEnumerable<EventDTO>> GetHistoryOfAllEvents()
+        {
+            var sports = await _context.Events.ToListAsync();
+            return sports.Select(EventMapper.Map).ToList();
         }
     }
 }
