@@ -27,6 +27,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="eventService"></param>
+        /// /// <param name="participantsService"></param>
         public EventsController(ILogger<EventsController> logger,
             IEventService eventService,
             IParticipantsService participantsService)
