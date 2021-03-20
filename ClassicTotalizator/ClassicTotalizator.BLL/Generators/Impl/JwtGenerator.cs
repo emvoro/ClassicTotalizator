@@ -18,7 +18,8 @@ namespace ClassicTotalizator.BLL.Generators.IMPL
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, account.AccountType)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, account.AccountType),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, "USER")
             };
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));

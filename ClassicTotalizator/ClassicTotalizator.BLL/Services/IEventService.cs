@@ -37,8 +37,18 @@ namespace ClassicTotalizator.BLL.Services
         /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
         Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport);
 
+        /// <summary>
+        /// Trying to edit already created event
+        /// </summary>
+        /// <param name="newEvent">New variant of this event</param>
+        /// <returns>Edited event</returns>
+        Task<EventDTO> EditEventAsync(EventDTO newEvent);
 
-        Task<Event> EditEventAsync(EventDTO newEvent);
+        /// <summary>
+        /// Producing list of all sports on the platfrom
+        /// </summary>
+        /// <returns>List of current registered sports</returns>
+        Task<IEnumerable<SportDTO>> GetCurrentListOfSports();
 
     }
 }

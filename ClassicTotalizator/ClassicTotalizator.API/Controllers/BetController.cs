@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
-using System.Text;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -24,7 +23,7 @@ namespace ClassicTotalizator.API.Controllers
         private readonly ILogger<BetController> _logger;
 
         /// <summary>
-        /// Bet Ñontroller Constructor
+        /// Bet ï¿½ontroller Constructor
         /// </summary>
         /// <param name="betService">Bet service</param>
         /// <param name="logger">Logger</param>
@@ -42,21 +41,11 @@ namespace ClassicTotalizator.API.Controllers
         [Authorize(Roles = "USER")]
         public async Task<ActionResult> GetBetsByAccId()
         {
-            var token = Request.Headers[HeaderNames.Authorization].FirstOrDefault();
-            if (string.IsNullOrEmpty(token))
-                return Unauthorized();
+            var id = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(id, out var guidId))
+                return BadRequest();
 
-            if (token.Contains("Bearer"))
-            {
-                token = token.Replace("Bearer", "");
-            }
-            
-            var credentialBytes = Convert.FromBase64String(token.Trim());
-            var credentials = Encoding.ASCII.GetString(credentialBytes).Split(new[] { ':' }, 2);
-            var login = credentials[0];
-            var password = credentials[1];
-            
-            var bets = await _betService.GetBetsByAccId(Guid.Empty);
+            var bets = await _betService.GetBetsByAccId(guidId);
             if (bets == null)
                 return NotFound();
 
