@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace ClassicTotalizator.DAL.Entities
 {
     public class Transaction

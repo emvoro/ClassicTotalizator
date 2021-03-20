@@ -1,7 +1,6 @@
 ﻿using System;
 using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace ClassicTotalizator.DAL.Context
 {
