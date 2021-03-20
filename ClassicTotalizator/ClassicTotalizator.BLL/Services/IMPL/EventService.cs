@@ -20,11 +20,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<Event> GetById(Guid id)
+        public async Task<EventDTO> GetById(Guid id)
         {
-            if (id == Guid.Empty) return null;
-
-            return await _context.Events.FindAsync(id);
+            if (id == Guid.Empty) 
+                return null;
+            return EventMapper.ToEventDTO(await _context.Events.FindAsync(id));
         }
 
         public async Task<bool> CreateEventAsync(EventDTO eventDTO)

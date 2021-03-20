@@ -54,8 +54,8 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all possible outcomes</returns>
         [HttpGet("outcomes")]
-        public async Task<IEnumerable<int>> GepAllPossibleResults() => new List<int> { 0, 1, 2 };
-
+        public IEnumerable<int> GetAllPossibleOutcomes() => new List<int> {0,1,2 };
+        
         /// <summary>
         /// Get all sports action
         /// </summary>
@@ -81,9 +81,17 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event with this id</returns>
         [HttpGet("getById")]
-        public async Task<ActionResult<EventDTO>> GetEventById()
+        public async Task<ActionResult<EventDTO>> GetEventById([FromRoute] Guid id)
         {
-            throw new NotImplementedException();
+            if (id == Guid.Empty)
+                return BadRequest();
+
+            var foundEvent = _eventService.GetById(id);
+
+            if (foundEvent == null)
+                return NotFound();
+
+            return Ok(foundEvent);
         }
 
         /// <summary>
@@ -91,6 +99,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all possible sports on the platform</returns>
         [HttpGet("feed")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<EventDTO>>> GetAllUpcomingEvents()
         {
             var events = await _eventService.GetEventsAsync();
