@@ -9,8 +9,6 @@ namespace ClassicTotalizator.BLL.Services
     {
         Task<IEnumerable<BetDTO>> GetEventBets(Guid id);
 
-        Task<BetDTO> GetById(Guid id);
-
         Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id);
 
         Task<bool> AddBet(BetDTO betDto);

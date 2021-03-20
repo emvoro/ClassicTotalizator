@@ -24,13 +24,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return @event.BetPool.Bets.Select(BetMapper.Map).ToList();
         }
 
-        public async Task<BetDTO> GetById(Guid id)
-        {
-            var bet = await _context.Bets.FindAsync(id);
-
-            return BetMapper.Map(bet);
-        }
-
         public async Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id)
         {
             var account = await _context.Accounts.FindAsync(id);

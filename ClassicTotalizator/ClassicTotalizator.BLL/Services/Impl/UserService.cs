@@ -55,7 +55,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             var account = AccountMapper.Map(registeredAcc);
             
-            account.Id = Guid.NewGuid();
             account.Wallet = new Wallet
             {
                 Account = account,
