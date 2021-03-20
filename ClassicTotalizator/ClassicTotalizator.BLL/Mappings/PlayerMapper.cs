@@ -10,7 +10,6 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class PlayerMapper
     {
-
         public static PlayerDTO Map(Player obj)
         {
             return obj == null

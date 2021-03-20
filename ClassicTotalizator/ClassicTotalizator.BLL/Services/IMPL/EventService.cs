@@ -27,13 +27,12 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return await _context.Events.FindAsync(id);
         }
 
-
         public async Task<bool> CreateEventAsync(EventDTO eventDTO)
         {
             if (eventDTO == null)
                 return false;
 
-            var newEvent = EventMapper.ToEvent(eventDTO);
+            var newEvent = EventMapper.Map(eventDTO);
             newEvent.Id = Guid.NewGuid();
             newEvent.BetPool = new BetPool { Event_Id = newEvent.Id, Margin = eventDTO.Margin, TotalAmount = 0 };
             newEvent.EventImage = "";
@@ -75,10 +74,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<IEnumerable<EventDTO>> GetEventsAsync()
         {
-            throw new NotImplementedException();
-           /* return await _context.Events
+            var events = await _context.Events
                 .Where(x => x.StartTime < DateTimeOffset.Now)
-                .ToListAsync() ?? new List<Event>();*/
+                .ToListAsync() ?? new List<Event>();
+
+            return events.Select(EventMapper.Map).ToList();
         }
     }
 }
