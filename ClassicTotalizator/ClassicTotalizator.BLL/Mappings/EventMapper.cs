@@ -22,5 +22,18 @@ namespace ClassicTotalizator.BLL.Mappings
                     Sport = eventDTO.Sport
                 };
         }
+
+        public static EventDTO ToEventDTO(EventDTO eventDTO)
+        {
+            return eventDTO == null
+                ? null
+                : new EventDTO
+                {
+                    Participant1 = eventDTO.Participant1,
+                    Participant2 = eventDTO.Participant2,
+                    StartTime = eventDTO.StartTime,
+                    Sport = eventDTO.Sport
+                };
+        }
     }
 }

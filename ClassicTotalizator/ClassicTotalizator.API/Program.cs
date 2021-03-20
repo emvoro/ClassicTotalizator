@@ -22,9 +22,9 @@ namespace ClassicTotalizator.API
                      .WriteTo.ColoredConsole()
                      .CreateLogger());
              })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+             .ConfigureWebHostDefaults(webBuilder =>
+             {
+                 webBuilder.UseStartup<Startup>();
+             });
     }
 }

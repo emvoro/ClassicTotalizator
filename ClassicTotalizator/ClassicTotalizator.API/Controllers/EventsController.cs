@@ -21,11 +21,14 @@ namespace ClassicTotalizator.API.Controllers
     public class EventsController : ControllerBase
     {
         private readonly ILogger<EventsController> _logger;
+        private readonly IEventService _eventService;
 
-        public EventsController(ILogger<EventsController> logger)
+        public EventsController(ILogger<EventsController> logger, IEventService eventService)
         {
             _logger = logger;
+            _eventService = eventService;
         }
+
         /// <summary>
         /// Get participants action
         /// </summary>
@@ -35,13 +38,13 @@ namespace ClassicTotalizator.API.Controllers
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
         /// All possible outcomes for events action
         /// </summary>
         /// <returns>List of all possible outcomes</returns>
         [HttpGet("outcomes")]
         public async Task<IEnumerable<int>> GepAllPossibleResults() => new List<int> { 0, 1, 2 };
-
 
         /// <summary>
         /// Get all sports action
@@ -53,11 +56,28 @@ namespace ClassicTotalizator.API.Controllers
             throw new NotImplementedException();
         }
 
-
+        /// <summary>
+        /// Get all sports action
+        /// </summary>
+        /// <returns>List of all possible sports on the platform</returns>
         [HttpPost("addEvent")]
         public async Task<ActionResult<EventDTO>> AddEventToLine() // Add consuming event Dto
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get all events
+        /// </summary>
+        /// <returns>List of all possible sports on the platform</returns>
+        [HttpGet("feed")]
+        public async Task<ActionResult<List<EventDTO>>> GetAllUpcomingEvents()
+        {
+            var events = await _eventService.GetEventsAsync();
+            if (events == null)
+                return NotFound();
+
+            return Ok(events);
         }
     }
 }
