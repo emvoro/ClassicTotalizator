@@ -40,8 +40,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<bool> Add(Account account)
         {
             if (account == null)
-                return false;
-            
+                throw new ArgumentNullException(nameof(account));
             if (await GetByEmail(account.Email) != null)
                 return false;
 
