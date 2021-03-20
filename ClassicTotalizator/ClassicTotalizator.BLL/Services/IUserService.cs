@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ClassicTotalizator.DAL.Entities;
+using ClassicTotalizator.BLL.Contracts;
 
 namespace ClassicTotalizator.BLL.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<Account>> GetAll();
-        Task<Account> GetById(Guid id);
-        Task<Account> GetByEmail(string email);
-        Task<bool> Add(Account account);
+        Task<IEnumerable<AccountDTO>> GetAll();
+        Task<AccountDTO> GetById(Guid id);
+        Task<AccountDTO> GetByEmail(string email);
+        Task<bool> Add(AccountDTO registeredAcc);
         Task<bool> Remove(Guid id);
     }
 }
