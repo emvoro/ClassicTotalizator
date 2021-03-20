@@ -37,6 +37,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="id">Bet id</param>
         /// <returns>Bet</returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult> GetBetById([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
@@ -55,6 +56,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="id">Account id</param>
         /// <returns>Bets on account</returns>
         [HttpGet("account/{id}")]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult> GetBetsByAccId([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
@@ -72,8 +74,8 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="id">Event id</param>
         /// <returns>Event bet's</returns>
-        [Authorize(Roles = "ADMIN")]
         [HttpGet("event/{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> GetEventBets([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
@@ -92,6 +94,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="bet">New bet from user</param>
         /// <returns>Status code, ok if bet done, something another if not</returns>
         [HttpPost]
+        [Authorize(Roles = "USER")]
         public async Task<IActionResult> AddBet([FromBody] BetDto bet)
         {
             if (!ModelState.IsValid || bet == null)
