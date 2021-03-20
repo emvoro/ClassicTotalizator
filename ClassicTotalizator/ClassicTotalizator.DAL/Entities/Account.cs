@@ -11,7 +11,7 @@ namespace ClassicTotalizator.DAL.Entities
 
         public string Email { get; set; }
         
-        [MinLength(6, ErrorMessage = "Password must me minimum 6 symbols length.")]
+        [MinLength(6, ErrorMessage = "Password must be minimum 6 symbols length.")]
         public string PasswordHash { get; set; }
         
         public string AvatarLink { get; set; }
@@ -24,7 +24,7 @@ namespace ClassicTotalizator.DAL.Entities
         
         public DateTimeOffset AccountCreationTime { get; set; }
 
-        public ICollection<Bet> BetsHistory { get; set; }
+        public IEnumerable<Bet> BetsHistory { get; set; }
 
         public Account()
         {
