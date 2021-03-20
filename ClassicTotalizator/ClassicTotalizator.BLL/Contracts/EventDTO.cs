@@ -27,12 +27,12 @@ namespace ClassicTotalizator.BLL.Contracts
         public decimal Margin { get; set; }
 
         [Required]
-        public IEnumerable<int> PossibleResults { get; set; }
+        public string[] PossibleResults { get; set; }
 
         [Required]
         public bool IsEnded { get; set; }
 
-        public int? EventResult { get; set; }
+        public string EventResult { get; set; }
 
     }
 }

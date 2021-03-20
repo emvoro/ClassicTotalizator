@@ -18,7 +18,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Id = obj.Id,
                     Name = obj.Name,
-                    Photo = obj.Photo,
+                    PhotoLink = obj.PhotoLink,
                     Players = obj.Players.Select(PlayerMapper.Map).ToList()
                 };
         }

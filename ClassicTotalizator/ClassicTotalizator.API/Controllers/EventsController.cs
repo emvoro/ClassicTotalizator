@@ -41,7 +41,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Collection of all registered participants for [CURRENT SPORT]</returns>        //Here we need to consume type of sport
         [HttpGet("participants")]
-        public async Task<ActionResult<IEnumerable<ParticipantsDTO>>> GetAllParticipantsAsync()
+        public async Task<ActionResult<IEnumerable<ParticipantDTO>>> GetAllParticipantsAsync()
         {
             var participants = await _participantsService.GetAllParticipantsAsync();
             if (participants == null)
@@ -54,7 +54,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all possible outcomes</returns>
         [HttpGet("outcomes")]
-        public IEnumerable<int> GetAllPossibleOutcomes() => new List<int> {0,1,2 };
+        public IEnumerable<string> GetAllPossibleOutcomes() => new List<string> {"W1","X","W2" };
         
         /// <summary>
         /// Get all sports action
