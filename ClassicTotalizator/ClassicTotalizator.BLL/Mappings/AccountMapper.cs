@@ -1,14 +1,11 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ClassicTotalizator.BLL.Mappings
 {
     public static class AccountMapper
     {
-        public static Account ToAccount(AccountRegisterDTO registerDTO)
+        public static Account Map(AccountRegisterDTO registerDTO)
         {
             return registerDTO == null
                 ? null
@@ -20,7 +17,8 @@ namespace ClassicTotalizator.BLL.Mappings
                     AccountCreationTime = registerDTO.AccountCreationTime
                 };
         }
-        public static Account ToAccount(AccountLoginDTO loginDTO)
+        
+        public static Account Map(AccountLoginDTO loginDTO)
         {
             return loginDTO == null
                 ? null
@@ -28,6 +26,40 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Email = loginDTO.Login,
                     PasswordHash = loginDTO.Password
+                };
+        }
+
+        public static Account Map(Contracts.AccountDTO obj)
+        {
+            return obj == null
+                ? null
+                : new Account
+                {
+                    Id = obj.Id,
+                    Email = obj.Email,
+                    PasswordHash = obj.PasswordHash,
+                    AccountCreationTime = obj.AccountCreationTime,
+                    AccountType = obj.AccountType,
+                    AvatarLink = obj.AvatarLink,
+                    DOB = obj.DOB,
+                    Wallet = obj.Wallet
+                };
+        }
+        
+        public static Contracts.AccountDTO Map(Account obj)
+        {
+            return obj == null
+                ? null
+                : new Contracts.AccountDTO
+                {
+                    Id = obj.Id,
+                    Email = obj.Email,
+                    PasswordHash = obj.PasswordHash,
+                    AccountCreationTime = obj.AccountCreationTime,
+                    AccountType = obj.AccountType,
+                    AvatarLink = obj.AvatarLink,
+                    DOB = obj.DOB,
+                    Wallet = obj.Wallet
                 };
         }
     }
