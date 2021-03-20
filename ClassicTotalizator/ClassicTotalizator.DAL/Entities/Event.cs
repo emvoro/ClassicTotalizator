@@ -25,7 +25,7 @@ namespace ClassicTotalizator.DAL.Entities
 
         public BetPool BetPool { get; set; }
 
-        public IEnumerable<int> PossibleResults { get; set; }
+        public string[] PossibleResults { get; set; }
 
         public int? Result { get; set; }
 
