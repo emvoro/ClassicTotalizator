@@ -2,6 +2,9 @@
 
 namespace ClassicTotalizator.API.Options
 {
+    /// <summary>
+    /// JWT Options
+    /// </summary>
     public static class JwtOptions
     {
         /// <summary>

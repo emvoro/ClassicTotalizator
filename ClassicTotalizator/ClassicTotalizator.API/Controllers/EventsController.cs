@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
 {
-
     /// <summary>
-    /// THIS PART ACTUALLY NOT IMPLEMENTED DONT TOUCH THIS
+    /// This controller contains operations with events.
     /// </summary>
     [Authorize(Roles = "ADMIN")]
     [Route("api/[controller]")]
@@ -23,7 +22,7 @@ namespace ClassicTotalizator.API.Controllers
         private readonly IParticipantsService _participantsService;
 
         /// <summary>
-        /// Ctor
+        /// Events Controller Constructor
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="eventService"></param>
@@ -40,7 +39,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Get participants action
         /// </summary>
-        /// <returns>Collection of all registered participants for [CURRENT SPORT]</returns>        //Here we need to consume type of sport
+        /// <returns>Collection of all registered participants for [CURRENT SPORT]</returns>
         [HttpGet("participants")]
         public async Task<ActionResult<IEnumerable<ParticipantDTO>>> GetAllParticipantsAsync()
         {
@@ -68,9 +67,9 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Returns whole list of all created events
+        /// Returns list of all created events.
         /// </summary>
-        /// <returns>List of all</returns>
+        /// <returns>List of Events</returns>
         [HttpGet("getEventsPool")]
         public async Task<ActionResult<IEnumerable<EventDTO>>> GetAllEvents()
         {
@@ -78,9 +77,9 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Finding event by thats id action
+        /// Finding event by id.
         /// </summary>
-        /// <returns>Event with this id</returns>
+        /// <returns>Event by id</returns>
         [HttpGet("getById")]
         public async Task<ActionResult<EventDTO>> GetEventById([FromRoute] Guid id)
         {
@@ -95,6 +94,10 @@ namespace ClassicTotalizator.API.Controllers
             return Ok(foundEvent);
         }
 
+        /// <summary>
+        /// Creates new event by template.
+        /// </summary>
+        /// <returns>Event DTO</returns>
         [HttpPost("createEvent")]
         public async Task<ActionResult<EventDTO>> CreateEventByTemplate([FromRoute] EventRegisterDTO registerDTO)
         {
@@ -110,6 +113,10 @@ namespace ClassicTotalizator.API.Controllers
             return Ok(createdEvent);
         }
 
+        /// <summary>
+        /// Edites event.
+        /// </summary>
+        /// <returns>Event DTO</returns>
         [HttpPatch("patchEvent")]
         public async Task<ActionResult<EventDTO>> EditEvent([FromBody] EventDTO eventDTO)
         {
@@ -126,9 +133,9 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get all events
+        /// Gets all events.
         /// </summary>
-        /// <returns>List of all possible sports on the platform</returns>
+        /// <returns>List of all upcoming events.</returns>
         [HttpGet("feed")]
         [AllowAnonymous]
         public async Task<ActionResult<List<EventDTO>>> GetAllUpcomingEvents()

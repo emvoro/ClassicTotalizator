@@ -18,7 +18,6 @@ namespace ClassicTotalizator.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        
         private readonly ILogger<AuthController> _logger;
         private IConfiguration Configuration { get; }
 
@@ -41,13 +40,13 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Registration action.
         /// </summary>
-        /// <param name="registerDto">Requested dto for registration on platform</param>
+        /// <param name="registerDTO">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDto)
+        public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDTO)
         {
-            if (!ModelState.IsValid || registerDto == null)
+            if (!ModelState.IsValid || registerDTO == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
@@ -55,7 +54,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var token = await _authService.RegisterAsync(registerDto);
+                var token = await _authService.RegisterAsync(registerDTO);
                 var jwtReturnedDTO = new JwtDTO
                 {
                     JwtString = token
@@ -72,20 +71,20 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Login action.
         /// </summary>
-        /// <param name="loginDto">Requested dto for login on platform</param>
+        /// <param name="loginDTO">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDto)
+        public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDTO)
         {
-            if (!ModelState.IsValid || loginDto == null)
+            if (!ModelState.IsValid || loginDTO == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 
-            var token = await _authService.LoginAsync(loginDto);
+            var token = await _authService.LoginAsync(loginDTO);
             var jwtReturnedDTO = new JwtDTO
             {
                 JwtString = token

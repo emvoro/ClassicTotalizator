@@ -8,18 +8,30 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Middlewares
 {
+    /// <summary>
+    ///  This class responds for logging.
+    /// </summary>
     public class LoggerMiddleware
     {
         private readonly ILogger<LoggerMiddleware> _logger;
         
         private readonly RequestDelegate _next;
-        
+
+        /// <summary>
+        /// Logger Middleware Controller
+        /// </summary>
+        /// /// <param name="next"></param>
+        /// /// <param name="logger"></param>
         public LoggerMiddleware(RequestDelegate next, ILogger<LoggerMiddleware> logger)
         {
             _logger = logger;
             _next = next;
         }
-        
+
+        /// <summary>
+        /// Invokes logging
+        /// </summary>
+        /// /// <param name="context"></param>
         public async Task InvokeAsync(HttpContext context)
         {
             _logger.LogInformation(await PrintSomeInfoAboutRequest(context));

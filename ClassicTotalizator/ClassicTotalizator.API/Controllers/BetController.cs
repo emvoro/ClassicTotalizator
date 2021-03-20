@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace ClassicTotalizator.API.Controllers
 {
     /// <summary>
-    /// Controller for bets, can use only user after login
+    /// Controller for bets, can use only user after login.
     /// </summary>
     [ApiController]
     [Authorize]
@@ -21,7 +21,7 @@ namespace ClassicTotalizator.API.Controllers
         private readonly ILogger<BetController> _logger;
 
         /// <summary>
-        /// Constructor
+        /// Bet Ñontroller Constructor
         /// </summary>
         /// <param name="betService">Bet service</param>
         /// <param name="logger">Logger</param>
