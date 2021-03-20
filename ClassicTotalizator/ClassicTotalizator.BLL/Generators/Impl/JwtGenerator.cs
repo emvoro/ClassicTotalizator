@@ -1,11 +1,10 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.DAL.Entities;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ClassicTotalizator.BLL.Contracts;
 
 namespace ClassicTotalizator.BLL.Generators.IMPL
 {
@@ -13,13 +12,13 @@ namespace ClassicTotalizator.BLL.Generators.IMPL
     {
         private string _securityKey { get; set; }
 
-        public string GenerateJwt(Account account, string securityKey)
+        public string GenerateJwt(AccountDTO account, string securityKey)
         {
             _securityKey = securityKey;
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimTypes.Role, account.AccountType.ToString())
+                new Claim(ClaimTypes.Role, account.AccountType)
             };
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
