@@ -86,7 +86,7 @@ namespace ClassicTotalizator.API.Controllers
             if (id == Guid.Empty)
                 return BadRequest();
 
-            var foundEvent = _eventService.GetById(id);
+            var foundEvent = await _eventService.GetById(id);
 
             if (foundEvent == null)
                 return NotFound();

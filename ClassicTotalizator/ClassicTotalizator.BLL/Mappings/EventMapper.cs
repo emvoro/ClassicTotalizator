@@ -7,10 +7,11 @@ namespace ClassicTotalizator.BLL.Mappings
     {
         public static Event Map(EventDTO eventDTO)
         {
-                return eventDTO == null
-                    ? null
-                    : new Event
-                    {
+            return eventDTO == null
+                ? null
+                : new Event
+                {
+                        Id = eventDTO.Id,
                         Participant1 = eventDTO.Participant1,
                         Participant2 = eventDTO.Participant2,
                         StartTime = eventDTO.StartTime,
@@ -20,12 +21,12 @@ namespace ClassicTotalizator.BLL.Mappings
 
 
         public static EventDTO Map(Event @event)
-
         {
             return @event == null
                 ? null
                 : new EventDTO
                 {
+                    Id = @event.Id,
                     Participant1 = @event.Participant1,
                     Participant2 = @event.Participant2,
                     StartTime = @event.StartTime,

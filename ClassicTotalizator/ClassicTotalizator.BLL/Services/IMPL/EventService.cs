@@ -24,7 +24,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (id == Guid.Empty) 
                 return null;
-            return EventMapper.ToEventDTO(await _context.Events.FindAsync(id));
+            return EventMapper.Map(await _context.Events.FindAsync(id));
         }
 
         public async Task<bool> CreateEventAsync(EventDTO eventDTO)
