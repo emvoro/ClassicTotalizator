@@ -5,7 +5,7 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public class EventMapper
     {
-        public static Event ToEvent(EventDTO eventDTO)
+        public static Event Map(EventDTO eventDTO)
         {
                 return eventDTO == null
                     ? null
@@ -18,7 +18,9 @@ namespace ClassicTotalizator.BLL.Mappings
                     };
         }
 
-        public static EventDTO ToEventDTO(Event @event)
+
+        public static EventDTO Map(Event @event)
+
         {
             return @event == null
                 ? null
