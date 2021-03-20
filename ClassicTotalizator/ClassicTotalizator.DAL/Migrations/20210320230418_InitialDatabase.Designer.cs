@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClassicTotalizator.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210320191544_Init")]
-    partial class Init
+    [Migration("20210320230418_InitialDatabase")]
+    partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,8 +120,8 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Property<string[]>("PossibleResults")
                         .HasColumnType("text[]");
 
-                    b.Property<int?>("Result")
-                        .HasColumnType("integer");
+                    b.Property<string>("Result")
+                        .HasColumnType("text");
 
                     b.Property<int>("Sport_Id")
                         .HasColumnType("integer");

@@ -118,8 +118,8 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Property<string[]>("PossibleResults")
                         .HasColumnType("text[]");
 
-                    b.Property<int?>("Result")
-                        .HasColumnType("integer");
+                    b.Property<string>("Result")
+                        .HasColumnType("text");
 
                     b.Property<int>("Sport_Id")
                         .HasColumnType("integer");
