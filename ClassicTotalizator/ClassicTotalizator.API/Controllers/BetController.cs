@@ -81,6 +81,8 @@ namespace ClassicTotalizator.API.Controllers
             if (id == Guid.Empty)
                 return BadRequest();
 
+            
+
             var bets = await _betService.GetEventBets(id);
             if (bets == null)
                 return NotFound();
