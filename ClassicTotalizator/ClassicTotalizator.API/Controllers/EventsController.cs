@@ -15,7 +15,7 @@ namespace ClassicTotalizator.API.Controllers
     /// <summary>
     /// THIS PART ACTUALLY NOT IMPLEMENTED DONT TOUCH THIS
     /// </summary>
-    [Authorize]
+    [Authorize(Roles ="ADMIN")]
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
@@ -26,6 +26,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             _logger = logger;
         }
+
         /// <summary>
         /// Get participants action
         /// </summary>
@@ -35,13 +36,13 @@ namespace ClassicTotalizator.API.Controllers
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
         /// All possible outcomes for events action
         /// </summary>
         /// <returns>List of all possible outcomes</returns>
         [HttpGet("outcomes")]
         public async Task<IEnumerable<int>> GepAllPossibleResults() => new List<int> { 0, 1, 2 };
-
 
         /// <summary>
         /// Get all sports action
@@ -53,9 +54,23 @@ namespace ClassicTotalizator.API.Controllers
             throw new NotImplementedException();
         }
 
-
+        /// <summary>
+        /// Register event action
+        /// </summary>
+        /// <param name="registerDTO">Registered model of event that will be saved in platformed and showed for the audience</param>
+        /// <returns>Builded whole event for next configuretion</returns>
         [HttpPost("addEvent")]
-        public async Task<ActionResult<EventDTO>> AddEventToLine() // Add consuming event Dto
+        public async Task<ActionResult<EventDTO>> AddEventToLine(EventRegisterDTO registerDTO) // Add consuming event Dto
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Lst of all</returns>
+        [HttpGet("getEventsPool")]
+        public async Task<ActionResult<EventsPoolDTO>> GetAllEvents()
         {
             throw new NotImplementedException();
         }
