@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
