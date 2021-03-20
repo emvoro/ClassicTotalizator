@@ -12,7 +12,7 @@ namespace ClassicTotalizator.API.Controllers
     /// <summary>
     /// This controller contains operations with events.
     /// </summary>
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
