@@ -11,9 +11,11 @@ namespace ClassicTotalizator.DAL.Entities
 
         public string Name { get; set; }
 
-        public ICollection<Player> Players { get; set; }
+        public IEnumerable<Player> Players { get; set; }
         
-        public string Photo { get; set; }
+        public string PhotoLink { get; set; }
+
+        public IEnumerable<Parameter> Parameters { get; set; }
 
         public Participant()
         {
