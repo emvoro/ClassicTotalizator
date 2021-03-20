@@ -12,7 +12,7 @@ namespace ClassicTotalizator.API.Controllers
     /// Controller for bets, can use only user after login
     /// </summary>
     [ApiController]
-    [Authorize(Roles = "USER")]
+    [Authorize]
     [Route("api/v1/bet")]
     public class BetController : ControllerBase
     {
@@ -72,6 +72,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="id">Event id</param>
         /// <returns>Event bet's</returns>
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("event/{id}")]
         public async Task<ActionResult> GetEventBets([FromRoute] Guid id)
         {
