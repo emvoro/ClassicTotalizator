@@ -125,8 +125,6 @@ namespace ClassicTotalizator.API.Controllers
             return Ok(editedEvent);
         }
 
-
-
         /// <summary>
         /// Get all events
         /// </summary>
