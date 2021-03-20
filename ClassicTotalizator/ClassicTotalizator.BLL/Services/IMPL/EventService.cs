@@ -63,9 +63,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<IEnumerable<EventDTO>> GetEventsAsync()
         {
-            var events = await _context.Events
-                .Where(x => x.StartTime < DateTimeOffset.Now)
-                .ToListAsync() ?? new List<Event>();
+            var events = await _context.Events.Where(x => x.StartTime < DateTimeOffset.UtcNow).ToListAsync() ?? new List<Event>();
 
             return events.Select(EventMapper.Map).ToList();
         }
