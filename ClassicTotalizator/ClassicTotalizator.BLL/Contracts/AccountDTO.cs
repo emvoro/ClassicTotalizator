@@ -1,5 +1,4 @@
 using System;
-using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Contracts
 {
@@ -17,7 +16,7 @@ namespace ClassicTotalizator.BLL.Contracts
 
         public DateTimeOffset DOB { get; set; }
 
-        public Wallet Wallet { get; set; }
+        public WalletDTO Wallet { get; set; }
         
         public DateTimeOffset AccountCreationTime { get; set; }
     }
