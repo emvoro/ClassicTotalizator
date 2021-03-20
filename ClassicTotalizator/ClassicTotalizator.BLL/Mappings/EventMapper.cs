@@ -15,11 +15,11 @@ namespace ClassicTotalizator.BLL.Mappings
                     Participant1 = eventDTO.Participant1,
                     Participant2 = eventDTO.Participant2,
                     StartTime = eventDTO.StartTime,
-                    Sport = eventDTO.Sport
-                    //EventResult =@event.EventResult,
-                    //IsEnded =@event.IsEnded,
-                    //Margin = @event.Margin,
-                    //PossibleResults =@event.PossibleResults
+                    Sport = SportMapper.Map(eventDTO.Sport),
+                    Result = eventDTO.EventResult,
+                    IsEnded =eventDTO.IsEnded,
+                    Margin = eventDTO.Margin,
+                    PossibleResults = eventDTO.PossibleResults
                 };
         }
 
@@ -34,11 +34,11 @@ namespace ClassicTotalizator.BLL.Mappings
                     Participant1 = @event.Participant1,
                     Participant2 = @event.Participant2,
                     StartTime = @event.StartTime,
-                    Sport = @event.Sport
-                    //EventResult =@event.EventResult,
-                    //IsEnded =@event.IsEnded,
-                    //Margin = @event.Margin,
-                    //PossibleResults =@event.PossibleResults
+                    Sport = SportMapper.Map(@event.Sport),
+                    EventResult =@event.Result,
+                    IsEnded =@event.IsEnded,
+                    Margin = @event.Margin,
+                    PossibleResults =@event.PossibleResults
                 };
         }
     }
