@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClassicTotalizator.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210319211652_InitialDatabase")]
-    partial class InitialDatabase
+    [Migration("20210320191544_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,9 +91,6 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Property<Guid>("Event_Id")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("Margin")
-                        .HasColumnType("numeric");
-
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric");
 
@@ -108,14 +105,11 @@ namespace ClassicTotalizator.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("EndTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsEnded")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("EventImage")
-                        .HasColumnType("text");
-
-                    b.Property<string>("EventResult")
-                        .HasColumnType("text");
+                    b.Property<decimal>("Margin")
+                        .HasColumnType("numeric");
 
                     b.Property<Guid?>("Participant1Id")
                         .HasColumnType("uuid");
@@ -123,8 +117,14 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Property<Guid?>("Participant2Id")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Sport")
-                        .HasColumnType("text");
+                    b.Property<string[]>("PossibleResults")
+                        .HasColumnType("text[]");
+
+                    b.Property<int?>("Result")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Sport_Id")
+                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("timestamp with time zone");
@@ -138,7 +138,34 @@ namespace ClassicTotalizator.DAL.Migrations
 
                     b.HasIndex("Participant2Id");
 
+                    b.HasIndex("Sport_Id");
+
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Parameter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("Participant_Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("Participant_Id");
+
+                    b.ToTable("Parameters");
                 });
 
             modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Participant", b =>
@@ -150,7 +177,7 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("Photo")
+                    b.Property<string>("PhotoLink")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -181,6 +208,24 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.HasIndex("Participant_Id");
 
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Sport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Sports");
                 });
 
             modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Transaction", b =>
@@ -271,9 +316,28 @@ namespace ClassicTotalizator.DAL.Migrations
                         .WithMany()
                         .HasForeignKey("Participant2Id");
 
+                    b.HasOne("ClassicTotalizator.DAL.Entities.Sport", "Sport")
+                        .WithMany()
+                        .HasForeignKey("Sport_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Participant1");
 
                     b.Navigation("Participant2");
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Parameter", b =>
+                {
+                    b.HasOne("ClassicTotalizator.DAL.Entities.Participant", "Participant")
+                        .WithMany("Parameters")
+                        .HasForeignKey("Participant_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Player", b =>
@@ -326,6 +390,8 @@ namespace ClassicTotalizator.DAL.Migrations
 
             modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Participant", b =>
                 {
+                    b.Navigation("Parameters");
+
                     b.Navigation("Players");
                 });
 
