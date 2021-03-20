@@ -77,6 +77,7 @@ namespace ClassicTotalizator.API
                         BearerFormat = "JWT"
                     });
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClassicTotalizator.API", Version = "v1" });
+
                 if (File.Exists(documentationPath))
                     c.IncludeXmlComments(documenation, includeControllerXmlComments: true);
             });
