@@ -21,12 +21,12 @@ namespace ClassicTotalizator.BLL.Contracts
         public DateTimeOffset StartTime { get; set; }
 
         [Required]
-        public string Sport { get; set; }
+        public SportDTO Sport { get; set; }
 
         [Required]
         public decimal Margin { get; set; }
 
         [Required]
-        public int[] PossibleResults { get; set; }
+        public string[] PossibleResults { get; set; }
     }
 }

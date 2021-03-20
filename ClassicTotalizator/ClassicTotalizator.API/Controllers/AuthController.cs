@@ -57,8 +57,10 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var token = await _authService.RegisterAsync(registerDto);
-                var jwtReturnedDTO = new JwtDTO();
-                jwtReturnedDTO.JwtString = token;
+                var jwtReturnedDTO = new JwtDTO
+                {
+                    JwtString = token
+                };
                 return CheckTokenAndReturn(jwtReturnedDTO, "Register failed!");
             }
             catch (ArgumentNullException)
@@ -85,8 +87,10 @@ namespace ClassicTotalizator.API.Controllers
             }
 
             var token = await _authService.LoginAsync(loginDto);
-            var jwtReturnedDTO = new JwtDTO();
-            jwtReturnedDTO.JwtString = token;
+            var jwtReturnedDTO = new JwtDTO
+            {
+                JwtString = token
+            };
             return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
         }
 

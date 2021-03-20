@@ -94,6 +94,38 @@ namespace ClassicTotalizator.API.Controllers
             return Ok(foundEvent);
         }
 
+        [HttpPost("createEvent")]
+        public async Task<ActionResult<EventDTO>> CreateEventByTemplate([FromRoute] EventRegisterDTO registerDTO)
+        {
+            if (!ModelState.IsValid || registerDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+            var createdEvent = await _eventService.CreateEventAsync(registerDTO);
+            if (createdEvent == null)
+                return BadRequest();
+
+            return Ok(createdEvent);
+        }
+
+        [HttpPatch("patchEvent")]
+        public async Task<ActionResult<EventDTO>> EditEvent([FromBody] EventDTO eventDTO)
+        {
+            if (!ModelState.IsValid || eventDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+            var editedEvent = await _eventService.EditEventAsync(eventDTO);
+            if (editedEvent == null)
+                return BadRequest();
+
+            return Ok(editedEvent);
+        }
+
+
+
         /// <summary>
         /// Get all events
         /// </summary>

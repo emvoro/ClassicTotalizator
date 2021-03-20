@@ -31,7 +31,8 @@ namespace ClassicTotalizator.BLL.Contracts
 
         [Required]
         public bool IsEnded { get; set; }
-
+        
+        [Required]
         public string EventResult { get; set; }
 
     }
