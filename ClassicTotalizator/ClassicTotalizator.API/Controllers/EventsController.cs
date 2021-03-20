@@ -21,10 +21,12 @@ namespace ClassicTotalizator.API.Controllers
     public class EventsController : ControllerBase
     {
         private readonly ILogger<EventsController> _logger;
+        private readonly IEventService _eventService;
 
-        public EventsController(ILogger<EventsController> logger)
+        public EventsController(ILogger<EventsController> logger, IEventService eventService)
         {
             _logger = logger;
+            _eventService = eventService;
         }
 
         /// <summary>
@@ -55,17 +57,6 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Register event action
-        /// </summary>
-        /// <param name="registerDTO">Registered model of event that will be saved in platformed and showed for the audience</param>
-        /// <returns>Builded whole event for next configuretion</returns>
-        [HttpPost("addEvent")]
-        public async Task<ActionResult<EventDTO>> AddEventToLine(EventRegisterDTO registerDTO) // Add consuming event Dto
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <returns>Lst of all</returns>
@@ -73,6 +64,20 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<EventsPoolDTO>> GetAllEvents()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get all events
+        /// </summary>
+        /// <returns>List of all possible sports on the platform</returns>
+        [HttpGet("feed")]
+        public async Task<ActionResult<List<EventDTO>>> GetAllUpcomingEvents()
+        {
+            var events = await _eventService.GetEventsAsync();
+            if (events == null)
+                return NotFound();
+
+            return Ok(events);
         }
     }
 }
