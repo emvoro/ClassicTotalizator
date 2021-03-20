@@ -55,14 +55,13 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="id">Account id</param>
         /// <returns>Bets on account</returns>
-        [HttpGet("account/{id}")]
+        [HttpGet("account")]
         [Authorize(Roles = "USER")]
-        public async Task<ActionResult> GetBetsByAccId([FromRoute] Guid id)
+        public async Task<ActionResult> GetBetsByAccId()
         {
-            if (id == Guid.Empty)
-                return BadRequest();
+            var accessToken = Request.Headers.Values;
 
-            var bets = await _betService.GetBetsByAccId(id);
+            var bets = await _betService.GetBetsByAccId(Guid.Empty);
             if (bets == null)
                 return NotFound();
 
@@ -96,7 +95,6 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="bet">New bet from user</param>
         /// <returns>Status code, ok if bet done, something another if not</returns>
         [HttpPost]
-
         public async Task<IActionResult> AddBet([FromBody] BetDTO bet)
 
         {
