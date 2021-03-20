@@ -98,18 +98,6 @@ namespace ClassicTotalizator.API
                     ValidateLifetime = true
                 };
             });
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(Configuration.GetSection("AuthKey").GetValue<string>("Secret"))),
-                        ValidateIssuer = false,
-                        ValidateLifetime = true,
-                        ValidateAudience = false
-                    };
-                });
 
         }
 
