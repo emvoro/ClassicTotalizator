@@ -73,14 +73,31 @@ namespace ClassicTotalizator.API
                     c.IncludeXmlComments(documenation, includeControllerXmlComments: true);
             });
 
-                services.AddAuthentication(options =>
-                {
+
+            services.AddCors();
+
+            services.AddAuthentication(options =>
+            {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.ASCII.GetBytes(Configuration.GetSection("AuthKey").GetValue<string>("Secret"))),
+                    ValidateIssuer = true,
+                    ValidIssuer = JwtOptions.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = JwtOptions.Audience,
+                    ValidateLifetime = true
+                };
+            });
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
                     x.TokenValidationParameters = new TokenValidationParameters
@@ -105,6 +122,10 @@ namespace ClassicTotalizator.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClassicTotalizator.API v1"));
             }
+
+            app.UseCors(builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseMiddleware<LoggerMiddleware>();
 
