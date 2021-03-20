@@ -17,9 +17,16 @@ namespace ClassicTotalizator.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        
         private readonly ILogger<AuthController> _logger;
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="authService">Auth service</param>
+        /// <param name="logger">Logger</param>
+        /// <param name="configuration">Configuration</param>
         public AuthController(
             IAuthService authService,
             ILogger<AuthController> logger, IConfiguration configuration)
@@ -45,8 +52,16 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
 
-            var token = await _authService.RegisterAsync(registerDto);
-            return CheckTokenAndReturn(token, "Register failed!");
+            try
+            {
+                var token = await _authService.RegisterAsync(registerDto);
+                return CheckTokenAndReturn(token, "Register failed!");
+            }
+            catch (ArgumentNullException)
+            {
+                _logger.LogWarning("Argument null exception! Try to add null object in AuthController!");
+                return BadRequest();
+            }
         }
 
         /// <summary>
