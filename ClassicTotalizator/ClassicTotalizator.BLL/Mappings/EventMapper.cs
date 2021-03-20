@@ -22,7 +22,20 @@ namespace ClassicTotalizator.BLL.Mappings
                     PossibleResults = eventDTO.PossibleResults
                 };
         }
-
+        public static Event Map(EventRegisterDTO registerDTO)
+        {
+            return registerDTO == null
+                ? null
+                : new Event
+                {
+                    Participant1 = registerDTO.Participant1,
+                    Participant2 = registerDTO.Participant2,
+                    StartTime = registerDTO.StartTime,
+                    Sport = SportMapper.Map(registerDTO.Sport),
+                    Margin = registerDTO.Margin,
+                    PossibleResults = registerDTO.PossibleResults
+                };
+        }
 
         public static EventDTO Map(Event @event)
         {

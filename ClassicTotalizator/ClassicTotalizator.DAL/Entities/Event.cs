@@ -27,7 +27,7 @@ namespace ClassicTotalizator.DAL.Entities
 
         public string[] PossibleResults { get; set; }
 
-        public int? Result { get; set; }
+        public string Result { get; set; }
 
         public decimal Margin { get; set; }
     }
