@@ -94,8 +94,9 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="bet">New bet from user</param>
         /// <returns>Status code, ok if bet done, something another if not</returns>
         [HttpPost]
-        [Authorize(Roles = "USER")]
-        public async Task<IActionResult> AddBet([FromBody] BetDto bet)
+
+        public async Task<IActionResult> AddBet([FromBody] BetDTO bet)
+
         {
             if (!ModelState.IsValid || bet == null)
                 return BadRequest();

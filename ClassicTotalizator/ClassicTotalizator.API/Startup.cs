@@ -35,6 +35,8 @@ namespace ClassicTotalizator.API
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IBetService, BetService>();
+            services.AddTransient<IEventService,EventService>();
+            services.AddTransient<IParticipantsService,ParticipantsService>();
             services.AddTransient<IHashGenerator, HashGenerator>(provider => new HashGenerator(Configuration.GetSection("HashOptions").GetValue<string>("Salt")));
             ConfigurationServices.ConfigureServices(services, Configuration);
             services.AddControllers();

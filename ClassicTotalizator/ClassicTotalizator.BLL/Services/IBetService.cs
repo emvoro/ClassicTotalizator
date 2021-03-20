@@ -7,12 +7,12 @@ namespace ClassicTotalizator.BLL.Services
 {
     public interface IBetService
     {
-        Task<IEnumerable<BetDto>> GetEventBets(Guid id);
+        Task<IEnumerable<BetDTO>> GetEventBets(Guid id);
 
-        Task<BetDto> GetById(Guid id);
+        Task<BetDTO> GetById(Guid id);
 
-        Task<IEnumerable<BetDto>> GetBetsByAccId(Guid id);
+        Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id);
 
-        Task<bool> AddBet(BetDto betDto);
+        Task<bool> AddBet(BetDTO betDto);
     }
 }

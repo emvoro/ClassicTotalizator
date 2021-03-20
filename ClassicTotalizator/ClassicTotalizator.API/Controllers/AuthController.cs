@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace ClassicTotalizator.API.Controllers
@@ -14,6 +15,7 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/v1")]
+    [Produces(MediaTypeNames.Application.Json)]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
-    class EventService : IEventService
+    public class EventService : IEventService
     {
         private readonly DatabaseContext _context;
 
@@ -20,27 +20,19 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<IEnumerable<Event>> GetEventsAsync()
+        public async Task<EventDTO> GetById(Guid id)
         {
-            return await _context.Events
-                .Where(x => x.StartTime < DateTimeOffset.Now)
-                .ToListAsync() ?? new List<Event>();
+            if (id == Guid.Empty) 
+                return null;
+            return EventMapper.Map(await _context.Events.FindAsync(id));
         }
-
-        public async Task<Event> GetById(Guid id)
-        {
-            if (id == Guid.Empty) return null;
-
-            return await _context.Events.FindAsync(id);
-        }
-
 
         public async Task<bool> CreateEventAsync(EventDTO eventDTO)
         {
             if (eventDTO == null)
                 return false;
 
-            var newEvent = EventMapper.ToEvent(eventDTO);
+            var newEvent = EventMapper.Map(eventDTO);
             newEvent.Id = Guid.NewGuid();
             newEvent.BetPool = new BetPool { Event_Id = newEvent.Id, Margin = eventDTO.Margin, TotalAmount = 0 };
             newEvent.EventImage = "";
@@ -78,6 +70,15 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             await _context.SaveChangesAsync();
 
             return oldEvent;
+        }
+
+        public async Task<IEnumerable<EventDTO>> GetEventsAsync()
+        {
+            var events = await _context.Events
+                .Where(x => x.StartTime < DateTimeOffset.Now)
+                .ToListAsync() ?? new List<Event>();
+
+            return events.Select(EventMapper.Map).ToList();
         }
     }
 }

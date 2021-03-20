@@ -17,28 +17,28 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<IEnumerable<BetDto>> GetEventBets(Guid id)
+        public async Task<IEnumerable<BetDTO>> GetEventBets(Guid id)
         {
             var @event = await _context.Events.FindAsync(id);
 
             return @event.BetPool.Bets.Select(BetMapper.Map).ToList();
         }
 
-        public async Task<BetDto> GetById(Guid id)
+        public async Task<BetDTO> GetById(Guid id)
         {
             var bet = await _context.Bets.FindAsync(id);
 
             return BetMapper.Map(bet);
         }
 
-        public async Task<IEnumerable<BetDto>> GetBetsByAccId(Guid id)
+        public async Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id)
         {
             var account = await _context.Accounts.FindAsync(id);
 
             return account.BetsHistory.Select(BetMapper.Map).ToList();
         }
 
-        public async Task<bool> AddBet(BetDto betDto)
+        public async Task<bool> AddBet(BetDTO betDto)
         {
             if (betDto == null)
                 throw new ArgumentNullException(nameof(betDto));
