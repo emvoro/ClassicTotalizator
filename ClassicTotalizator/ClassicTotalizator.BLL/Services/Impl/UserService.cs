@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
 using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -16,34 +19,42 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<IEnumerable<Account>> GetAll()
+        public async Task<IEnumerable<AccountDTO>> GetAll()
         {
-            return await _context.Accounts.ToListAsync() ?? new List<Account>();
+            var accounts = await _context.Accounts.ToListAsync();
+
+            return accounts?.Select(AccountMapper.Map).ToList();
         }
 
-        public async Task<Account> GetById(Guid id)
+        public async Task<AccountDTO> GetById(Guid id)
         {
             if (id == Guid.Empty)
                 return null;
+            
+            var account = await _context.Accounts.FindAsync(id);
 
-            return await _context.Accounts.FindAsync(id);
+            return AccountMapper.Map(account);
         }
 
-        public async Task<Account> GetByEmail(string email)
+        public async Task<AccountDTO> GetByEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
                 return null;
             
-            return await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email);
+            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Email == email);
+            
+            return AccountMapper.Map(account);
         }
 
-        public async Task<bool> Add(Account account)
+        public async Task<bool> Add(AccountDTO registeredAcc)
         {
-            if (account == null)
-                throw new ArgumentNullException(nameof(account));
-            if (await GetByEmail(account.Email) != null)
+            if (registeredAcc == null)
+                throw new ArgumentNullException(nameof(registeredAcc));
+            if (await GetByEmail(registeredAcc.Email) != null)
                 return false;
 
+            var account = AccountMapper.Map(registeredAcc);
+            
             account.Id = Guid.NewGuid();
             account.Wallet = new Wallet
             {
