@@ -82,7 +82,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Finding event by id.
         /// </summary>
         /// <returns>Event by id</returns>
-        [HttpGet("getById")]
+        [HttpGet("getById/{id}")]
         public async Task<ActionResult<EventDTO>> GetEventById([FromRoute] Guid id)
         {
             if (id == Guid.Empty)

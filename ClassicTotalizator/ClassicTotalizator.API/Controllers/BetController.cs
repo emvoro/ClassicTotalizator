@@ -14,8 +14,7 @@ namespace ClassicTotalizator.API.Controllers
     /// Controller for bets, can use only user after login.
     /// </summary>
     [ApiController]
-    [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/bet")]
     public class BetController : ControllerBase
     {
         private readonly IBetService _betService;
@@ -23,7 +22,7 @@ namespace ClassicTotalizator.API.Controllers
         private readonly ILogger<BetController> _logger;
 
         /// <summary>
-        /// Bet �ontroller Constructor
+        /// Bet controller Constructor
         /// </summary>
         /// <param name="betService">Bet service</param>
         /// <param name="logger">Logger</param>
@@ -77,6 +76,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="bet">New bet from user</param>
         /// <returns>Status code, ok if bet done, something another if not</returns>
         [HttpPost]
+        [Authorize(Roles = "USER")]
         public async Task<IActionResult> AddBet([FromBody] BetDTO bet)
         {
             if (!ModelState.IsValid || bet == null)
