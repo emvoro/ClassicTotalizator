@@ -29,66 +29,59 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventDTO> CreateEventAsync(EventRegisterDTO eventDTO)
         {
-            /*if (eventDTO == null)
-                return null;
-
-            var newEvent = EventMapper.Map(eventDTO);
-            newEvent.Id = Guid.NewGuid();
-            newEvent.BetPool = new BetPool { Event_Id = newEvent.Id, TotalAmount = 0 };
-            await _context.Events.AddAsync(newEvent);
-            await _context.SaveChangesAsync();*/
-
             if (eventDTO == null)
+                throw new ArgumentNullException(nameof(eventDTO));
+            if (string.IsNullOrEmpty(eventDTO.Participant_Id1.ToString()) ||
+                string.IsNullOrEmpty(eventDTO.Participant_Id2.ToString()) ||
+                eventDTO.StartTime < DateTimeOffset.UtcNow || eventDTO.Margin <= 0)
                 return null;
 
-            if (string.IsNullOrEmpty(eventDTO.IdParticipant1.ToString()) && string.IsNullOrEmpty(eventDTO.IdParticipant2.ToString()))
-                return null;
-
-            var participant1 = await _context.Participants.FindAsync(eventDTO.IdParticipant1);
-
-            var participant2 = await _context.Participants.FindAsync(eventDTO.IdParticipant2);
-
+            var participant1 = await _context.Participants.FindAsync(eventDTO.Participant_Id1);
+            var participant2 = await _context.Participants.FindAsync(eventDTO.Participant_Id2);
             var sport = await _context.Sports.FindAsync(eventDTO.SportId);
 
             var newId = Guid.NewGuid();
-            await _context.Events.AddAsync(
-                new Event()
-                { 
-                    Id = newId,
-                    BetPool = new BetPool()
-                    { 
-                        Event_Id = newId,
-                        TotalAmount =0
-                    },
-                    IsEnded=false,
-                    Margin = eventDTO.Margin,
-                    Participant1 =participant1,
-                    Participant2 = participant2,
-                    PossibleResults= eventDTO.PossibleResults,
-                    Sport =sport,
-                    Sport_Id =sport.Id,
-                    StartTime =eventDTO.StartTime,
-                    Result = null
-                });
+            var @event = new Event
+            {
+                Id = newId,
+                BetPool = new BetPool
+                {
+                    Event_Id = newId,
+                    TotalAmount = 0
+                },
+                IsEnded = false,
+                Margin = eventDTO.Margin,
+                Participant1 = participant1,
+                Participant2 = participant2,
+                PossibleResults = eventDTO.PossibleResults,
+                Sport = sport,
+                Sport_Id = sport.Id,
+                StartTime = eventDTO.StartTime,
+                Result = null
+            };
+            
+            await _context.Events.AddAsync(@event);
+            await _context.SaveChangesAsync();
 
+            return EventMapper.Map(@event);
         }
 
         public async Task<EventDTO> EditEventAsync(EventDTO newEvent)
         {
+            if (newEvent.PossibleResults.Length == 2 && newEvent.PossibleResults.Contains("X"))
+                return null;
+            
             var oldEvent = await _context.Events.FindAsync(newEvent.Id);
-            oldEvent.Participant1 = newEvent.Participant1;
-            oldEvent.Participant2 = newEvent.Participant2;
-            oldEvent.Sport = SportMapper.Map(newEvent.Sport);
+            
             oldEvent.StartTime = newEvent.StartTime;
             oldEvent.Margin = newEvent.Margin;
             oldEvent.IsEnded = newEvent.IsEnded;
             oldEvent.Result = newEvent.EventResult;
-
-            if (newEvent.PossibleResults.Length == 2 && newEvent.PossibleResults.Contains("X"))
-                return null;
             oldEvent.PossibleResults = newEvent.PossibleResults;
+            
             _context.Update(oldEvent);
             await _context.SaveChangesAsync();
+            
             return EventMapper.Map(oldEvent);
         }
 
@@ -96,7 +89,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             var events = await _context.Events.ToListAsync() ?? new List<Event>();
 
-            return new EventsDTO()
+            return new EventsDTO
             {
                 Events = events.Select(EventMapper.Map).ToList()
             };
@@ -105,7 +98,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<SportsDTO> GetCurrentListOfSports()
         {
             var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
-            return new SportsDTO()
+            
+            return new SportsDTO
             {
                 Sports = sports.Select(SportMapper.Map).ToList()
             };
@@ -115,7 +109,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             var currentLine = await _context
                    .Events.Where(e => e.IsEnded == false).ToListAsync();
-            return new EventsDTO()
+            
+            return new EventsDTO
             {
                 Events = currentLine.Select(EventMapper.Map).ToList()
             };
