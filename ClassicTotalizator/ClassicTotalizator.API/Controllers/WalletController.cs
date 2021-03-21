@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ILogger = Serilog.ILogger;
@@ -14,7 +15,8 @@ namespace ClassicTotalizator.API.Controllers
     /// API for wallet
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/v1/wallet")]
     public class WalletController : ControllerBase
     {
         private readonly IWalletService _walletService;
@@ -77,9 +79,13 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (transactionDto == null)
                 return BadRequest();
+
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+                return BadRequest();
             
-            var id = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (!Guid.TryParse(id, out var accountId))
+            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(stringId, out var accountId))
                 return BadRequest();
 
             try
