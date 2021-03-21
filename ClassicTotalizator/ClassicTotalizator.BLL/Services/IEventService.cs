@@ -1,5 +1,4 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,6 +29,8 @@ namespace ClassicTotalizator.BLL.Services
         /// <param name="id">Unique identifier of event</param>
         /// <returns> Found event by requested id</returns>
         Task<EventDTO> GetById(Guid id);
+        
+        /// <summary>
         /// Creates event for backoffice.
         /// </summary>
         /// <param name="sport">Contract for event.</param>
@@ -45,10 +46,16 @@ namespace ClassicTotalizator.BLL.Services
         Task<EventDTO> EditEventAsync(EventDTO newEvent);
 
         /// <summary>
-        /// Producing list of all sports on the platfrom
+        /// Producing list of all sports on the platform
         /// </summary>
         /// <returns>List of current registered sports</returns>
         Task<SportsDTO> GetCurrentListOfSports();
 
+        /// <summary>
+        /// Close event and calculate money for winners
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> ClosedEvent(Guid id);
     }
 }
