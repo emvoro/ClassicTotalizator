@@ -18,23 +18,25 @@ namespace ClassicTotalizator.BLL.Generators.IMPL
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, account.AccountType)
+                new Claim(ClaimTypes.Role, account.AccountType)
             };
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
+            var identity = new ClaimsIdentity(claims, "ApplicationCookie",ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
 
-            var credentials = new SigningCredentials(symmetricSecurityKey,SecurityAlgorithms.HmacSha512Signature);
+                var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1d),
-                SigningCredentials = credentials
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenContext = tokenHandler.CreateToken(tokenDescriptor);
+               var credentials = new SigningCredentials(symmetricSecurityKey,SecurityAlgorithms.HmacSha512Signature);
 
-            return tokenHandler.WriteToken(tokenContext);
+                 var jwt = new JwtSecurityToken(
+                notBefore: DateTime.UtcNow,
+                claims: identity.Claims,
+                expires: DateTime.UtcNow.AddDays(1d),
+                signingCredentials: credentials
+                );
+
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
 }
