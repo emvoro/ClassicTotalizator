@@ -18,24 +18,22 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<WalletDTO> Transaction(TransactionDTO transactionDto)
+        public async Task<WalletDTO> Transaction(Guid accountId, TransactionDTO transactionDto)
         {
             if (transactionDto == null)
                 throw new ArgumentNullException(nameof(transactionDto));
             if (!ValidateTransactionDto(transactionDto))
                 return null;
 
-            transactionDto.DateTime = DateTimeOffset.UtcNow;
-            
             var transaction = TransactionMapper.Map(transactionDto);
-            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == transaction.Account_Id);
+            transaction.DateTime = DateTimeOffset.UtcNow;
+
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == accountId);
             if (wallet == null)
                 return null;
 
             transaction.Id = Guid.NewGuid();
 
-            transaction.Wallet = wallet;
-            
             if(transaction.Type == "withdraw")
             {
                 if (wallet.Amount < transaction.Amount)
@@ -80,7 +78,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private bool ValidateTransactionDto(TransactionDTO obj)
         {
-            if (obj.Amount <= 0 || string.IsNullOrEmpty(obj.Type) || obj.Account_Id == Guid.Empty)
+            if (obj.Amount <= 0 || string.IsNullOrEmpty(obj.Type))
                 return false;
 
             return true;
