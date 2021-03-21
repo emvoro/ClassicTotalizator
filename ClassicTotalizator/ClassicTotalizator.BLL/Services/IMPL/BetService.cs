@@ -38,10 +38,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 throw new ArgumentNullException(nameof(betDto));
             if (betDto.Amount <= 0 || betDto.Event_Id == Guid.Empty ||  string.IsNullOrEmpty(betDto.Choice))
                 return false;
+            
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == betDto.Account_Id);
+            if (wallet == null || wallet.Amount < betDto.Amount)
+                return false;
+
+            wallet.Amount -= betDto.Amount;
 
             var bet = BetMapper.Map(betDto);
             bet.Id = Guid.NewGuid();
-            
+
+            _context.Wallets.Update(wallet);
             await _context.Bets.AddAsync(bet);
             await _context.SaveChangesAsync();
 
