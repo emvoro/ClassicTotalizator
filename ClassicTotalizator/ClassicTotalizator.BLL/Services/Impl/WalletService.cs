@@ -71,9 +71,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (id == Guid.Empty)
                 return null;
 
-            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == id);
+            var transactions = await _context.Transactions.Where(x => x.Account_Id == id).ToListAsync();
 
-            return wallet.TransactionsHistory.Select(TransactionMapper.Map).ToList();
+            return transactions.Select(TransactionMapper.Map).ToList();
         }
 
         private bool ValidateTransactionDto(TransactionDTO obj)
