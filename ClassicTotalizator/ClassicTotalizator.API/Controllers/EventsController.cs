@@ -174,16 +174,29 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Gets all events.
         /// </summary>
-        /// <returns>List of all upcoming events.</returns>
-        [HttpGet("feed")]
-        [AllowAnonymous]
-        public async Task<ActionResult<List<EventDTO>>> GetAllUpcomingEvents()
+        /// <returns>List of all events.</returns>
+        [HttpGet("getAllEvents")]
+        public async Task<ActionResult<List<EventDTO>>> GetAllEvents()
         {
             var events = await _eventService.GetEventsAsync();
             if (events == null)
                 return NotFound();
 
             return Ok(events);
+        }
+
+        /// <summary>
+        /// Get current line
+        /// </summary>
+        /// <returns>List of all current active events</returns>
+        [HttpGet("feed")]
+        public async Task<ActionResult<EventsDTO>> GetCurrentLine()
+        {
+            var currentLine = await _eventService.GetCurrentLineOfEvents();
+            if (currentLine == null)
+                return NotFound();
+
+            return Ok(currentLine);
         }
     }
 }
