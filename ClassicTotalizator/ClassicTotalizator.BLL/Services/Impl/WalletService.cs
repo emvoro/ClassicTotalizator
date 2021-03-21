@@ -51,10 +51,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             {
                 return null;
             }
-            
-            wallet.TransactionsHistory.ToList().Add(transaction);
 
-            _context.Wallets.Update(wallet);
             await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync();
 
