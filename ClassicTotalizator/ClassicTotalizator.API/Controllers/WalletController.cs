@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
@@ -75,10 +77,14 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (transactionDto == null)
                 return BadRequest();
+            
+            var id = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(id, out var accountId))
+                return BadRequest();
 
             try
             {
-                var wallet = await _walletService.Transaction(transactionDto);
+                var wallet = await _walletService.Transaction(accountId, transactionDto);
                 if (wallet == null)
                     return BadRequest();
 

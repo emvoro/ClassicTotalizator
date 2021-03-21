@@ -7,7 +7,7 @@ namespace ClassicTotalizator.BLL.Services
 {
     public interface IWalletService
     {
-        Task<WalletDTO> Transaction(TransactionDTO transactionDto);
+        Task<WalletDTO> Transaction(Guid accountId, TransactionDTO transactionDto);
 
         Task<WalletDTO> GetWalletByAccId(Guid id);
 
