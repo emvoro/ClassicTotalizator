@@ -33,17 +33,18 @@ namespace ClassicTotalizator.BLL.Mappings
 
         public static EventDTO Map(Event @event)
         {
-            return @event == null
-                ? null
-                : new EventDTO
+            if (@event == null || @event.Participant1 == null || @event.Participant2 == null || @event.Sport == null)
+                return null;
+            
+            return new EventDTO
                 {
                     Id = @event.Id,
                     Participant_Id1 = @event.Participant1.Id,
                     Participant_Id2 = @event.Participant2.Id,
                     StartTime = @event.StartTime,
                     Sport_Id = SportMapper.Map(@event.Sport).Id,
-                    EventResult =@event.Result,
-                    IsEnded =@event.IsEnded,
+                    EventResult = @event.Result,
+                    IsEnded = @event.IsEnded,
                     Margin = @event.Margin,
                     PossibleResults =@event.PossibleResults
                 };
