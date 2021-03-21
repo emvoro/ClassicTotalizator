@@ -78,7 +78,6 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>Status code, ok if bet done, something another if not</returns>
         [HttpPost]
         public async Task<IActionResult> AddBet([FromBody] BetDTO bet)
-
         {
             if (!ModelState.IsValid || bet == null)
                 return BadRequest();

@@ -3,7 +3,7 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Mappings
 {
-    public class EventMapper
+    public static class EventMapper
     {
         public static Event Map(EventDTO eventDTO)
         {
@@ -39,10 +39,10 @@ namespace ClassicTotalizator.BLL.Mappings
             return new EventDTO
                 {
                     Id = @event.Id,
-                    Participant_Id1 = @event.Participant1.Id,
-                    Participant_Id2 = @event.Participant2.Id,
+                    Participant_Id1 = @event.Participant_Id1,
+                    Participant_Id2 = @event.Participant_Id2,
                     StartTime = @event.StartTime,
-                    Sport_Id = SportMapper.Map(@event.Sport).Id,
+                    Sport_Id = @event.Sport_Id,
                     EventResult = @event.Result,
                     IsEnded = @event.IsEnded,
                     Margin = @event.Margin,
