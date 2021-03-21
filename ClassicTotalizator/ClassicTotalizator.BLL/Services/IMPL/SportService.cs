@@ -27,10 +27,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 throw new ArgumentNullException(nameof(sport));
 
             var sportEntity = SportMapper.Map(sport);
+            try
+            {
+                await _context.Sports.AddAsync(sportEntity);
+                await _context.SaveChangesAsync();
 
-            await _context.Sports.AddAsync(sportEntity);
-            await _context.SaveChangesAsync();
-
+            }
+            catch (Exception)
+            {
+                return false;
+            }
             return true;
         }
     }
