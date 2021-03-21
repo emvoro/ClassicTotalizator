@@ -99,8 +99,6 @@ namespace ClassicTotalizator.DAL.Context
             builder.Entity<Sport>().HasKey(s => s.Id);
 
             builder.Entity<Sport>().HasIndex(s => s.Id).IsUnique();
-
-
         }
     }
 }
