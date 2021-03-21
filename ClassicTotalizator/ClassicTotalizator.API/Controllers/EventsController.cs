@@ -20,20 +20,24 @@ namespace ClassicTotalizator.API.Controllers
         private readonly ILogger<EventsController> _logger;
         private readonly IEventService _eventService;
         private readonly IParticipantsService _participantsService;
+        private readonly ISportService _sportService;
 
         /// <summary>
         /// Events Controller Constructor
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="eventService"></param>
-        /// /// <param name="participantsService"></param>
+        /// <param name="participantsService"></param>
+        /// <param name="sportService"></param>
         public EventsController(ILogger<EventsController> logger,
             IEventService eventService,
-            IParticipantsService participantsService)
+            IParticipantsService participantsService,
+            ISportService sportService)
         {
             _logger = logger;
             _eventService = eventService;
             _participantsService = participantsService;
+            _sportService = sportService;
         }
 
         /// <summary>
@@ -104,6 +108,23 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
 
             return Ok(createdEvent);
+        }
+
+        /// <summary>
+        /// Adds sport.
+        /// </summary>
+        /// <returns>Sport DTO</returns>
+        [HttpPost("addSport")]
+        public async Task<ActionResult<EventDTO>> AddSport([FromRoute] SportDTO sportDTO)
+        {
+            if (!ModelState.IsValid || sportDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+            var createdSport = await _sportService.Add(sportDTO);
+
+            return Ok(createdSport);
         }
 
         /// <summary>
