@@ -101,7 +101,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPost("createEvent")]
-        public async Task<ActionResult<EventDTO>> CreateEventByTemplate([FromRoute] EventRegisterDTO registerDTO)
+        public async Task<ActionResult<EventDTO>> CreateEventByTemplate([FromBody] EventRegisterDTO registerDTO)
         {
             if (!ModelState.IsValid || registerDTO == null)
             {
