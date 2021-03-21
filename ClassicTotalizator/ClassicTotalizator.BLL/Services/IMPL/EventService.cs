@@ -86,9 +86,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventsDTO> GetCurrentLineOfEvents()
         {
-            var currentLine =  _context
-                .Events
-                .FromSqlRaw("SELECT * FROM db-totalizator.Events WHERE IsEnded = false").ToList();
+            var currentLine = await _context
+                   .Events.Where(e => e.IsEnded == false).ToListAsync();
             return new EventsDTO()
             {
                 Events = currentLine.Select(EventMapper.Map).ToList()
@@ -97,8 +96,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> ClosedEvent(Guid id)
         {
-            var @event = await _context.Events.FindAsync(id);
-            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;
+            throw new NotImplementedException();
+           /* var @event = await _context.Events.FindAsync(id);
+            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;*/
         }
     }
 }

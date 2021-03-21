@@ -57,5 +57,11 @@ namespace ClassicTotalizator.BLL.Services
         /// <param name="id"></param>
         /// <returns></returns>
         Task<bool> ClosedEvent(Guid id);
+
+        /// <summary>
+        /// Produces list of all not ended events
+        /// </summary>
+        /// <returns>List of current active events</returns>
+        Task<EventsDTO> GetCurrentLineOfEvents();
     }
 }
