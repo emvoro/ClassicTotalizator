@@ -10,16 +10,16 @@ namespace ClassicTotalizator.BLL.Contracts
         public Guid Id { get; set; }
 
         [Required]
-        public Guid ParticipantId1 { get; set; }
+        public Guid Participant_Id1 { get; set; }
 
         [Required]
-        public Guid ParticipantId2 { get; set; }
+        public Guid Participant_Id2 { get; set; }
 
         [Required]
         public DateTimeOffset StartTime { get; set; }
 
         [Required]
-        public int SportId { get; set; }
+        public int Sport_Id { get; set; }
 
         [Required]
         public decimal Margin { get; set; }
@@ -32,6 +32,5 @@ namespace ClassicTotalizator.BLL.Contracts
         
         [Required]
         public string EventResult { get; set; }
-
     }
 }
