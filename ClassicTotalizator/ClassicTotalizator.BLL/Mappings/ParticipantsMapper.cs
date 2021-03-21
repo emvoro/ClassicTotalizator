@@ -18,5 +18,17 @@ namespace ClassicTotalizator.BLL.Mappings
                     Players = obj.Players.Select(PlayerMapper.Map).ToList()
                 };
         }
-    }
+        public static Participant Map(ParticipantDTO obj)
+        {
+            return obj == null
+                       ? null
+                       : new Participant
+                       {
+                           Id = obj.Id,
+                           Name = obj.Name,
+                           PhotoLink = obj.PhotoLink,
+                           Players = obj.Players.Select(PlayerMapper.Map).ToList()
+                       };
+        }
+    } 
 }

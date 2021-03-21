@@ -2,6 +2,7 @@
 using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,18 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             var partcipantsListInDal = await _context.Participants.ToListAsync();
             return new ParticipantsDTO() { Participants = partcipantsListInDal.Select(ParticipantsMapper.Map).ToList() };
+        }
+
+        public async Task<bool> AddNewParticipant(ParticipantDTO participant)
+        {
+            if (participant == null)
+                return false;
+
+            var newParticipant = ParticipantsMapper.Map(participant);
+
+            await _context.Participants.AddAsync(newParticipant);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
