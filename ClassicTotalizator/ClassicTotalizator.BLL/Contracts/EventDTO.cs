@@ -10,16 +10,16 @@ namespace ClassicTotalizator.BLL.Contracts
         public Guid Id { get; set; }
 
         [Required]
-        public Participant Participant1 { get; set; }
+        public Guid ParticipantId1 { get; set; }
 
         [Required]
-        public Participant Participant2 { get; set; }
+        public Guid ParticipantId2 { get; set; }
 
         [Required]
         public DateTimeOffset StartTime { get; set; }
 
         [Required]
-        public SportDTO Sport { get; set; }
+        public int SportId { get; set; }
 
         [Required]
         public decimal Margin { get; set; }
