@@ -7,7 +7,6 @@ using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ILogger = Serilog.ILogger;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -37,15 +36,19 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Action give account wallet
         /// </summary>
-        /// <param name="id">Account id</param>
         /// <returns>Account wallet</returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<WalletDTO>> GetWalletByAccId([FromRoute] Guid id)
+        [HttpGet]
+        public async Task<ActionResult<WalletDTO>> GetWalletByAccId()
         {
-            if (id == Guid.Empty)
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+                return BadRequest();
+            
+            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(stringId, out var accountId))
                 return BadRequest();
 
-            var wallet = await _walletService.GetWalletByAccId(id);
+            var wallet = await _walletService.GetWalletByAccId(accountId);
             if (wallet == null)
                 return NotFound();
 
@@ -55,15 +58,20 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Action give account transaction history
         /// </summary>
-        /// <param name="id">Account id</param>
         /// <returns>Transaction history</returns>
-        [HttpGet("transactionHistory/{id}")]
-        public async Task<ActionResult> GetTransactionHistory([FromRoute] Guid id)
+        [HttpGet("transactionHistory")]
+        public async Task<ActionResult> GetTransactionHistory()
         {
-            if (id == Guid.Empty)
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+                return BadRequest();
+            
+            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(stringId, out var accountId))
                 return BadRequest();
 
-            var wallet = await _walletService.GetWalletByAccId(id);
+
+            var wallet = await _walletService.GetWalletByAccId(accountId);
             if (wallet == null)
                 return NotFound();
 
