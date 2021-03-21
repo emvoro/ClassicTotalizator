@@ -70,11 +70,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             };
         }
 
-        public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<SportsDTO> GetCurrentListOfSports()
         {
             var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
@@ -99,6 +94,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             throw new NotImplementedException();
            /* var @event = await _context.Events.FindAsync(id);
             var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;*/
+        }
+
+        public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
+        {
+            throw new NotImplementedException();
         }
     }
 }
