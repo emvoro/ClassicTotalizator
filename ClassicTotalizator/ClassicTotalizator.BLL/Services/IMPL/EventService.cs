@@ -59,7 +59,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 },
                 IsEnded = false,
                 Margin = eventDTO.Margin,
+                Participant_Id1 = participant1.Id,
                 Participant1 = participant1,
+                Participant_Id2 = participant2.Id,
                 Participant2 = participant2,
                 PossibleResults = eventDTO.PossibleResults,
                 Sport = sport,
@@ -137,5 +139,14 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             throw new NotImplementedException();
         }
+
+        // private Task<IEnumerable<EventDTO>> GetAllFullEvent()
+        // {
+        //     var events = _context.Events;
+        //     foreach (var @event in events)
+        //     {
+        //         
+        //     }
+        // }
     }
 }

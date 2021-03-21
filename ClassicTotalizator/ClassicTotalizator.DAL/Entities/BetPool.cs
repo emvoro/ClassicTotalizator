@@ -12,10 +12,10 @@ namespace ClassicTotalizator.DAL.Entities
 
         [ForeignKey("Event_Id")]
         public virtual Event Event { get; set; }
-
-        public IEnumerable<Bet> Bets { get; set; }
-
+        
         public decimal TotalAmount { get; set; }
+
+        public ICollection<Bet> Bets { get; set; }
 
         public BetPool()
         {

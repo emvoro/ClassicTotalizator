@@ -13,10 +13,16 @@ namespace ClassicTotalizator.DAL.Entities
 
         [ForeignKey("Sport_Id")]
         public Sport Sport { get; set; }
+        
+        public Guid Participant_Id1 { get; set; }
 
-        public Participant Participant1 { get; set; }
+        [ForeignKey("Participant_Id1")]
+        public virtual Participant Participant1 { get; set; }
 
-        public Participant Participant2 { get; set; }
+        public Guid Participant_Id2 { get; set; }
+        
+        [ForeignKey("Participant_Id2")]
+        public virtual Participant Participant2 { get; set; }
 
         public DateTimeOffset StartTime { get; set; }
 

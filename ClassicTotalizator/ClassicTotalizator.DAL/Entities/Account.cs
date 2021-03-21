@@ -24,7 +24,7 @@ namespace ClassicTotalizator.DAL.Entities
         
         public DateTimeOffset AccountCreationTime { get; set; }
 
-        public IEnumerable<Bet> BetsHistory { get; set; }
+        public ICollection<Bet> BetsHistory { get; set; }
 
         public Account()
         {
