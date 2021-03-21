@@ -11,7 +11,6 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new TransactionDTO
                 {
-                    Id = obj.Id,
                     Account_Id = obj.Account_Id,
                     DateTime = obj.DateTime,
                     Amount = obj.Amount,
@@ -25,7 +24,6 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new Transaction
                 {
-                    Id = obj.Id,
                     Account_Id = obj.Account_Id,
                     DateTime = obj.DateTime,
                     Amount = obj.Amount,

@@ -20,8 +20,22 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<ParticipantsDTO> GetAllParticipantsAsync()
         {
-            var partcipantsListInDal = await _context.Participants.ToListAsync();
-            return new ParticipantsDTO() { Participants = partcipantsListInDal.Select(ParticipantsMapper.Map).ToList() };
+            var participantsListInDal = await _context.Participants.ToListAsync();
+            if (participantsListInDal == null)
+                return null;
+
+            var participants = new ParticipantsDTO
+            {
+                Participants = participantsListInDal.Select(ParticipantsMapper.Map).ToList()
+            };
+            
+            foreach (var participant in participants.Participants)
+            {
+                participant.Players = await GetPlayersByPartId(participant.Id);
+                participant.Parameters = await GetParametersByPartId(participant.Id);
+            }
+            
+            return participants;
         }
 
         public async Task<bool> AddNewParticipant(ParticipantDTO participant)
@@ -34,6 +48,24 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             await _context.Participants.AddAsync(newParticipant);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        private async Task<IEnumerable<ParameterDTO>> GetParametersByPartId(Guid id)
+        {
+            if (id == Guid.Empty)
+                return null;
+
+            var parameters = await _context.Parameters.Where(x => x.Participant_Id == id).ToListAsync();
+            return parameters.Select(ParameterMapper.Map).ToList();
+        }
+
+        private async Task<IEnumerable<PlayerDTO>> GetPlayersByPartId(Guid id)
+        {
+            if (id == Guid.Empty)
+                return null;
+
+            var players = await _context.Players.Where(x => x.Participant_Id == id).ToListAsync();
+            return players.Select(PlayerMapper.Map).ToList();
         }
     }
 }

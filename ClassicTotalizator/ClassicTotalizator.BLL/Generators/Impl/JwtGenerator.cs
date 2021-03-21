@@ -10,11 +10,8 @@ namespace ClassicTotalizator.BLL.Generators.IMPL
 {
     public class JwtGenerator : IJwtGenerator
     {
-        private string _securityKey { get; set; }
-
         public string GenerateJwt(AccountDTO account, string securityKey)
         {
-            _securityKey = securityKey;
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
@@ -24,7 +21,7 @@ namespace ClassicTotalizator.BLL.Generators.IMPL
             var identity = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
 
             var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
 

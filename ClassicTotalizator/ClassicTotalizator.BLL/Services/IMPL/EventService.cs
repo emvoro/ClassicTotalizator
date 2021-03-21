@@ -21,8 +21,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventDTO> GetById(Guid id)
         {
-            if (id == Guid.Empty) 
+            if (id == Guid.Empty)
                 return null;
+            
             return EventMapper.Map(await _context.Events.FindAsync(id));
         }
 
@@ -59,11 +60,14 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return EventMapper.Map(oldEvent);
         }
 
-        public async Task<IEnumerable<EventDTO>> GetEventsAsync()
+        public async Task<EventsDTO> GetEventsAsync()
         {
             var events = await _context.Events.ToListAsync() ?? new List<Event>();
 
-            return events.Select(EventMapper.Map).ToList();
+            return new EventsDTO()
+            {
+                Events = events.Select(EventMapper.Map).ToList()
+            };
         }
 
         public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
@@ -74,7 +78,27 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<SportsDTO> GetCurrentListOfSports()
         {
             var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
-            return new SportsDTO() { Sports = sports.Select(SportMapper.Map).ToList() };
+            return new SportsDTO()
+            {
+                Sports = sports.Select(SportMapper.Map).ToList()
+            };
+        }
+
+        public async Task<EventsDTO> GetCurrentLineOfEvents()
+        {
+            var currentLine = await _context
+                   .Events.Where(e => e.IsEnded == false).ToListAsync();
+            return new EventsDTO()
+            {
+                Events = currentLine.Select(EventMapper.Map).ToList()
+            };
+        }
+
+        public async Task<bool> ClosedEvent(Guid id)
+        {
+            throw new NotImplementedException();
+           /* var @event = await _context.Events.FindAsync(id);
+            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;*/
         }
     }
 }
