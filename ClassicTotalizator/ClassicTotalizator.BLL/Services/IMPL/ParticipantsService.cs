@@ -17,10 +17,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<IEnumerable<ParticipantDTO>> GetAllParticipantsAsync()
+        public async Task<ParticipantsDTO> GetAllParticipantsAsync()
         {
             var partcipantsListInDal = await _context.Participants.ToListAsync();
-            return partcipantsListInDal.Select(ParticipantsMapper.Map).ToList();
+            return new ParticipantsDTO() { Participants = partcipantsListInDal.Select(ParticipantsMapper.Map).ToList() };
         }
     }
 }

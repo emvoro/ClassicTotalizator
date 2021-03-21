@@ -17,6 +17,6 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <returns>Returns list of current participants or <c>null</c> if no participants on the platform </returns>
         /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
-        Task<IEnumerable<ParticipantDTO>> GetAllParticipantsAsync();
+        Task<ParticipantsDTO> GetAllParticipantsAsync();
     }
 }
