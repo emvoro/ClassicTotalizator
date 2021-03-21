@@ -71,10 +71,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<SportDTO>> GetCurrentListOfSports()
+        public async Task<SportsDTO> GetCurrentListOfSports()
         {
             var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
-            return sports.Select(SportMapper.Map).ToList();
+            return new SportsDTO() { Sports = sports.Select(SportMapper.Map).ToList() };
         }
     }
 }

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ClassicTotalizator.BLL.Contracts
 {
-    public class SportsDTO
+    public class OutcomesDTO
     {
-        public IEnumerable<SportDTO> Sports { get; set; }
+        public IEnumerable<string> Outcomes { get; set; }
 
-        public SportsDTO()
+        public OutcomesDTO()
         {
-            Sports = new List<SportDTO>();
+            Outcomes = new List<string>() { "W1", "X", "W2" };
         }
     }
 }
