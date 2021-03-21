@@ -100,7 +100,7 @@ namespace ClassicTotalizator.API.Controllers
             if (!string.IsNullOrEmpty(message)) 
                 _logger.LogWarning(message);
                 
-            return BadRequest();
+            return NotFound();
         }
     }
 }

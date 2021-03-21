@@ -121,7 +121,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>Sport DTO</returns>
         [Authorize(Roles=Roles.Admin)]
         [HttpPost("addSport")]
-        public async Task<ActionResult<SportDTO>> AddSport([FromRoute] SportDTO sportDTO)
+        public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDTO)
         {
             throw new NotImplementedException();
             //if (!ModelState.IsValid || sportDTO == null)
@@ -140,7 +140,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>True if participant added in database or false if smth went wrongs</returns>
         [Authorize(Roles = Roles.Admin)]
         [HttpPost("addParticipant")]
-        public async Task<ActionResult<bool>> AddParticipant([FromRoute] ParticipantDTO participantDTO)
+        public async Task<ActionResult<bool>> AddParticipant([FromBody] ParticipantDTO participantDTO)
         {
             if (!ModelState.IsValid || participantDTO == null)
             {
