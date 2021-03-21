@@ -9,19 +9,16 @@ namespace ClassicTotalizator.BLL.Contracts
     public class EventRegisterDTO
     {
         [Required]
-        public Guid Id { get; set; }
+        public Guid Participant_Id1 { get; set; }
 
         [Required]
-        public Participant Participant1 { get; set; }
-
-        [Required]
-        public Participant Participant2 { get; set; }
+        public Guid Participant_Id2 { get; set; }
 
         [Required]
         public DateTimeOffset StartTime { get; set; }
 
         [Required]
-        public SportDTO Sport { get; set; }
+        public int SportId { get; set; }
 
         [Required]
         public decimal Margin { get; set; }
