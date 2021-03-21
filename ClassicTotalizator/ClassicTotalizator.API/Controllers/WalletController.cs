@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -15,13 +17,17 @@ namespace ClassicTotalizator.API.Controllers
     {
         private readonly IWalletService _walletService;
 
+        private readonly ILogger<WalletController> _logger;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="walletService">Wallet service</param>
-        public WalletController(IWalletService walletService)
+        /// <param name="logger">Logger</param>
+        public WalletController(IWalletService walletService, ILogger<WalletController> logger)
         {
             _walletService = walletService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace ClassicTotalizator.API.Controllers
 
             return Ok(wallet);
         }
-        
+
         /// <summary>
         /// Action give account transaction history
         /// </summary>
@@ -58,6 +64,31 @@ namespace ClassicTotalizator.API.Controllers
                 return NotFound();
 
             return Ok(wallet);
+        }
+
+        /// <summary>
+        /// Transaction, withdraw or deposit
+        /// </summary>
+        /// <returns>Wallet</returns>
+        [HttpPost("transaction")]
+        public async Task<ActionResult<WalletDTO>> AddTransaction([FromBody] TransactionDTO transactionDto)
+        {
+            if (transactionDto == null)
+                return BadRequest();
+
+            try
+            {
+                var wallet = await _walletService.Transaction(transactionDto);
+                if (wallet == null)
+                    return BadRequest();
+
+                return Ok(wallet);
+            }
+            catch (ArgumentNullException)
+            {
+                _logger.LogWarning("ArgumentNullException! Wallet controller, method AddTransaction, transaction is null!");
+                return Conflict();
+            }
         }
     }
 }
