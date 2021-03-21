@@ -32,6 +32,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             foreach (var participant in participants.Participants)
             {
                 participant.Players = await GetPlayersByPartId(participant.Id);
+                participant.Parameters = await GetParametersByPartId(participant.Id);
             }
             
             return participants;
@@ -47,6 +48,15 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             await _context.Participants.AddAsync(newParticipant);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        private async Task<IEnumerable<ParameterDTO>> GetParametersByPartId(Guid id)
+        {
+            if (id == Guid.Empty)
+                return null;
+
+            var parameters = await _context.Parameters.Where(x => x.Participant_Id == id).ToListAsync();
+            return parameters.Select(ParameterMapper.Map).ToList();
         }
 
         private async Task<IEnumerable<PlayerDTO>> GetPlayersByPartId(Guid id)
