@@ -50,6 +50,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             
             transaction.Id = Guid.NewGuid();
 
+            _context.Wallets.Update(wallet);
             await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync();
 
