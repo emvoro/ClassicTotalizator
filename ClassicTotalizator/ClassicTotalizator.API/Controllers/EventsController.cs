@@ -114,8 +114,9 @@ namespace ClassicTotalizator.API.Controllers
         /// Adds sport.
         /// </summary>
         /// <returns>Sport DTO</returns>
+        [Authorize(Roles=Roles.Admin)]
         [HttpPost("addSport")]
-        public async Task<ActionResult<EventDTO>> AddSport([FromRoute] SportDTO sportDTO)
+        public async Task<ActionResult<SportDTO>> AddSport([FromRoute] SportDTO sportDTO)
         {
             if (!ModelState.IsValid || sportDTO == null)
             {
