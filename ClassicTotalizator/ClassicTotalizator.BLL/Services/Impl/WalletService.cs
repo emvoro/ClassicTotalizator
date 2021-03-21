@@ -31,9 +31,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == accountId);
             if (wallet == null)
                 return null;
-
-            transaction.Id = Guid.NewGuid();
-
+            
             if(transaction.Type == "withdraw")
             {
                 if (wallet.Amount < transaction.Amount)
@@ -49,6 +47,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             {
                 return null;
             }
+            
+            transaction.Id = Guid.NewGuid();
 
             await _context.Transactions.AddAsync(transaction);
             await _context.SaveChangesAsync();
@@ -71,9 +71,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (id == Guid.Empty)
                 return null;
 
-            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == id);
+            var transactions = await _context.Transactions.Where(x => x.Account_Id == id).ToListAsync();
 
-            return wallet.TransactionsHistory.Select(TransactionMapper.Map).ToList();
+            return transactions.Select(TransactionMapper.Map).ToList();
         }
 
         private bool ValidateTransactionDto(TransactionDTO obj)

@@ -14,7 +14,7 @@ namespace ClassicTotalizator.API.Controllers
     ///  This controller is used to register and login the user on the platform
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/auth")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
