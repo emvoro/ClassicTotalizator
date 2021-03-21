@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClassicTotalizator.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210320230418_InitialDatabase")]
-    partial class InitialDatabase
+    [Migration("20210321210439_InitialDatabse")]
+    partial class InitialDatabse
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -111,10 +111,10 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Property<decimal>("Margin")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid?>("Participant1Id")
+                    b.Property<Guid>("Participant_Id1")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("Participant2Id")
+                    b.Property<Guid>("Participant_Id2")
                         .HasColumnType("uuid");
 
                     b.Property<string[]>("PossibleResults")
@@ -134,9 +134,9 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.HasIndex("Participant1Id");
+                    b.HasIndex("Participant_Id1");
 
-                    b.HasIndex("Participant2Id");
+                    b.HasIndex("Participant_Id2");
 
                     b.HasIndex("Sport_Id");
 
@@ -310,11 +310,15 @@ namespace ClassicTotalizator.DAL.Migrations
                 {
                     b.HasOne("ClassicTotalizator.DAL.Entities.Participant", "Participant1")
                         .WithMany()
-                        .HasForeignKey("Participant1Id");
+                        .HasForeignKey("Participant_Id1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ClassicTotalizator.DAL.Entities.Participant", "Participant2")
                         .WithMany()
-                        .HasForeignKey("Participant2Id");
+                        .HasForeignKey("Participant_Id2")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ClassicTotalizator.DAL.Entities.Sport", "Sport")
                         .WithMany()
