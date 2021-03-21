@@ -37,8 +37,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return null;
 
             var participant1 = await _context.Participants.FindAsync(eventDTO.Participant_Id1);
+            if (participant1 == null)
+                return null;
+            
             var participant2 = await _context.Participants.FindAsync(eventDTO.Participant_Id2);
+            if (participant2 == null)
+                return null;
+            
             var sport = await _context.Sports.FindAsync(eventDTO.SportId);
+            if (sport == null)
+                return null;
 
             var newId = Guid.NewGuid();
             var @event = new Event
@@ -119,8 +127,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<bool> ClosedEvent(Guid id)
         {
             throw new NotImplementedException();
-           /* var @event = await _context.Events.FindAsync(id);
-            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;*/
+            
+            var @event = await _context.Events.FindAsync(id);
+            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;
+            
         }
 
         public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)

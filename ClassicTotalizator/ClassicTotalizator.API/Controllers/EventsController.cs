@@ -108,11 +108,20 @@ namespace ClassicTotalizator.API.Controllers
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
-            var createdEvent = await _eventService.CreateEventAsync(registerDTO);
-            if (createdEvent == null)
-                return BadRequest();
 
-            return Ok(createdEvent);
+            try
+            {
+                var createdEvent = await _eventService.CreateEventAsync(registerDTO);
+                if (createdEvent == null)
+                    return BadRequest();
+
+                return Ok(createdEvent);
+            }
+            catch (ArgumentNullException)
+            {
+                _logger.LogWarning("ArgumentNullException! Event controller, event to create was null!");
+                return Forbid();
+            }
         }
 
         /// <summary>
