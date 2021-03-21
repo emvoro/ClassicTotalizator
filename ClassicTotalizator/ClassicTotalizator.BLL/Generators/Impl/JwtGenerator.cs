@@ -36,7 +36,7 @@ namespace ClassicTotalizator.BLL.Generators.IMPL
                  );
 
 
-            return "Bearer " + new JwtSecurityTokenHandler().WriteToken(jwt);
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
 }

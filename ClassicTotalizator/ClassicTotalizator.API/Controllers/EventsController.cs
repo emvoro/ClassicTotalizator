@@ -135,6 +135,24 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
+        /// New participant adding action
+        /// </summary>
+        /// <returns>True if participant added in database or false if smth went wrongs</returns>
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPost("addParticipant")]
+        public async Task<ActionResult<bool>> AddParticipant([FromRoute] ParticipantDTO participantDTO)
+        {
+            if (!ModelState.IsValid || participantDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+            var createdSport = await _participantsService.AddNewParticipant(participantDTO);
+
+            return Ok(createdSport);
+        }
+
+        /// <summary>
         /// Edites event.
         /// </summary>
         /// <returns>Event DTO</returns>
