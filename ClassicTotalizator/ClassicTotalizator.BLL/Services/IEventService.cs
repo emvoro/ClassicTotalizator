@@ -1,5 +1,4 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace ClassicTotalizator.BLL.Services
         /// Registers user and assigns unique account id.
         /// </summary>
         /// <returns>Returns jwt token or <c>null</c> if login already existed.</returns>
-        Task<EventsDTO> GetEventsAsync();
+        Task<IEnumerable<EventDTO>> GetEventsAsync();
 
         /// <summary>
         /// Searching for an event in the database
@@ -30,6 +29,8 @@ namespace ClassicTotalizator.BLL.Services
         /// <param name="id">Unique identifier of event</param>
         /// <returns> Found event by requested id</returns>
         Task<EventDTO> GetById(Guid id);
+        
+        /// <summary>
         /// Creates event for backoffice.
         /// </summary>
         /// <param name="sport">Contract for event.</param>
@@ -45,15 +46,16 @@ namespace ClassicTotalizator.BLL.Services
         Task<EventDTO> EditEventAsync(EventDTO newEvent);
 
         /// <summary>
-        /// Producing list of all sports on the platfrom
+        /// Producing list of all sports on the platform
         /// </summary>
         /// <returns>List of current registered sports</returns>
         Task<SportsDTO> GetCurrentListOfSports();
 
         /// <summary>
-        /// Producing list of current line
+        /// Close event and calculate money for winners
         /// </summary>
-        /// <returns>Line of current active events</returns>
-        Task<EventsDTO> GetCurrentLineOfEvents();
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> ClosedEvent(Guid id);
     }
 }

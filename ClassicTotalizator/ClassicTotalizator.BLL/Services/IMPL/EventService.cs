@@ -23,6 +23,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (id == Guid.Empty)
                 return null;
+            
             return EventMapper.Map(await _context.Events.FindAsync(id));
         }
 
@@ -92,6 +93,12 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             {
                 Events = currentLine.Select(EventMapper.Map).ToList()
             };
+        }
+
+        public async Task<bool> ClosedEvent(Guid id)
+        {
+            var @event = await _context.Events.FindAsync(id);
+            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;
         }
     }
 }
