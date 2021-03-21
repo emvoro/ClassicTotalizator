@@ -132,15 +132,14 @@ namespace ClassicTotalizator.API.Controllers
         [HttpPost("addSport")]
         public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDTO)
         {
-            throw new NotImplementedException();
-            //if (!ModelState.IsValid || sportDTO == null)
-            //{
-            //    _logger.LogWarning("Model invalid!");
-            //    return BadRequest();
-            //}
-            //var createdSport = await _sportService.Add(sportDTO);
+            if (!ModelState.IsValid || sportDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+            var createdSport = await _sportService.Add(sportDTO);
 
-            //return Ok(createdSport);
+            return Ok(createdSport);
         }
 
         /// <summary>
