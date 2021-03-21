@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -19,16 +20,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<IEnumerable<BetDTO>> GetEventBets(Guid id)
         {
-            var @event = await _context.Events.FindAsync(id);
+            var bets = await _context.Bets.Where(x => x.Event_Id == id).ToListAsync();
 
-            return @event.BetPool.Bets.Select(BetMapper.Map).ToList();
+            return bets.Select(BetMapper.Map).ToList();
         }
 
         public async Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id)
         {
-            var account = await _context.Accounts.FindAsync(id);
+            var bets = await _context.Bets.Where(x => x.Account_Id == id).ToListAsync();
 
-            return account.BetsHistory.Select(BetMapper.Map).ToList();
+            return bets.Select(BetMapper.Map).ToList();
         }
 
         public async Task<bool> AddBet(BetDTO betDto)
