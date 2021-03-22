@@ -38,20 +38,16 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Bets on account</returns>
         [HttpGet("account")]
-        [Authorize(Roles = "USER")]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> GetBetsByAccId()
         {
-            var identity = User.Identity as ClaimsIdentity;
-            if (identity == null)
-                return BadRequest();
-            
-            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(stringId, out var accountId))
-                return BadRequest();
+            var accountId = GetIdFromToken();
+            if (accountId == Guid.Empty)
+                return BadRequest("Token value is invalid!");
 
             var bets = await _betService.GetBetsByAccId(accountId);
             if (bets == null)
-                return NotFound();
+                return NotFound("Bets not found!");
 
             return Ok(bets);
         }
@@ -62,15 +58,15 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="id">Event id</param>
         /// <returns>Event bet's</returns>
         [HttpGet("event/{id}")]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult> GetEventBets([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
-                return BadRequest();
+                return BadRequest("Id is empty!");
             
             var bets = await _betService.GetEventBets(id);
             if (bets == null)
-                return NotFound();
+                return NotFound("Bets not found!");
 
             return Ok(bets);
         }
@@ -81,19 +77,15 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="bet">New bet from user</param>
         /// <returns>Status code, ok if bet done, something another if not</returns>
         [HttpPost]
-        [Authorize(Roles = "USER")]
+        [Authorize(Roles = Roles.User)]
         public async Task<IActionResult> AddBet([FromBody] BetNewDTO bet)
         {
             if (!ModelState.IsValid || bet == null)
-                return BadRequest();
-            
-            var identity = User.Identity as ClaimsIdentity;
-            if (identity == null)
-                return BadRequest();
-            
-            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(stringId, out var accountId))
-                return BadRequest();
+                return BadRequest("Model is invalid!");
+
+            var accountId = GetIdFromToken();
+            if (accountId == Guid.Empty)
+                return BadRequest("Token value is invalid!");
 
             try
             {
@@ -107,8 +99,20 @@ namespace ClassicTotalizator.API.Controllers
             catch (ArgumentNullException e)
             {
                 _logger.LogWarning(e.Message);
-                return BadRequest();
+                return BadRequest("Argument null exception!");
             }
+        }
+
+        private Guid GetIdFromToken()
+        {
+            if (!(User.Identity is ClaimsIdentity identity))
+                return Guid.Empty;
+            
+            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(stringId, out var accountId))
+                return Guid.Empty;
+
+            return accountId;
         }
     }
 }
