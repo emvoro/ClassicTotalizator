@@ -173,10 +173,13 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (eventToClose == null)
                 throw new ArgumentNullException(nameof(eventToClose));
-            if (eventToClose.Result != "W1" && eventToClose.Result != "W2" && eventToClose.Result != "X")
+
+            var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
+            if (closingEvent == null)
                 return false;
             
-            var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
+            if (!closingEvent.PossibleResults.Contains(eventToClose.Result))
+                return false;
 
             if (closingEvent.IsEnded)
                 return false;
