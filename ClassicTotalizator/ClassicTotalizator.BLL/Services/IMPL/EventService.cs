@@ -168,61 +168,57 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> FinishEvent(FinishedEventDTO eventToClose)
         {
-            if (eventToClose.Result != "W1" || eventToClose.Result != "W2" || eventToClose.Result != "X")
+            if (eventToClose == null)
+                throw new ArgumentNullException(nameof(eventToClose));
+            if (eventToClose.Result != "W1" && eventToClose.Result != "W2" && eventToClose.Result != "X")
                 return false;
             
             var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
 
-            if (closingEvent.IsEnded == true)
+            if (closingEvent.IsEnded)
                 return false;
            
             closingEvent.Result = eventToClose.Result;
-
             closingEvent.IsEnded = true;
 
-            return true /*await CashSettlementOfBetsOnEvents(closingEvent)*/;
+            return await CashSettlementOfBetsOnEvents(closingEvent);
         }
 
         private async Task<bool> CashSettlementOfBetsOnEvents(Event closedEvent)
         {
-            throw new NotImplementedException();
-           /* decimal winningAmount = 0;
-            decimal losingAmount = 0;
+             decimal winningAmount = 0;
+             decimal losingAmount = 0;
+ 
+             var currentBetPool = await _context.BetPools.FindAsync(closedEvent.Id);
+ 
+             var winningBets = new List<Bet>();
+ 
+             foreach (var bet in currentBetPool.Bets)
+             {
+                 if (bet.Choice.Equals(closedEvent.Result))
+                 {
+                     winningAmount = bet.Amount;
+                     winningBets.Add(bet);
+                 }
+                 else
+                     losingAmount = bet.Amount;
+             }
 
-            var currentBetPool = await _context.BetPools.FindAsync(closedEvent.Id);
+             if (winningAmount == 0)
+                 return false;
 
-            var winningBets = new List<Bet>();
+             foreach (var bet in winningBets)
+             {
+                 var moneyForDep = (losingAmount * bet.Amount) / winningAmount;
+                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
+ 
+                 pendingWallet.Amount += moneyForDep;
+ 
+                 _context.Wallets.Update(pendingWallet);
+                 await _context.SaveChangesAsync();
+             }
 
-            foreach (var m in currentBetPool.Bets)
-            {
-                if (m.Choice.Equals(closedEvent.EventResult))
-                {
-                    winningAmount = m.Amount;
-                    winningBets.Add(m);
-                }
-                else
-                    losingAmount = m.Amount;
-            }
-
-            var totalAMount = winningAmount + losingAmount;
-
-            if (winningAmount == 0)
-                return;
-
-
-            foreach (var m in winningBets)
-            {
-                var moneyForDep = (losingAmount * m.Amount) / winningAmount;
-                var pendingWallet = await _context.Wallets.FindAsync(m.Account_Id);
-
-                pendingWallet.Amount += moneyForDep;
-
-                _context.Wallets.Update(pendingWallet);
-                await _context.SaveChangesAsync();
-            }
-            */
+             return true;
         }
-
-
     }
 }
