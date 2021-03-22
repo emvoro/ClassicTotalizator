@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -60,7 +61,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Transaction history</returns>
         [HttpGet("transactionHistory")]
-        public async Task<ActionResult> GetTransactionHistory()
+        public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactionHistory()
         {
             var identity = User.Identity as ClaimsIdentity;
             if (identity == null)
@@ -70,12 +71,11 @@ namespace ClassicTotalizator.API.Controllers
             if(!Guid.TryParse(stringId, out var accountId))
                 return BadRequest();
 
-
-            var wallet = await _walletService.GetWalletByAccId(accountId);
-            if (wallet == null)
+            var transactionHistoryByAccId = await _walletService.GetTransactionHistoryByAccId(accountId);
+            if (transactionHistoryByAccId == null)
                 return NotFound();
 
-            return Ok(wallet);
+            return Ok(transactionHistoryByAccId);
         }
 
         /// <summary>

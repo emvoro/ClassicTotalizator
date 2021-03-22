@@ -24,14 +24,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 throw new ArgumentNullException(nameof(transactionDto));
             if (!ValidateTransactionDto(transactionDto))
                 return null;
-
-            var transaction = TransactionMapper.Map(transactionDto);
-            transaction.DateTime = DateTimeOffset.UtcNow;
-
+            
             var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == accountId);
             if (wallet == null)
                 return null;
+
+            var transaction = TransactionMapper.Map(transactionDto);
             
+            transaction.DateTime = DateTimeOffset.UtcNow;
+            transaction.Wallet = wallet;
+
             if(transaction.Type == "withdraw")
             {
                 if (wallet.Amount < transaction.Amount)

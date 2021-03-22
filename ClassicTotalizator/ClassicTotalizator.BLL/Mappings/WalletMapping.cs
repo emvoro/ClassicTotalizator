@@ -11,7 +11,6 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new WalletDTO
                 {
-                    Account_Id = obj.Account_Id,
                     Amount = obj.Amount
                 };
         }
@@ -22,7 +21,6 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new Wallet
                 {
-                    Account_Id = obj.Account_Id,
                     Amount = obj.Amount
                 };
         }

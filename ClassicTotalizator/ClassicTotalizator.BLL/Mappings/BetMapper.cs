@@ -11,6 +11,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new BetDTO
                 {
+                    Account_Id = obj.Account_Id,
                     Amount = obj.Amount,
                     Choice = obj.Choice,
                     Event_Id = obj.Event_Id
@@ -23,6 +24,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new Bet
                 {
+                    Account_Id = obj.Account_Id,
                     Amount = obj.Amount,
                     Choice = obj.Choice,
                     Event_Id = obj.Event_Id
