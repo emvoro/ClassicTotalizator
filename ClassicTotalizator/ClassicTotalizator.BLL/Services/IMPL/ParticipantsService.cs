@@ -38,16 +38,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return participants;
         }
 
-        public async Task<bool> AddNewParticipant(ParticipantDTO participant)
+        public async Task<ParticipantDTO> AddNewParticipant(ParticipantDTO participant)
         {
             if (participant == null)
-                return false;
+                return null;
 
             var newParticipant = ParticipantsMapper.Map(participant);
 
             await _context.Participants.AddAsync(newParticipant);
             await _context.SaveChangesAsync();
-            return true;
+            return participant;
         }
 
         private async Task<IEnumerable<ParameterDTO>> GetParametersByPartId(Guid id)

@@ -18,6 +18,6 @@ namespace ClassicTotalizator.BLL.Services
         /// /// <param name="sportDTO">Contract for event.</param>
         /// <returns>Boolean result of sport creation</returns>
         /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
-        Task<bool> Add(SportDTO sportDTO);
+        Task<SportDTO> Add(SportDTO sportDTO);
     }
 }
