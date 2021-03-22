@@ -131,6 +131,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> FinishEvent(FinishedEventDTO eventToClose)
         {
+            if (eventToClose.Result != "W1" || eventToClose.Result != "W2" || eventToClose.Result != "X")
+                return false;
             var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
 
             closingEvent.Result = eventToClose.Result;
