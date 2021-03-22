@@ -119,15 +119,53 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             };
         }
 
-        public async Task<EventsDTO> GetCurrentLineOfEvents()
+        public async Task<EventsFeedDTO> GetCurrentLineOfEvents()
         {
             var currentLine = await _context
                    .Events.Where(e => e.IsEnded == false).ToListAsync();
 
-            return new EventsDTO
+            var eventPreviewDtos = new List<EventPreviewDTO>();
+
+            foreach (var @event in currentLine)
             {
-                Events = currentLine.Select(EventMapper.Map).ToList()
+                @event.Participant1 = await _context.Participants.FindAsync(@event.Participant_Id1);
+                @event.Participant2 = await _context.Participants.FindAsync(@event.Participant_Id2);
+                
+                @event.Sport = await _context.Sports.FindAsync(@event.Sport_Id);
+
+                eventPreviewDtos.Add(await GetAmountsOnResults(@event));
+            }
+
+            return new EventsFeedDTO
+            {
+                Events = eventPreviewDtos
             };
+        }
+
+        private async Task<EventPreviewDTO> GetAmountsOnResults(Event @event)
+        {
+            var bets = await _context.Bets.Where(x => x.Event_Id == @event.Id).ToListAsync();
+            var eventRes = EventMapper.MapPreview(@event);
+
+            foreach (var bet in bets)
+            {
+                switch (bet.Choice)
+                {
+                    case "W1":
+                        @eventRes.AmountW1 += bet.Amount;
+                        break;
+                    case "W2":
+                        @eventRes.AmountW2 += bet.Amount;
+                        break;
+                    case "X":
+                        @eventRes.AmountX += bet.Amount;
+                        break;
+                    default:
+                        continue;
+                }
+            }
+
+            return eventRes;
         }
 
         public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
