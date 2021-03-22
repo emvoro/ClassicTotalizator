@@ -21,7 +21,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<bool> Add(SportDTO sport)
+        public async Task<SportDTO> Add(SportDTO sport)
         {
             if (sport == null)
                 throw new ArgumentNullException(nameof(sport));
@@ -35,9 +35,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
-            return true;
+            return sport;
         }
     }
 }

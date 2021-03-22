@@ -143,7 +143,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// New participant adding action
+        /// New participant adding action.
         /// </summary>
         /// <returns>True if participant added in database or false if smth went wrongs</returns>
         [Authorize(Roles = Roles.Admin)]
@@ -155,9 +155,9 @@ namespace ClassicTotalizator.API.Controllers
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
-            var createdSport = await _participantsService.AddNewParticipant(participantDTO);
+            var participant = await _participantsService.AddNewParticipant(participantDTO);
 
-            return Ok(createdSport);
+            return Ok(participant);
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get current line
+        /// Get current line.
         /// </summary>
         /// <returns>List of all current active events</returns>
         [HttpGet("feed")]
