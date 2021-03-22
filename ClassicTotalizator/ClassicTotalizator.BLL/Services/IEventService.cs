@@ -51,12 +51,6 @@ namespace ClassicTotalizator.BLL.Services
         /// <returns>List of current registered sports</returns>
         Task<SportsDTO> GetCurrentListOfSports();
 
-        /// <summary>
-        /// Close event and calculate money for winners
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<bool> ClosedEvent(Guid id);
 
         /// <summary>
         /// Produces list of all not ended events
