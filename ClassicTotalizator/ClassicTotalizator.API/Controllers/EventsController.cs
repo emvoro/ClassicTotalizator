@@ -198,6 +198,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all current active events</returns>
         [HttpGet("feed")]
+        [AllowAnonymous]
         public async Task<ActionResult<EventsDTO>> GetCurrentLine()
         {
             var currentLine = await _eventService.GetCurrentLineOfEvents();
