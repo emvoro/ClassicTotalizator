@@ -61,7 +61,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Transaction history</returns>
         [HttpGet("transactionHistory")]
-        public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetTransactionHistory()
+        public async Task<ActionResult<IEnumerable<TransactionWithTimeDTO>>> GetTransactionHistory()
         {
             var identity = User.Identity as ClaimsIdentity;
             if (identity == null)
