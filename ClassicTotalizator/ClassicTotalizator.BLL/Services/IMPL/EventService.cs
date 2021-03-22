@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Mappings;
+﻿using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
 using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
