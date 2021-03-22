@@ -173,6 +173,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             
             var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
 
+            if (closingEvent.IsEnded == true)
+                return false;
+           
             closingEvent.Result = eventToClose.Result;
 
             closingEvent.IsEnded = true;
