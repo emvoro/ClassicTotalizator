@@ -91,8 +91,43 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             
             _context.Update(oldEvent);
             await _context.SaveChangesAsync();
-            
-            return EventMapper.Map(oldEvent);
+
+            var editedEvent = EventMapper.Map(oldEvent);
+
+            if (editedEvent.IsEnded)
+                await CashSettlementOfBetsOnEvents(editedEvent);
+
+
+
+            return editedEvent;
+        }
+
+        private async Task CashSettlementOfBetsOnEvents(EventDTO closedEvent)
+        {
+            var @event = await _context.Events.FindAsync(closedEvent.Id);
+            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;
+            decimal winningAmount = 0;
+            decimal losingAmount = 0;
+
+            var currentBetPool = await _context.BetPools.FindAsync(closedEvent.Id);
+
+            var winningBets = new List<Bet>();
+
+            var losingBets = new List<Bet>();
+
+            foreach (var m in currentBetPool.Bets)
+            {
+                if (m.Choice.Equals(closedEvent.EventResult))
+                {
+                    winningAmount = m.Amount;
+                    winningBets.Add(m);
+                }
+                else
+                {
+                    losingAmount = m.Amount;
+                    losingBets.Add(m);
+                }
+            }
         }
 
         public async Task<EventsDTO> GetEventsAsync()
@@ -126,27 +161,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             };
         }
 
-        public async Task<bool> ClosedEvent(Guid id)
-        {
-            throw new NotImplementedException();
-            
-            var @event = await _context.Events.FindAsync(id);
-            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;
-            
-        }
-
         public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
         {
             throw new NotImplementedException();
         }
-
-        // private Task<IEnumerable<EventDTO>> GetAllFullEvent()
-        // {
-        //     var events = _context.Events;
-        //     foreach (var @event in events)
-        //     {
-        //         
-        //     }
-        // }
     }
 }
