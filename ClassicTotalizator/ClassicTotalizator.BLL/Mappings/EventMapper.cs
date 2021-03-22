@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Contracts.EventDTOs;
+﻿using ClassicTotalizator.BLL.Contracts.EventDTOs;
 using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Mappings
@@ -20,6 +19,7 @@ namespace ClassicTotalizator.BLL.Mappings
                     PossibleResults = eventDTO.PossibleResults
                 };
         }
+
         public static Event Map(EventRegisterDTO registerDTO)
         {
             return registerDTO == null
@@ -29,6 +29,23 @@ namespace ClassicTotalizator.BLL.Mappings
                     StartTime = registerDTO.StartTime,
                     Margin = registerDTO.Margin,
                     PossibleResults = registerDTO.PossibleResults
+                };
+        }
+
+        public static EventPreviewDTO MapPreview(Event @event)
+        {
+            return @event == null
+                ? null
+                : new EventPreviewDTO
+                {
+                    Id = @event.Id,
+                    Participant1 = ParticipantsMapper.Map(@event.Participant1),
+                    Participant2 = ParticipantsMapper.Map(@event.Participant2),
+                    StartTime = @event.StartTime,
+                    SportName = @event.Sport.Name,
+                    IsEnded = @event.IsEnded,
+                    Margin = @event.Margin,
+                    PossibleResults = @event.PossibleResults
                 };
         }
 
