@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.EventDTOs;
 using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
@@ -259,12 +258,20 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
 
-            var finished = await _eventService.FinishEvent(finishedEvent);
+            try
+            {
+                var finished = await _eventService.FinishEvent(finishedEvent);
 
-            if (!finished)
-                BadRequest();
+                if (!finished)
+                    BadRequest();
 
-            return Ok(finished);
+                return Ok(finished);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogWarning(e.Message);
+                return BadRequest();
+            }
         }
     }
 }
