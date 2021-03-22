@@ -24,14 +24,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 throw new ArgumentNullException(nameof(transactionDto));
             if (!ValidateTransactionDto(transactionDto))
                 return null;
-
-            var transaction = TransactionMapper.Map(transactionDto);
-            transaction.DateTime = DateTimeOffset.UtcNow;
-
+            
             var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == accountId);
             if (wallet == null)
                 return null;
+
+            var transaction = TransactionMapper.Map(transactionDto);
             
+            transaction.DateTime = DateTimeOffset.UtcNow;
+            transaction.Wallet = wallet;
+
             if(transaction.Type == "withdraw")
             {
                 if (wallet.Amount < transaction.Amount)
@@ -67,14 +69,14 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return WalletMapping.Map(wallet);
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetTransactionHistoryByAccId(Guid id)
+        public async Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccId(Guid id)
         {
             if (id == Guid.Empty)
                 return null;
 
             var transactions = await _context.Transactions.Where(x => x.Account_Id == id).ToListAsync();
 
-            return transactions.Select(TransactionMapper.Map).ToList();
+            return transactions.Select(TransactionMapper.MapWithTime).ToList();
         }
 
         private bool ValidateTransactionDto(TransactionDTO obj)

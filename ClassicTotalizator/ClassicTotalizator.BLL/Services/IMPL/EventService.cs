@@ -23,7 +23,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (id == Guid.Empty)
                 return null;
-            
+
             return EventMapper.Map(await _context.Events.FindAsync(id));
         }
 
@@ -39,11 +39,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var participant1 = await _context.Participants.FindAsync(eventDTO.Participant_Id1);
             if (participant1 == null)
                 return null;
-            
+
             var participant2 = await _context.Participants.FindAsync(eventDTO.Participant_Id2);
             if (participant2 == null)
                 return null;
-            
+
             var sport = await _context.Sports.FindAsync(eventDTO.SportId);
             if (sport == null)
                 return null;
@@ -69,7 +69,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 StartTime = eventDTO.StartTime,
                 Result = null
             };
-            
+
             await _context.Events.AddAsync(@event);
             await _context.SaveChangesAsync();
 
@@ -80,19 +80,67 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (newEvent.PossibleResults.Length == 2 && newEvent.PossibleResults.Contains("X"))
                 return null;
-            
+
             var oldEvent = await _context.Events.FindAsync(newEvent.Id);
-            
+
             oldEvent.StartTime = newEvent.StartTime;
             oldEvent.Margin = newEvent.Margin;
             oldEvent.IsEnded = newEvent.IsEnded;
             oldEvent.Result = newEvent.EventResult;
             oldEvent.PossibleResults = newEvent.PossibleResults;
-            
+
             _context.Update(oldEvent);
             await _context.SaveChangesAsync();
+
+            var editedEvent = EventMapper.Map(oldEvent);
+
+            if (editedEvent.IsEnded)
+                await CashSettlementOfBetsOnEvents(editedEvent);
+
+
+
+            return editedEvent;
+        }
+
+        //ToDo: Add margin distinction
+        private async Task CashSettlementOfBetsOnEvents(EventDTO closedEvent)
+        {
+            var @event = await _context.Events.FindAsync(closedEvent.Id);
+
+            decimal winningAmount = 0;
+            decimal losingAmount = 0;
+
+            var currentBetPool = await _context.BetPools.FindAsync(closedEvent.Id);
+
+            var winningBets = new List<Bet>();
+
+            foreach (var m in currentBetPool.Bets)
+            {
+                if (m.Choice.Equals(closedEvent.EventResult))
+                {
+                    winningAmount = m.Amount;
+                    winningBets.Add(m);
+                }
+                else
+                    losingAmount = m.Amount;
+            }
+
+            var totalAMount = winningAmount + losingAmount;
             
-            return EventMapper.Map(oldEvent);
+            if (winningAmount == 0)
+                return;
+            
+
+            foreach (var m in winningBets)
+            {
+                var moneyForDep = (losingAmount * m.Amount) / winningAmount;
+                var pendingWallet = await _context.Wallets.FindAsync(m.Account_Id);
+
+                pendingWallet.Amount += moneyForDep;
+
+                _context.Wallets.Update(pendingWallet);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<EventsDTO> GetEventsAsync()
@@ -108,7 +156,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<SportsDTO> GetCurrentListOfSports()
         {
             var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
-            
+
             return new SportsDTO
             {
                 Sports = sports.Select(SportMapper.Map).ToList()
@@ -119,34 +167,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             var currentLine = await _context
                    .Events.Where(e => e.IsEnded == false).ToListAsync();
-            
+
             return new EventsDTO
             {
                 Events = currentLine.Select(EventMapper.Map).ToList()
             };
         }
 
-        public async Task<bool> ClosedEvent(Guid id)
-        {
-            throw new NotImplementedException();
-            
-            var @event = await _context.Events.FindAsync(id);
-            var totalAmountWithMargin = @event.BetPool.TotalAmount - @event.BetPool.TotalAmount * @event.Margin;
-            
-        }
-
         public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
         {
             throw new NotImplementedException();
         }
-
-        // private Task<IEnumerable<EventDTO>> GetAllFullEvent()
-        // {
-        //     var events = _context.Events;
-        //     foreach (var @event in events)
-        //     {
-        //         
-        //     }
-        // }
     }
 }

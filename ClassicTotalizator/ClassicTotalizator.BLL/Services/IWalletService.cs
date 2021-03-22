@@ -11,6 +11,6 @@ namespace ClassicTotalizator.BLL.Services
 
         Task<WalletDTO> GetWalletByAccId(Guid id);
 
-        Task<IEnumerable<TransactionDTO>> GetTransactionHistoryByAccId(Guid id);
+        Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccId(Guid id);
     }
 }
