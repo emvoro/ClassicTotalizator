@@ -1,11 +1,9 @@
 using System;
 
-namespace ClassicTotalizator.BLL.Contracts
+namespace ClassicTotalizator.BLL.Contracts.BetDTOs
 {
-    public class BetDTO
+    public class BetNewDTO
     {
-        public Guid Account_Id { get; set; }
-        
         public Guid Event_Id { get; set; }
 
         public string Choice { get; set; }

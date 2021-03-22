@@ -1,12 +1,11 @@
 ﻿using ClassicTotalizator.API.Options;
-using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -18,7 +17,9 @@ namespace ClassicTotalizator.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        
         private readonly ILogger<AuthController> _logger;
+        
         private IConfiguration Configuration { get; }
 
         /// <summary>
@@ -43,7 +44,6 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="registerDTO">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
-        [AllowAnonymous]
         public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDTO)
         {
             if (!ModelState.IsValid || registerDTO == null)
@@ -59,11 +59,12 @@ namespace ClassicTotalizator.API.Controllers
                 {
                     JwtString = token
                 };
+                
                 return CheckTokenAndReturn(jwtReturnedDTO, "Register failed!");
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                _logger.LogWarning("Argument null exception! Try to add null object in AuthController!");
+                _logger.LogWarning(e.Message);
                 return BadRequest();
             }
         }
@@ -73,9 +74,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="loginDTO">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
-        /// <exception cref="NotImplementedException"></exception>
         [HttpPost("Login")]
-        [AllowAnonymous]
         public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDTO)
         {
             if (!ModelState.IsValid || loginDTO == null)
@@ -89,6 +88,7 @@ namespace ClassicTotalizator.API.Controllers
             {
                 JwtString = token
             };
+            
             return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
         }
 

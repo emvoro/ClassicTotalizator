@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.EventDTOs;
+using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
+using ClassicTotalizator.BLL.Contracts.SportDTOs;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -117,9 +120,9 @@ namespace ClassicTotalizator.API.Controllers
 
                 return Ok(createdEvent);
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                _logger.LogWarning("ArgumentNullException! Event controller, event to create was null!");
+                _logger.LogWarning(e.Message);
                 return Forbid();
             }
         }

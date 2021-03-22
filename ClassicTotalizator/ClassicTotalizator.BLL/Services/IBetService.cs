@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Contracts.BetDTOs;
 
 namespace ClassicTotalizator.BLL.Services
 {
@@ -11,6 +12,6 @@ namespace ClassicTotalizator.BLL.Services
 
         Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id);
 
-        Task<bool> AddBet(BetDTO betDto);
+        Task<bool> AddBet(BetNewDTO betDto, Guid accountId);
     }
 }

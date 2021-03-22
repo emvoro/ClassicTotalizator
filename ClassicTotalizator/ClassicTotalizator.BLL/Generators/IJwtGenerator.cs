@@ -1,4 +1,5 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 
 namespace ClassicTotalizator.BLL.Generators
 {

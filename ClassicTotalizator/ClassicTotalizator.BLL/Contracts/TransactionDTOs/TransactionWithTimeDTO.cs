@@ -1,6 +1,6 @@
 using System;
 
-namespace ClassicTotalizator.BLL.Contracts
+namespace ClassicTotalizator.BLL.Contracts.TransactionDTOs
 {
     public class TransactionWithTimeDTO
     {

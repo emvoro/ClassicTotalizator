@@ -1,6 +1,7 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.DAL.Entities;
 using System.Linq;
+using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
 
 namespace ClassicTotalizator.BLL.Mappings
 {
