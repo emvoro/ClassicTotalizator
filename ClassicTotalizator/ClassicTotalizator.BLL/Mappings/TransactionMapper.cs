@@ -26,5 +26,29 @@ namespace ClassicTotalizator.BLL.Mappings
                     Type = obj.Type
                 };
         } 
+        
+        public static Transaction Map(TransactionWithTimeDTO obj)
+        {
+            return obj == null
+                ? null
+                : new Transaction
+                {
+                    DateTime = obj.DateTime,
+                    Amount = obj.Amount,
+                    Type = obj.Type
+                };
+        }
+        
+        public static TransactionWithTimeDTO MapWithTime(Transaction obj)
+        {
+            return obj == null
+                ? null
+                : new TransactionWithTimeDTO
+                {
+                    DateTime = obj.DateTime,
+                    Amount = obj.Amount,
+                    Type = obj.Type
+                };
+        }
     }
 }
