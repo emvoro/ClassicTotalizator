@@ -50,8 +50,10 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<ParticipantsDTO>> GetAllParticipantsAsync()
         {
             var participants = await _participantsService.GetAllParticipantsAsync();
+
             if (participants == null)
                 return NotFound();
+
             return Ok(participants);
         }
 
@@ -102,8 +104,9 @@ namespace ClassicTotalizator.API.Controllers
         /// Creates new event by template.
         /// </summary>
         /// <returns>Event DTO</returns>
+        [Authorize(Roles=Roles.Admin)]
         [HttpPost("createEvent")]
-        public async Task<ActionResult<EventDTO>> CreateEventByTemplate([FromBody] EventRegisterDTO registerDTO)
+        public async Task<ActionResult<EventDTO>> AddEvent([FromBody] EventRegisterDTO registerDTO)
         {
             if (!ModelState.IsValid || registerDTO == null)
             {
@@ -114,10 +117,40 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var createdEvent = await _eventService.CreateEventAsync(registerDTO);
+
                 if (createdEvent == null)
                     return BadRequest();
 
                 return Ok(createdEvent);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogWarning(e.Message);
+                return Forbid();
+            }
+        }
+
+        /// <summary>
+        /// Creates new participant by template.
+        /// </summary>
+        /// <returns>Event DTO</returns>
+        [HttpPost("addParticipant")]
+        public async Task<ActionResult<EventDTO>> AddParticipant([FromBody] ParticipantRegisterDTO registerDTO)
+        {
+            if (!ModelState.IsValid || registerDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+
+            try
+            {
+                var createdParticipant = await _participantsService.AddNewParticipant(registerDTO);
+
+                if (createdParticipant == null)
+                    return BadRequest();
+
+                return Ok(createdParticipant);
             }
             catch (ArgumentNullException e)
             {
@@ -144,23 +177,23 @@ namespace ClassicTotalizator.API.Controllers
             return Ok(createdSport);
         }
 
-        /// <summary>
-        /// New participant adding action.
-        /// </summary>
-        /// <returns>True if participant added in database or false if smth went wrongs</returns>
-        [Authorize(Roles = Roles.Admin)]
-        [HttpPost("addParticipant")]
-        public async Task<ActionResult<bool>> AddParticipant([FromBody] ParticipantDTO participantDTO)
-        {
-            if (!ModelState.IsValid || participantDTO == null)
-            {
-                _logger.LogWarning("Model invalid!");
-                return BadRequest();
-            }
-            var participant = await _participantsService.AddNewParticipant(participantDTO);
+        ///// <summary>
+        ///// New participant adding action.
+        ///// </summary>
+        ///// <returns>True if participant added in database or false if smth went wrongs</returns>
+        //[Authorize(Roles = Roles.Admin)]
+        //[HttpPost("addParticipant")]
+        //public async Task<ActionResult<bool>> AddParticipant([FromBody] ParticipantDTO participantDTO)
+        //{
+        //    if (!ModelState.IsValid || participantDTO == null)
+        //    {
+        //        _logger.LogWarning("Model invalid!");
+        //        return BadRequest();
+        //    }
+        //    var participant = await _participantsService.AddNewParticipant(participantDTO);
 
-            return Ok(participant);
-        }
+        //    return Ok(participant);
+        //}
 
         /// <summary>
         /// Edites event.
@@ -210,7 +243,7 @@ namespace ClassicTotalizator.API.Controllers
 
             return Ok(currentLine);
         }
-        
+
         /// <summary>
         /// Close event
         /// </summary>

@@ -79,6 +79,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventDTO> EditEventAsync(EdittedEventDTO newEvent)
         {
+            if (newEvent.StartTime < DateTimeOffset.UtcNow)
+                return null;
+
             var oldEvent = await _context.Events.FindAsync(newEvent.Id);
 
             oldEvent.Margin = newEvent.Margin;
