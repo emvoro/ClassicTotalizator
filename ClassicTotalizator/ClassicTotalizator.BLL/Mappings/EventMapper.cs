@@ -20,6 +20,7 @@ namespace ClassicTotalizator.BLL.Mappings
                     PossibleResults = eventDTO.PossibleResults
                 };
         }
+
         public static Event Map(EventRegisterDTO registerDTO)
         {
             return registerDTO == null
