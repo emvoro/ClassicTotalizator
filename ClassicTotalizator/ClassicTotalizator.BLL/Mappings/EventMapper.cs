@@ -33,7 +33,9 @@ namespace ClassicTotalizator.BLL.Mappings
 
         public static EventDTO Map(Event @event)
         {
-            return new EventDTO
+            return @event == null
+                ? null
+                : new EventDTO
                 {
                     Id = @event.Id,
                     Participant_Id1 = @event.Participant_Id1,

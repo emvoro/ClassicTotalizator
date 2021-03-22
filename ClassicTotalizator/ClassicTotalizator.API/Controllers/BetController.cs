@@ -40,11 +40,15 @@ namespace ClassicTotalizator.API.Controllers
         [Authorize(Roles = "USER")]
         public async Task<ActionResult> GetBetsByAccId()
         {
-            var id = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (!Guid.TryParse(id, out var guidId))
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+                return BadRequest();
+            
+            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(stringId, out var accountId))
                 return BadRequest();
 
-            var bets = await _betService.GetBetsByAccId(guidId);
+            var bets = await _betService.GetBetsByAccId(accountId);
             if (bets == null)
                 return NotFound();
 
@@ -81,9 +85,19 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (!ModelState.IsValid || bet == null)
                 return BadRequest();
+            
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+                return BadRequest();
+            
+            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(stringId, out var accountId))
+                return BadRequest();
 
             try
             {
+                bet.Account_Id = accountId;
+                
                 if (await _betService.AddBet(bet))
                 {
                     return Ok();
