@@ -188,7 +188,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all events.</returns>
         [HttpGet("getAllEvents")]
-        public async Task<ActionResult<List<EventDTO>>> GetAllEvents()
+        public async Task<ActionResult<EventsDTO>> GetAllEvents()
         {
             var events = await _eventService.GetEventsAsync();
             if (events == null)
@@ -203,7 +203,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>List of all current active events</returns>
         [HttpGet("feed")]
         [AllowAnonymous]
-        public async Task<ActionResult<EventsDTO>> GetCurrentLine()
+        public async Task<ActionResult> GetCurrentLine()
         {
             var currentLine = await _eventService.GetCurrentLineOfEvents();
             if (currentLine == null)
