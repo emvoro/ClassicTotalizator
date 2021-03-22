@@ -42,13 +42,9 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet]
         public async Task<ActionResult<WalletDTO>> GetWalletByAccId()
         {
-            var identity = User.Identity as ClaimsIdentity;
-            if (identity == null)
-                return BadRequest();
-            
-            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(stringId, out var accountId))
-                return BadRequest();
+            var accountId = GetIdFromToken();
+            if (accountId == Guid.Empty)
+                return BadRequest("Token value is invalid!");
             
             var wallet = await _walletService.GetWalletByAccId(accountId);
             if (wallet == null)
@@ -64,13 +60,9 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet("transactionHistory")]
         public async Task<ActionResult<IEnumerable<TransactionWithTimeDTO>>> GetTransactionHistory()
         {
-            var identity = User.Identity as ClaimsIdentity;
-            if (identity == null)
-                return BadRequest();
-            
-            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(stringId, out var accountId))
-                return BadRequest();
+            var accountId = GetIdFromToken();
+            if (accountId == Guid.Empty)
+                return BadRequest("Token value is invalid!");
 
             var transactionHistoryByAccId = await _walletService.GetTransactionHistoryByAccId(accountId);
             if (transactionHistoryByAccId == null)
@@ -87,21 +79,17 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<WalletDTO>> AddTransaction([FromBody] TransactionDTO transactionDto)
         {
             if (transactionDto == null)
-                return BadRequest();
+                return BadRequest("Invalid parameter!");
 
-            var identity = User.Identity as ClaimsIdentity;
-            if (identity == null)
-                return BadRequest();
-            
-            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(stringId, out var accountId))
-                return BadRequest();
+            var accountId = GetIdFromToken();
+            if (accountId == Guid.Empty)
+                return BadRequest("Token value is invalid!");
 
             try
             {
                 var wallet = await _walletService.Transaction(accountId, transactionDto);
                 if (wallet == null)
-                    return BadRequest();
+                    return BadRequest("Invalid transaction!");
 
                 return Ok(wallet);
             }
@@ -110,6 +98,18 @@ namespace ClassicTotalizator.API.Controllers
                 _logger.LogWarning(e.Message);
                 return Conflict();
             }
+        }
+        
+        private Guid GetIdFromToken()
+        {
+            if (!(User.Identity is ClaimsIdentity identity))
+                return Guid.Empty;
+            
+            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(stringId, out var accountId))
+                return Guid.Empty;
+
+            return accountId;
         }
     }
 }
