@@ -1,6 +1,7 @@
 using System;
+using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
 
-namespace ClassicTotalizator.BLL.Contracts
+namespace ClassicTotalizator.BLL.Contracts.EventDTOs
 {
     public class EventPreviewDTO
     {

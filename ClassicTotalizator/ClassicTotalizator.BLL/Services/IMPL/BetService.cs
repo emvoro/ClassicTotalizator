@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Contracts.BetDTOs;
 using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (@event == null)
                 return false;
 
-            if (@event.StartTime < DateTimeOffset.UtcNow)
+            if (@event.StartTime < DateTimeOffset.UtcNow || @event.IsEnded)
                 return false;
 
             var betPool = await _context.BetPools.FirstOrDefaultAsync(x => x.Event_Id == @event.Id);

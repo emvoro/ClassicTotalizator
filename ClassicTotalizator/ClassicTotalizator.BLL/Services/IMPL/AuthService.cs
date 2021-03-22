@@ -2,6 +2,7 @@
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Generators.IMPL;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 using ClassicTotalizator.BLL.Generators;
 
 namespace ClassicTotalizator.BLL.Services.IMPL

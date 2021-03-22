@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Contracts.TransactionDTOs;
 using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
 using Microsoft.EntityFrameworkCore;

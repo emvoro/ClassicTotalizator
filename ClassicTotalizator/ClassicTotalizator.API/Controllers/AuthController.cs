@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 
 namespace ClassicTotalizator.API.Controllers
 {

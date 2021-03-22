@@ -1,10 +1,7 @@
-﻿using ClassicTotalizator.DAL.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace ClassicTotalizator.BLL.Contracts
+namespace ClassicTotalizator.BLL.Contracts.EventDTOs
 {
     public class EventRegisterDTO
     {

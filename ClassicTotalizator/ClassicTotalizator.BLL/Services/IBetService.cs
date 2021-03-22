@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Contracts.BetDTOs;
 
 namespace ClassicTotalizator.BLL.Services
 {
