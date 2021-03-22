@@ -82,7 +82,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>Status code, ok if bet done, something another if not</returns>
         [HttpPost]
         [Authorize(Roles = "USER")]
-        public async Task<IActionResult> AddBet([FromBody] BetDTO bet)
+        public async Task<IActionResult> AddBet([FromBody] BetNewDTO bet)
         {
             if (!ModelState.IsValid || bet == null)
                 return BadRequest();
@@ -97,18 +97,16 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                bet.Account_Id = accountId;
-                
-                if (await _betService.AddBet(bet))
+                if (await _betService.AddBet(bet, accountId))
                 {
                     return Ok();
                 }
                 
                 return BadRequest();
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                _logger.LogWarning("ArgumentNullException! Try to add null obj in BetController!");
+                _logger.LogWarning(e.Message);
                 return BadRequest();
             }
         }

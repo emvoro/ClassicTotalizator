@@ -1,4 +1,3 @@
-using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Contracts.BetDTOs;
 using ClassicTotalizator.DAL.Entities;
 
@@ -26,6 +25,18 @@ namespace ClassicTotalizator.BLL.Mappings
                 : new Bet
                 {
                     Account_Id = obj.Account_Id,
+                    Amount = obj.Amount,
+                    Choice = obj.Choice,
+                    Event_Id = obj.Event_Id
+                };
+        }
+
+        public static Bet Map(BetNewDTO obj)
+        {
+            return obj == null
+                ? null
+                : new Bet
+                {
                     Amount = obj.Amount,
                     Choice = obj.Choice,
                     Event_Id = obj.Event_Id
