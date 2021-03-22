@@ -53,13 +53,11 @@ namespace ClassicTotalizator.BLL.Services
         /// <returns>List of current registered sports</returns>
         Task<SportsDTO> GetCurrentListOfSports();
 
-
         /// <summary>
         /// Produces list of all not ended events
         /// </summary>
         /// <returns>List of current active events</returns>
-        Task<EventsDTO> GetCurrentLineOfEvents();
-
+        Task<EventsFeedDTO> GetCurrentLineOfEvents();
 
         /// <summary>
         /// Finisheng event
