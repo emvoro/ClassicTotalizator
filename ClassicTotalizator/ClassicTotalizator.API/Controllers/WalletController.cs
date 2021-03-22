@@ -48,11 +48,11 @@ namespace ClassicTotalizator.API.Controllers
             var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if(!Guid.TryParse(stringId, out var accountId))
                 return BadRequest();
-
+            
             var wallet = await _walletService.GetWalletByAccId(accountId);
             if (wallet == null)
                 return NotFound();
-
+            
             return Ok(wallet);
         }
 
