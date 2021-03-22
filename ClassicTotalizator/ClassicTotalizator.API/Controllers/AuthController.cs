@@ -44,7 +44,6 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="registerDTO">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
-        [AllowAnonymous]
         public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDTO)
         {
             if (!ModelState.IsValid || registerDTO == null)
@@ -60,11 +59,12 @@ namespace ClassicTotalizator.API.Controllers
                 {
                     JwtString = token
                 };
+                
                 return CheckTokenAndReturn(jwtReturnedDTO, "Register failed!");
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                _logger.LogWarning("Argument null exception! Try to add null object in AuthController!");
+                _logger.LogWarning(e.Message);
                 return BadRequest();
             }
         }
@@ -76,7 +76,6 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>Returns JWT</returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPost("Login")]
-        [AllowAnonymous]
         public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDTO)
         {
             if (!ModelState.IsValid || loginDTO == null)
@@ -90,6 +89,7 @@ namespace ClassicTotalizator.API.Controllers
             {
                 JwtString = token
             };
+            
             return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
         }
 

@@ -105,9 +105,9 @@ namespace ClassicTotalizator.API.Controllers
 
                 return Ok(wallet);
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                _logger.LogWarning("ArgumentNullException! Wallet controller, method AddTransaction, transaction is null!");
+                _logger.LogWarning(e.Message);
                 return Conflict();
             }
         }

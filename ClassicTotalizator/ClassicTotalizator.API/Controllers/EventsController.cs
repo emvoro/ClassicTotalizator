@@ -120,9 +120,9 @@ namespace ClassicTotalizator.API.Controllers
 
                 return Ok(createdEvent);
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                _logger.LogWarning("ArgumentNullException! Event controller, event to create was null!");
+                _logger.LogWarning(e.Message);
                 return Forbid();
             }
         }
