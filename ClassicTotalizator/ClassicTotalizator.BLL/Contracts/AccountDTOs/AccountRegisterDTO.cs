@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ClassicTotalizator.BLL.Contracts
+namespace ClassicTotalizator.BLL.Contracts.AccountDTOs
 {
     /// <summary>
     ///  The contract coming from UI, for the registration of the user

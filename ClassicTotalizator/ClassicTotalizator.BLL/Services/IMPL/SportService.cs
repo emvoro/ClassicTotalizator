@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.SportDTOs;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {

@@ -1,6 +1,7 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using System;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 
 namespace ClassicTotalizator.BLL.Services
 {

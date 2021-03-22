@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.EventDTOs;
+using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
+using ClassicTotalizator.BLL.Contracts.SportDTOs;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -117,9 +120,9 @@ namespace ClassicTotalizator.API.Controllers
 
                 return Ok(createdEvent);
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                _logger.LogWarning("ArgumentNullException! Event controller, event to create was null!");
+                _logger.LogWarning(e.Message);
                 return Forbid();
             }
         }
@@ -165,7 +168,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPatch("patchEvent")]
-        public async Task<ActionResult<EventDTO>> EditEvent([FromBody] EventDTO eventDTO)
+        public async Task<ActionResult<EventDTO>> EditEvent([FromBody] EdittedEventDTO eventDTO)
         {
             if (!ModelState.IsValid || eventDTO == null)
             {
@@ -173,6 +176,7 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
             var editedEvent = await _eventService.EditEventAsync(eventDTO);
+            
             if (editedEvent == null)
                 return BadRequest();
 
@@ -184,7 +188,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all events.</returns>
         [HttpGet("getAllEvents")]
-        public async Task<ActionResult<List<EventDTO>>> GetAllEvents()
+        public async Task<ActionResult<EventsDTO>> GetAllEvents()
         {
             var events = await _eventService.GetEventsAsync();
             if (events == null)
@@ -199,13 +203,32 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>List of all current active events</returns>
         [HttpGet("feed")]
         [AllowAnonymous]
-        public async Task<ActionResult<EventsDTO>> GetCurrentLine()
+        public async Task<ActionResult> GetCurrentLine()
         {
             var currentLine = await _eventService.GetCurrentLineOfEvents();
             if (currentLine == null)
                 return NotFound();
 
             return Ok(currentLine);
+        }
+
+
+
+        [HttpPatch("finishEvent")]
+        public async Task<ActionResult<bool>> CloseEvent([FromBody] FinishedEventDTO finishedEvent )
+        {
+            if (!ModelState.IsValid || finishedEvent == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+
+            var finished = await _eventService.FinishEvent(finishedEvent);
+
+            if (!finished)
+                BadRequest();
+
+            return Ok(finished);
         }
     }
 }

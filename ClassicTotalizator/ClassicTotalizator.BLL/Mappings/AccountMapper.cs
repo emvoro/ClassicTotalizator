@@ -1,4 +1,5 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
+using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Mappings
