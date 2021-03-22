@@ -170,6 +170,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (eventToClose.Result != "W1" || eventToClose.Result != "W2" || eventToClose.Result != "X")
                 return false;
+            
             var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
 
             closingEvent.Result = eventToClose.Result;

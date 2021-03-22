@@ -211,9 +211,12 @@ namespace ClassicTotalizator.API.Controllers
 
             return Ok(currentLine);
         }
-
-
-
+        
+        /// <summary>
+        /// Close event
+        /// </summary>
+        /// <param name="finishedEvent">Event</param>
+        /// <returns>Bool value, true id closed, another - false</returns>
         [HttpPatch("finishEvent")]
         public async Task<ActionResult<bool>> CloseEvent([FromBody] FinishedEventDTO finishedEvent )
         {

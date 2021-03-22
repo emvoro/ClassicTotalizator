@@ -60,7 +60,7 @@ namespace ClassicTotalizator.BLL.Services
         Task<EventsFeedDTO> GetCurrentLineOfEvents();
 
         /// <summary>
-        /// Finisheng event
+        /// Finishing event
         /// </summary>
         /// <returns>True  if event closed and bets were calculated; Fasle if smth went wrong</returns>
         Task<bool> FinishEvent(FinishedEventDTO eventToClose);
