@@ -1,7 +1,5 @@
 ﻿using ClassicTotalizator.API.Options;
-using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -19,7 +17,9 @@ namespace ClassicTotalizator.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        
         private readonly ILogger<AuthController> _logger;
+        
         private IConfiguration Configuration { get; }
 
         /// <summary>
@@ -74,7 +74,6 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="loginDTO">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
-        /// <exception cref="NotImplementedException"></exception>
         [HttpPost("Login")]
         public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDTO)
         {
