@@ -57,5 +57,12 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <returns>List of current active events</returns>
         Task<EventsDTO> GetCurrentLineOfEvents();
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>True  if event closed and bets were calculated; Fasle if smth went wrong</returns>
+        Task<bool> FinishEvent(FinishedEventDTO eventToClose);
     }
 }
