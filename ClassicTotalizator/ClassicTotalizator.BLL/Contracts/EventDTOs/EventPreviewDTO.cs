@@ -21,8 +21,6 @@ namespace ClassicTotalizator.BLL.Contracts.EventDTOs
 
         public bool IsEnded { get; set; }
         
-        public string EventResult { get; set; }
-        
         public decimal AmountW1 { get; set; }
         
         public decimal AmountW2 { get; set; }

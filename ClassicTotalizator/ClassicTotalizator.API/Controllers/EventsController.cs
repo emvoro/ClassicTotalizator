@@ -201,7 +201,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPatch("patchEvent")]
-        public async Task<ActionResult<EventDTO>> EditEvent([FromBody] EventDTO eventDTO)
+        public async Task<ActionResult<EventDTO>> EditEvent([FromBody] EdittedEventDTO eventDTO)
         {
             if (!ModelState.IsValid || eventDTO == null)
             {
@@ -209,6 +209,7 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
             var editedEvent = await _eventService.EditEventAsync(eventDTO);
+            
             if (editedEvent == null)
                 return BadRequest();
 
@@ -220,7 +221,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all events.</returns>
         [HttpGet("getAllEvents")]
-        public async Task<ActionResult<List<EventDTO>>> GetAllEvents()
+        public async Task<ActionResult<EventsDTO>> GetAllEvents()
         {
             var events = await _eventService.GetEventsAsync();
             if (events == null)
@@ -235,7 +236,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>List of all current active events</returns>
         [HttpGet("feed")]
         [AllowAnonymous]
-        public async Task<ActionResult<EventsDTO>> GetCurrentLine()
+        public async Task<ActionResult<EventsFeedDTO>> GetCurrentLine()
         {
             var currentLine = await _eventService.GetCurrentLineOfEvents();
             if (currentLine == null)
@@ -244,9 +245,20 @@ namespace ClassicTotalizator.API.Controllers
             return Ok(currentLine);
         }
 
+        /// <summary>
+        /// Close event
+        /// </summary>
+        /// <param name="finishedEvent">Event</param>
+        /// <returns>Bool value, true id closed, another - false</returns>
         [HttpPatch("finishEvent")]
         public async Task<ActionResult<bool>> CloseEvent([FromBody] FinishedEventDTO finishedEvent )
         {
+            if (!ModelState.IsValid || finishedEvent == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+
             var finished = await _eventService.FinishEvent(finishedEvent);
 
             if (!finished)
