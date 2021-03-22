@@ -78,18 +78,12 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return EventMapper.Map(@event);
         }
 
-        public async Task<EventDTO> EditEventAsync(EventDTO newEvent)
+        public async Task<EventDTO> EditEventAsync(EdittedEventDTO newEvent)
         {
-            if (newEvent.PossibleResults.Length == 2 && newEvent.PossibleResults.Contains("X"))
-                return null;
-
             var oldEvent = await _context.Events.FindAsync(newEvent.Id);
 
-            oldEvent.StartTime = newEvent.StartTime;
             oldEvent.Margin = newEvent.Margin;
-            oldEvent.IsEnded = newEvent.IsEnded;
-            oldEvent.Result = newEvent.EventResult;
-            oldEvent.PossibleResults = newEvent.PossibleResults;
+            oldEvent.StartTime = newEvent.StartTime;
 
             _context.Update(oldEvent);
             await _context.SaveChangesAsync();
@@ -137,7 +131,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> FinishEvent(FinishedEventDTO eventToClose)
         {
-            var closingEvent = await _context.Events.FindAsync(eventToClose.Event_Id);
+            var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
 
             closingEvent.Result = eventToClose.Result;
 

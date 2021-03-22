@@ -45,7 +45,7 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <param name="newEvent">New variant of this event</param>
         /// <returns>Edited event</returns>
-        Task<EventDTO> EditEventAsync(EventDTO newEvent);
+        Task<EventDTO> EditEventAsync(EdittedEventDTO newEvent);
 
         /// <summary>
         /// Producing list of all sports on the platform
@@ -62,7 +62,7 @@ namespace ClassicTotalizator.BLL.Services
 
 
         /// <summary>
-        /// 
+        /// Finisheng event
         /// </summary>
         /// <returns>True  if event closed and bets were calculated; Fasle if smth went wrong</returns>
         Task<bool> FinishEvent(FinishedEventDTO eventToClose);
