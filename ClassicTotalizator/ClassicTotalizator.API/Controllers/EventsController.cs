@@ -210,5 +210,18 @@ namespace ClassicTotalizator.API.Controllers
 
             return Ok(currentLine);
         }
+
+
+
+        [HttpPatch("finishEvent")]
+        public async Task<ActionResult<bool>> CloseEvent([FromBody] FinishedEventDTO finishedEvent )
+        {
+            var finished = await _eventService.FinishEvent(finishedEvent);
+
+            if (!finished)
+                BadRequest();
+
+            return Ok(finished);
+        }
     }
 }

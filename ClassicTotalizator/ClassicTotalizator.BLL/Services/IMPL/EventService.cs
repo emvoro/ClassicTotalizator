@@ -95,54 +95,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             await _context.SaveChangesAsync();
 
             var editedEvent = EventMapper.Map(oldEvent);
-
-            if (editedEvent.IsEnded)
-                await CashSettlementOfBetsOnEvents(editedEvent);
-
-
-
+       
             return editedEvent;
-        }
-
-        //ToDo: Add margin distinction
-        private async Task CashSettlementOfBetsOnEvents(EventDTO closedEvent)
-        {
-            var @event = await _context.Events.FindAsync(closedEvent.Id);
-
-            decimal winningAmount = 0;
-            decimal losingAmount = 0;
-
-            var currentBetPool = await _context.BetPools.FindAsync(closedEvent.Id);
-
-            var winningBets = new List<Bet>();
-
-            foreach (var m in currentBetPool.Bets)
-            {
-                if (m.Choice.Equals(closedEvent.EventResult))
-                {
-                    winningAmount = m.Amount;
-                    winningBets.Add(m);
-                }
-                else
-                    losingAmount = m.Amount;
-            }
-
-            var totalAMount = winningAmount + losingAmount;
-            
-            if (winningAmount == 0)
-                return;
-            
-
-            foreach (var m in winningBets)
-            {
-                var moneyForDep = (losingAmount * m.Amount) / winningAmount;
-                var pendingWallet = await _context.Wallets.FindAsync(m.Account_Id);
-
-                pendingWallet.Amount += moneyForDep;
-
-                _context.Wallets.Update(pendingWallet);
-                await _context.SaveChangesAsync();
-            }
         }
 
         public async Task<EventsDTO> GetEventsAsync()
@@ -180,5 +134,58 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> FinishEvent(FinishedEventDTO eventToClose)
+        {
+            var closingEvent = await _context.Events.FindAsync(eventToClose.Event_Id);
+
+            closingEvent.Result = eventToClose.Result;
+
+            closingEvent.IsEnded = true;
+
+            return true /*await CashSettlementOfBetsOnEvents(closingEvent)*/;
+        }
+
+        private async Task<bool> CashSettlementOfBetsOnEvents(Event closedEvent)
+        {
+            throw new NotImplementedException();
+           /* decimal winningAmount = 0;
+            decimal losingAmount = 0;
+
+            var currentBetPool = await _context.BetPools.FindAsync(closedEvent.Id);
+
+            var winningBets = new List<Bet>();
+
+            foreach (var m in currentBetPool.Bets)
+            {
+                if (m.Choice.Equals(closedEvent.EventResult))
+                {
+                    winningAmount = m.Amount;
+                    winningBets.Add(m);
+                }
+                else
+                    losingAmount = m.Amount;
+            }
+
+            var totalAMount = winningAmount + losingAmount;
+
+            if (winningAmount == 0)
+                return;
+
+
+            foreach (var m in winningBets)
+            {
+                var moneyForDep = (losingAmount * m.Amount) / winningAmount;
+                var pendingWallet = await _context.Wallets.FindAsync(m.Account_Id);
+
+                pendingWallet.Amount += moneyForDep;
+
+                _context.Wallets.Update(pendingWallet);
+                await _context.SaveChangesAsync();
+            }
+            */
+        }
+
+
     }
 }
