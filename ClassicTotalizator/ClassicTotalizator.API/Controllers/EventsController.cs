@@ -53,7 +53,6 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
 
             var foundEvent = await _eventService.GetById(id);
-
             if (foundEvent == null)
                 return NotFound();
 
@@ -68,19 +67,44 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet("getEventPreview/{id}")]
         public async Task<ActionResult<EventPreviewDTO>> GetEventPreviewById([FromRoute] Guid id)
         {
-            try
-            {
-                var eventPreview = await _eventService.GetEventPreview(id);
-
-                if (eventPreview == null)
-                    return NotFound($"Event by this id [{id}] wasnt found");
-
-                return Ok(eventPreview);
-            }
-            catch (ArgumentException)
-            {
+            if (id == Guid.Empty)
                 return BadRequest($"This guid: [{id}] not valid!");
-            }
+            
+            var eventPreview = await _eventService.GetEventPreview(id);
+
+            if (eventPreview == null)
+                return NotFound($"Event by this id [{id}] was not found");
+
+            return Ok(eventPreview);
+        }
+
+        /// <summary>
+        /// Get all events.
+        /// </summary>
+        /// <returns>List of all events.</returns>
+        [HttpGet("getAllEvents")]
+        public async Task<ActionResult<EventsFeedDTO>> GetAllEvents()
+        {
+            var events = await _eventService.GetEventsAsync();
+            if (events == null)
+                return NotFound();
+
+            return Ok(events);
+        }
+
+        /// <summary>
+        /// Get current line.
+        /// </summary>
+        /// <returns>List of all current active events</returns>
+        [HttpGet("feed")]
+        [AllowAnonymous]
+        public async Task<ActionResult<EventsFeedDTO>> GetCurrentLine()
+        {
+            var currentLine = await _eventService.GetCurrentLineOfEvents();
+            if (currentLine == null)
+                return NotFound();
+
+            return Ok(currentLine);
         }
 
         /// <summary>
@@ -130,35 +154,6 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
 
             return Ok(editedEvent);
-        }
-
-        /// <summary>
-        /// Get all events.
-        /// </summary>
-        /// <returns>List of all events.</returns>
-        [HttpGet("getAllEvents")]
-        public async Task<ActionResult<EventsFeedDTO>> GetAllEvents()
-        {
-            var events = await _eventService.GetEventsAsync();
-            if (events == null)
-                return NotFound();
-
-            return Ok(events);
-        }
-
-        /// <summary>
-        /// Get current line.
-        /// </summary>
-        /// <returns>List of all current active events</returns>
-        [HttpGet("feed")]
-        [AllowAnonymous]
-        public async Task<ActionResult<EventsFeedDTO>> GetCurrentLine()
-        {
-            var currentLine = await _eventService.GetCurrentLineOfEvents();
-            if (currentLine == null)
-                return NotFound();
-
-            return Ok(currentLine);
         }
 
         /// <summary>
