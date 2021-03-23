@@ -1,10 +1,8 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Mappings;
+﻿using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.SportDTOs;
 using Microsoft.EntityFrameworkCore;
