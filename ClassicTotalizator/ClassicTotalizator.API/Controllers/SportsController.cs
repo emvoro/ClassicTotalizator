@@ -10,7 +10,7 @@ using ClassicTotalizator.BLL.Contracts.SportDTOs;
 namespace ClassicTotalizator.API.Controllers
 {
     /// <summary>
-    /// This controller contains operations with participants.
+    /// This controller contains operations with sports.
     /// </summary>
     [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
