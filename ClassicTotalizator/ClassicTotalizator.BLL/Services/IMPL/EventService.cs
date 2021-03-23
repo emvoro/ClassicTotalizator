@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.EventDTOs;
-using ClassicTotalizator.BLL.Contracts.SportDTOs;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -114,16 +113,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return new EventsFeedDTO
             {
                 Events = eventPreviewDtos
-            };
-        }
-
-        public async Task<SportsDTO> GetCurrentListOfSports()
-        {
-            var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
-
-            return new SportsDTO
-            {
-                Sports = sports.Select(SportMapper.Map).ToList()
             };
         }
 

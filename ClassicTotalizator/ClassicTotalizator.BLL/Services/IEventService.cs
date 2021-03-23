@@ -48,12 +48,6 @@ namespace ClassicTotalizator.BLL.Services
         Task<EventDTO> EditEventAsync(EdittedEventDTO newEvent);
 
         /// <summary>
-        /// Producing list of all sports on the platform
-        /// </summary>
-        /// <returns>List of current registered sports</returns>
-        Task<SportsDTO> GetCurrentListOfSports();
-
-        /// <summary>
         /// Produces list of all not ended events
         /// </summary>
         /// <returns>List of current active events</returns>
