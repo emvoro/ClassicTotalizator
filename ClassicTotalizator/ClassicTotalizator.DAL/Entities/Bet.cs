@@ -11,7 +11,7 @@ namespace ClassicTotalizator.DAL.Entities
 
         public Guid Account_Id { get; set; }
 
-        [ForeignKey("User_Id")]
+        [ForeignKey("Account_Id")]
         public virtual Account Account { get; set; }
 
         public Guid Event_Id { get; set; }
