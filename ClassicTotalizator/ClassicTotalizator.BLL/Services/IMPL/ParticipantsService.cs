@@ -40,7 +40,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return participants;
         }
 
-        public async Task<ParticipantRegisterDTO> AddNewParticipant(ParticipantRegisterDTO participant)
+        public async Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participant)
         {
             if (participant == null)
                 return null;
@@ -67,7 +67,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             await _context.Participants.AddAsync(newParticipant);
             await _context.SaveChangesAsync();
 
-            return participant;
+            return ParticipantsMapper.Map(newParticipant);
         }
 
         private async Task<IEnumerable<ParameterDTO>> GetParametersByPartId(Guid id)
