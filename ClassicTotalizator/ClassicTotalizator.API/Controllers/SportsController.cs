@@ -66,10 +66,10 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Deletes sport (TESTING, do not use yet).
+        /// Deletes sport (TESTING, DON'T USE).
         /// </summary>
-        /// <returns>Sport DTO</returns>
-        [HttpDelete("deleteSport")]
+        /// <returns>Deleting state.</returns>
+        [HttpDelete("deleteSport/{id}")]
         public async Task<ActionResult<bool>> DeleteSportSport([FromBody] int id)
         {
             if (!ModelState.IsValid)
