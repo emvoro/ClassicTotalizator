@@ -65,5 +65,12 @@ namespace ClassicTotalizator.BLL.Services
         /// <param name="id">Unique identifier of event</param>
         /// <returns>Detatils</returns>
         Task<EventPreviewDTO> GetEventPreview(Guid id);
+
+        /// <summary>
+        /// Deletes event from database
+        /// </summary>
+        /// <param name="id">Unique identifier of event</param>
+        /// <returns>True if event was deleted; false if event wasnt deleted </returns>
+        Task<bool> DeleteEvent(Guid id);
     }
 }
