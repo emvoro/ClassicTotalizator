@@ -20,5 +20,11 @@ namespace ClassicTotalizator.BLL.Services
         /// <returns>Boolean result of sport creation</returns>
         /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
         Task<SportDTO> Add(SportDTO sportDTO);
+
+        /// <summary>
+        /// Producing list of all sports on the platform
+        /// </summary>
+        /// <returns>List of current registered sports</returns>
+        Task<SportsDTO> GetCurrentListOfSports();
     }
 }

@@ -34,7 +34,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get bets on account
+        /// Get bets on account.
         /// </summary>
         /// <returns>Bets on account</returns>
         [HttpGet("account")]

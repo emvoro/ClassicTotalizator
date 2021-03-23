@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.SportDTOs;
+using Microsoft.EntityFrameworkCore;
+using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -39,6 +41,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return null;
             }
             return sport;
+        }
+
+        public async Task<SportsDTO> GetCurrentListOfSports()
+        {
+            var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
+
+            return new SportsDTO
+            {
+                Sports = sports.Select(SportMapper.Map).ToList()
+            };
         }
     }
 }

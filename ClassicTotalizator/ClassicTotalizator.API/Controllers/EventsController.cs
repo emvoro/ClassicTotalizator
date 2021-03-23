@@ -6,8 +6,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.EventDTOs;
-using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
-using ClassicTotalizator.BLL.Contracts.SportDTOs;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -21,40 +19,17 @@ namespace ClassicTotalizator.API.Controllers
     {
         private readonly ILogger<EventsController> _logger;
         private readonly IEventService _eventService;
-        private readonly IParticipantsService _participantsService;
-        private readonly ISportService _sportService;
 
         /// <summary>
         /// Events Controller Constructor
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="eventService"></param>
-        /// <param name="participantsService"></param>
-        /// <param name="sportService"></param>
         public EventsController(ILogger<EventsController> logger,
-            IEventService eventService,
-            IParticipantsService participantsService,
-            ISportService sportService)
+            IEventService eventService)
         {
             _logger = logger;
             _eventService = eventService;
-            _participantsService = participantsService;
-            _sportService = sportService;
-        }
-
-        /// <summary>
-        /// Get participants action
-        /// </summary>
-        /// <returns>Collection of all registered participants for [CURRENT SPORT]</returns>
-        [HttpGet("participants")]
-        public async Task<ActionResult<ParticipantsDTO>> GetAllParticipantsAsync()
-        {
-            var participants = await _participantsService.GetAllParticipantsAsync();
-
-            if (participants == null)
-                return NotFound();
-
-            return Ok(participants);
         }
 
         /// <summary>
@@ -65,21 +40,6 @@ namespace ClassicTotalizator.API.Controllers
         public IActionResult GetAllPossibleOutcomes()
         {
             return Ok(new OutcomesDTO());
-        }
-
-        /// <summary>
-        /// Get all sports action
-        /// </summary>
-        /// <returns>List of all possible sports on the platform</returns>
-        [HttpGet("sports")]
-        public async Task<ActionResult<SportsDTO>> GetAllSportsInPlatform()
-        {
-            var sports = await _eventService.GetCurrentListOfSports();
-
-            if (sports == null)
-                return NotFound();
-
-            return Ok(sports);
         }
 
         /// <summary>
@@ -128,53 +88,6 @@ namespace ClassicTotalizator.API.Controllers
                 _logger.LogWarning(e.Message);
                 return Forbid();
             }
-        }
-
-        /// <summary>
-        /// Creates new participant by template.
-        /// </summary>
-        /// <returns>Event DTO</returns>
-        [HttpPost("addParticipant")]
-        public async Task<ActionResult<ParticipantDTO>> AddParticipant([FromBody] ParticipantRegisterDTO registerDTO)
-        {
-            if (!ModelState.IsValid || registerDTO == null)
-            {
-                _logger.LogWarning("Model invalid!");
-                return BadRequest();
-            }
-
-            try
-            {
-                var createdParticipant = await _participantsService.AddNewParticipant(registerDTO);
-
-                if (createdParticipant == null)
-                    return BadRequest();
-
-                return Ok(createdParticipant);
-            }
-            catch (ArgumentNullException e)
-            {
-                _logger.LogWarning(e.Message);
-                return Forbid();
-            }
-        }
-
-        /// <summary>
-        /// Adds sport.
-        /// </summary>
-        /// <returns>Sport DTO</returns>
-        [Authorize(Roles=Roles.Admin)]
-        [HttpPost("addSport")]
-        public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDTO)
-        {
-            if (!ModelState.IsValid || sportDTO == null)
-            {
-                _logger.LogWarning("Model invalid!");
-                return BadRequest();
-            }
-            var createdSport = await _sportService.Add(sportDTO);
-
-            return Ok(createdSport);
         }
 
         /// <summary>
@@ -232,7 +145,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="finishedEvent">Event</param>
         /// <returns>Bool value, true id closed, another - false</returns>
         [HttpPatch("finishEvent")]
-        public async Task<ActionResult<bool>> FinishEvent([FromBody] FinishedEventDTO finishedEvent )
+        public async Task<ActionResult<bool>> FinishEvent([FromBody] FinishedEventDTO finishedEvent)
         {
             if (!ModelState.IsValid || finishedEvent == null)
             {
