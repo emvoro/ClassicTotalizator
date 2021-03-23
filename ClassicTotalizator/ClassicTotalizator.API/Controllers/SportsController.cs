@@ -51,7 +51,6 @@ namespace ClassicTotalizator.API.Controllers
         /// Adds new sport.
         /// </summary>
         /// <returns>Sport DTO</returns>
-        [Authorize(Roles = Roles.Admin)]
         [HttpPost("addSport")]
         public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDTO)
         {
