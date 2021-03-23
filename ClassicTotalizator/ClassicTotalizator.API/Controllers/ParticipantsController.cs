@@ -82,13 +82,8 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Deleting state.</returns>
         [HttpDelete("deleteParticipant/{id}")]
-        public async Task<ActionResult<bool>> DeleteParticipant(Guid id)
+        public async Task<ActionResult<bool>> DeleteParticipant([FromRoute] Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Model invalid!");
-                return BadRequest();
-            }
             var deleted = await _participantsService.DeleteParticipantAsync(id);
 
             if (!deleted)
