@@ -19,12 +19,12 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context = context;
         }
 
-        public async Task<EventPreviewDTO> GetById(Guid id)
+        public async Task<EventDTO> GetById(Guid id)
         {
             if (id == Guid.Empty)
                 return null;
 
-            return EventMapper.MapPreview(await _context.Events.FindAsync(id));
+            return EventMapper.Map(await _context.Events.FindAsync(id));
         }
 
         public async Task<EventDTO> CreateEventAsync(EventRegisterDTO eventDTO)
@@ -238,6 +238,37 @@ namespace ClassicTotalizator.BLL.Services.IMPL
              }
 
              return true;
+        }
+
+        public async Task<EventPreviewDTO> GetEventPreview(Guid id)
+        {
+            if (string.IsNullOrEmpty(id.ToString()))
+                throw new ArgumentException();
+
+            var eventInBase = await _context.Events.FindAsync(id);
+            if (eventInBase == null)
+                return null;
+
+            eventInBase.Participant1 = await _context.Participants.FindAsync(eventInBase.Participant_Id1);
+            eventInBase.Participant2 = await _context.Participants.FindAsync(eventInBase.Participant_Id2);
+            eventInBase.Sport = await _context.Sports.FindAsync(eventInBase.Sport_Id);
+
+            return await GetAmountsOnResults(eventInBase);
+        }
+
+        public async Task<bool> DeleteEvent(Guid id)
+        {
+            if (string.IsNullOrEmpty(id.ToString()))
+                throw new ArgumentException();
+
+            var eventToDelete = _context.Events.FirstOrDefault(@event => @event.Id == id);
+
+            if (eventToDelete == null)
+                return false;
+
+            _context.Events.Remove(eventToDelete);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

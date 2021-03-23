@@ -49,6 +49,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 };
         }
 
+
         public static EventDTO Map(Event @event)
         {
             return @event == null

@@ -14,16 +14,22 @@ namespace ClassicTotalizator.BLL.Services
     public interface IParticipantsService
     {
         /// <summary>
-        /// Creates list of all cuurent participants on the platform
+        /// Create list of all participants on the platform.
         /// </summary>
         /// <returns>Returns list of current participants or <c>null</c> if no participants on the platform </returns>
         /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
         Task<ParticipantsDTO> GetAllParticipantsAsync();
 
         /// <summary>
-        /// Adding new participants in the database
+        /// Add new participant.
         /// </summary>
         /// <returns>Returns true if Participant was added, false if smth went wrong</returns>
         Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participant);
+
+        /// <summary>
+        /// Delete participant.
+        /// </summary>
+        /// <returns>Returns true if Participant was deleted, false if there is no participant with such Id.</returns>
+        Task<bool> DeleteParticipantAsync(Guid id);
     }
 }
