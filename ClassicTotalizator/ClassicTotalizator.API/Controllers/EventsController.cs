@@ -60,7 +60,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get event preview by id action
+        /// Get event preview by id
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
         /// <returns>Event preview</returns>
