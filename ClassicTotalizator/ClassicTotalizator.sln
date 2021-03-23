@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassicTotalizator.DAL", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassicTotalizator.BLL", "ClassicTotalizator.BLL\ClassicTotalizator.BLL.csproj", "{B48C4862-7AED-4E10-A1BA-28108FBF6743}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassicTotalizator.Tests", "ClassicTotalizator.Tests\ClassicTotalizator.Tests.csproj", "{70EDC65E-AA91-4EF4-9C8D-22DD583316ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B48C4862-7AED-4E10-A1BA-28108FBF6743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48C4862-7AED-4E10-A1BA-28108FBF6743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48C4862-7AED-4E10-A1BA-28108FBF6743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70EDC65E-AA91-4EF4-9C8D-22DD583316ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70EDC65E-AA91-4EF4-9C8D-22DD583316ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70EDC65E-AA91-4EF4-9C8D-22DD583316ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70EDC65E-AA91-4EF4-9C8D-22DD583316ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

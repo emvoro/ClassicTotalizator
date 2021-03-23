@@ -47,7 +47,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event by id</returns>
         [HttpGet("getById/{id}")]
-        public async Task<ActionResult<EventPreviewDTO>> GetEventById([FromRoute] Guid id)
+        public async Task<ActionResult<EventDTO>> GetEventById([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
                 return BadRequest();
@@ -58,6 +58,29 @@ namespace ClassicTotalizator.API.Controllers
                 return NotFound();
 
             return Ok(foundEvent);
+        }
+
+        /// <summary>
+        /// Get event preview by id action
+        /// </summary>
+        /// <param name="id">Unique identifier of event</param>
+        /// <returns>Event preview</returns>
+        [HttpGet("getEventPreview/{id}")]
+        public async Task<ActionResult<EventPreviewDTO>> GetEventPreviewById([FromRoute] Guid id)
+        {
+            try
+            {
+                var eventPreview = await _eventService.GetEventPreview(id);
+
+                if (eventPreview == null)
+                    return NotFound($"Event by this id [{id}] wasnt found");
+
+                return Ok(eventPreview);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest($"This guid: [{id}] not valid!");
+            }
         }
 
         /// <summary>
@@ -162,6 +185,29 @@ namespace ClassicTotalizator.API.Controllers
                 return Ok(finished);
             }
             catch (ArgumentNullException e)
+            {
+                _logger.LogWarning(e.Message);
+                return BadRequest();
+            }
+        }
+        /// <summary>
+        /// CAUTION! Be careful with this method. :)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("deleteEvent/{id}")]
+        public async Task<ActionResult<bool>> DeleteSportSport([FromRoute]Guid id)
+        {
+            try
+            {
+                var deleted = await _eventService.DeleteEvent(id);
+
+                if (!deleted)
+                    return NotFound(deleted);
+
+                return Ok(deleted);
+            }
+            catch (ArgumentException e)
             {
                 _logger.LogWarning(e.Message);
                 return BadRequest();
