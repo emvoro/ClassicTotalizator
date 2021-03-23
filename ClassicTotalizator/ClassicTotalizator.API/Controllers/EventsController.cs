@@ -64,7 +64,6 @@ namespace ClassicTotalizator.API.Controllers
         /// Creates new event by template.
         /// </summary>
         /// <returns>Event DTO</returns>
-        [Authorize(Roles=Roles.Admin)]
         [HttpPost("createEvent")]
         public async Task<ActionResult<EventDTO>> AddEvent([FromBody] EventRegisterDTO registerDTO)
         {
