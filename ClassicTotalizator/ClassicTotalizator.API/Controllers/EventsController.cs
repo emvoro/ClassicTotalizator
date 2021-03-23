@@ -65,6 +65,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="id">Unique identifier of event</param>
         /// <returns>Event preview</returns>
         [HttpGet("getEventPreview/{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<EventPreviewDTO>> GetEventPreviewById([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
