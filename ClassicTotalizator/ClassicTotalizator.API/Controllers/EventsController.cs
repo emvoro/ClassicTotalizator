@@ -202,7 +202,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all events.</returns>
         [HttpGet("getAllEvents")]
-        public async Task<ActionResult<EventsDTO>> GetAllEvents()
+        public async Task<ActionResult<EventsFeedDTO>> GetAllEvents()
         {
             var events = await _eventService.GetEventsAsync();
             if (events == null)
