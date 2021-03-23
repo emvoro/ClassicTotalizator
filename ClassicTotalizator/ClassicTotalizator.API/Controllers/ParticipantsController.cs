@@ -24,8 +24,8 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Events Controller Constructor
         /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="participantsService"></param>
+        /// <param name="logger">Logger</param>
+        /// <param name="participantsService">Participants service</param>
         public ParticipantsController(ILogger<ParticipantsController> logger,
             IParticipantsService participantsService)
         {
@@ -34,7 +34,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get all participants.
+        /// Get all participants
         /// </summary>
         /// <returns>Collection of all registered participants for [CURRENT SPORT]</returns>
         [HttpGet("participants")]
@@ -49,7 +49,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Add new participant.
+        /// Add new participant
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPost("addParticipant")]
@@ -78,9 +78,9 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Deletes participant (TESTING, DON'T USE).
+        /// Deletes participant (TESTING, DON'T USE)
         /// </summary>
-        /// <returns>Deleting state.</returns>
+        /// <returns>Deleting state</returns>
         [HttpDelete("deleteParticipant/{id}")]
         public async Task<ActionResult<bool>> DeleteParticipant([FromRoute] Guid id)
         {

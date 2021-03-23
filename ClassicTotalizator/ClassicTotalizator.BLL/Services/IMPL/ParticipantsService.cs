@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
-using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
