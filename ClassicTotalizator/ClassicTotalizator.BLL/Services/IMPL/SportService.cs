@@ -52,5 +52,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 Sports = sports.Select(SportMapper.Map).ToList()
             };
         }
+
+        public async Task<bool> DeleteSportAsync(int id)
+        {
+            var sport = _context.Sports.FirstOrDefault(x => x.Id == id);
+
+            if (sport == null)
+                return false;
+
+            _context.Sports.Remove(sport);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

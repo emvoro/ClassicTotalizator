@@ -26,5 +26,12 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <returns>List of current registered sports</returns>
         Task<SportsDTO> GetCurrentListOfSports();
+
+        /// <summary>
+        /// Creates new sport.
+        /// </summary>
+        /// /// <param name="id">Contract for event.</param>
+        /// <returns>Boolean result of sport creation</returns>
+        Task<bool> DeleteSportAsync(int id);
     }
 }
