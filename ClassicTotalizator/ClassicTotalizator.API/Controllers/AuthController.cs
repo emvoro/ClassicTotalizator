@@ -20,8 +20,6 @@ namespace ClassicTotalizator.API.Controllers
         
         private readonly ILogger<AuthController> _logger;
 
-        private readonly IAccountService _accountService;
-        
         private IConfiguration Configuration { get; }
 
         /// <summary>
@@ -30,17 +28,14 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="authService">Auth service</param>
         /// <param name="logger">Logger</param>
         /// <param name="configuration">Configuration</param>
-        /// <param name="accountService">Account service</param>
         public AuthController(
             IAuthService authService,
             ILogger<AuthController> logger, 
-            IConfiguration configuration, 
-            IAccountService accountService)
+            IConfiguration configuration)
         {
             _authService = authService;
             _logger = logger;
             Configuration = configuration;
-            _accountService = accountService;
             _authService.SecurityKey = Configuration.GetSection("AuthKey").GetValue<string>("Secret");
         }
 
