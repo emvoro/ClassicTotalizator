@@ -258,26 +258,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (winningAmount == 0)
                 return true;
 
-            /*
-             
-             Доля выигрыша игрока = (сумма ставок игрока на победный outcome / сумма всех ставок на победный outcome) * 100%
-
-             Сумма выигрыша игрока = (сумма всех ставок на все проигрышные outcomes / 100) * Доля выигрыша игрока
-             
-
-            w1 == 1000 666
-            w1 == 500   333,3333
-
-            w2 == 1000
-
-            win 
-            985
-
-            lose
-            985
-
-             */
-
             foreach (var bet in winningBets)
             {
                 var betPart = (bet.Amount / winningAmount) * (100 / closedEvent.Margin);
