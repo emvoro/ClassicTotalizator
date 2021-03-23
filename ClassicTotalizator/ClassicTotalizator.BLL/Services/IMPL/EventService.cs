@@ -139,32 +139,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             };
         }
 
-        private async Task<EventPreviewDTO> GetAmountsOnResults(Event @event)
-        {
-            var bets = await _context.Bets.Where(x => x.Event_Id == @event.Id).ToListAsync();
-            var eventRes = EventMapper.MapPreview(@event);
-
-            foreach (var bet in bets)
-            {
-                switch (bet.Choice)
-                {
-                    case "W1":
-                        @eventRes.AmountW1 += bet.Amount;
-                        break;
-                    case "W2":
-                        @eventRes.AmountW2 += bet.Amount;
-                        break;
-                    case "X":
-                        @eventRes.AmountX += bet.Amount;
-                        break;
-                    default:
-                        continue;
-                }
-            }
-
-            return eventRes;
-        }
-
         public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
         {
             throw new NotImplementedException();
@@ -195,56 +169,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return await CashSettlementOfBetsOnEvents(closingEvent);
         }
 
-        private async Task<bool> CashSettlementOfBetsOnEvents(Event closedEvent)
-        {
-             decimal winningAmount = 0;
-             decimal losingAmount = 0;
-
-
-            var betsInPool = await _context.Bets.Where(id => id.Event_Id == closedEvent.Id).ToListAsync();
-
-             var winningBets = new List<Bet>();
- 
-             foreach (var bet in betsInPool)
-             {
-                 if (bet.Choice.Equals(closedEvent.Result))
-                 {
-                     winningAmount = bet.Amount;
-                     winningBets.Add(bet);
-                 }
-                 else
-                     losingAmount = bet.Amount;
-             }
-
-             if (winningAmount == 0)
-                 return false;
-
-            winningAmount -= (winningAmount * ((closedEvent.Margin/2) / 100m));
-            losingAmount -= (losingAmount * ((closedEvent.Margin / 2) / 100m));
-
-
-            foreach (var bet in winningBets)
-             {
-
-                var betPart = (bet.Amount / winningAmount) * (100m / 100m);
-                var moneyForDep = (losingAmount / 100m) * betPart;
-
-                var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
-
-                pendingWallet.Amount += (bet.Amount) + moneyForDep;
- 
-                 _context.Wallets.Update(pendingWallet);
-                 await _context.SaveChangesAsync();
-             }
-
-             return true;
-        }
-
         public async Task<EventPreviewDTO> GetEventPreview(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
-                throw new ArgumentException();
-
             var eventInBase = await _context.Events.FindAsync(id);
             if (eventInBase == null)
                 return null;
@@ -268,6 +194,77 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             _context.Events.Remove(eventToDelete);
             await _context.SaveChangesAsync();
+            return true;
+        }
+
+        private async Task<EventPreviewDTO> GetAmountsOnResults(Event @event)
+        {
+            var bets = await _context.Bets.Where(x => x.Event_Id == @event.Id).ToListAsync();
+            var eventRes = EventMapper.MapPreview(@event);
+
+            foreach (var bet in bets)
+            {
+                switch (bet.Choice)
+                {
+                    case "W1":
+                        @eventRes.AmountW1 += bet.Amount;
+                        break;
+                    case "W2":
+                        @eventRes.AmountW2 += bet.Amount;
+                        break;
+                    case "X":
+                        @eventRes.AmountX += bet.Amount;
+                        break;
+                    default:
+                        continue;
+                }
+            }
+
+            return eventRes;
+        }
+
+        private async Task<bool> CashSettlementOfBetsOnEvents(Event closedEvent)
+        {
+            decimal winningAmount = 0;
+            decimal losingAmount = 0;
+
+
+            var betsInPool = await _context.Bets.Where(id => id.Event_Id == closedEvent.Id).ToListAsync();
+
+            var winningBets = new List<Bet>();
+ 
+            foreach (var bet in betsInPool)
+            {
+                if (bet.Choice.Equals(closedEvent.Result))
+                {
+                    winningAmount = bet.Amount;
+                    winningBets.Add(bet);
+                }
+                else
+                    losingAmount = bet.Amount;
+            }
+
+            if (winningAmount == 0)
+                return false;
+
+            winningAmount -= (winningAmount * ((closedEvent.Margin/2) / 100m));
+            losingAmount -= (losingAmount * ((closedEvent.Margin / 2) / 100m));
+
+
+            foreach (var bet in winningBets)
+            {
+
+                var betPart = (bet.Amount / winningAmount) * (100m / 100m);
+                var moneyForDep = (losingAmount / 100m) * betPart;
+
+                var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
+
+                pendingWallet.Amount += (bet.Amount) + moneyForDep;
+ 
+                _context.Wallets.Update(pendingWallet);
+                await _context.SaveChangesAsync();
+            }
+
             return true;
         }
     }
