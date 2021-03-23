@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 namespace ClassicTotalizator.API.Controllers
 {
     /// <summary>
-    /// Controller for bets, can use only user after login.
+    /// This controller contains operations with bets for logged in users.
     /// </summary>
     [ApiController]
     [Route("api/v1/bet")]

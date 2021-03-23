@@ -10,7 +10,7 @@ using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 namespace ClassicTotalizator.API.Controllers
 {
     /// <summary>
-    ///  This controller is used to register and login the user on the platform
+    /// This controller contains authorization operations.
     /// </summary>
     [ApiController]
     [Route("api/v1/auth")]

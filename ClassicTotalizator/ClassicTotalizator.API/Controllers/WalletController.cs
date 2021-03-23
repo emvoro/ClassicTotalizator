@@ -20,12 +20,12 @@ namespace ClassicTotalizator.API.Controllers
     [Route("api/v1/wallet")]
     public class WalletController : ControllerBase
     {
-        private readonly IWalletService _walletService;
-
         private readonly ILogger<WalletController> _logger;
 
+        private readonly IWalletService _walletService;
+
         /// <summary>
-        /// Constructor
+        /// Wallet Controller Constructor
         /// </summary>
         /// <param name="walletService">Wallet service</param>
         /// <param name="logger">Logger</param>
@@ -36,7 +36,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Action give account wallet
+        /// Get account wallet.
         /// </summary>
         /// <returns>Account wallet</returns>
         [HttpGet]
@@ -54,7 +54,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Action give account transaction history
+        /// Get account transaction history.
         /// </summary>
         /// <returns>Transaction history</returns>
         [HttpGet("transactionHistory")]
@@ -72,7 +72,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Transaction, withdraw or deposit
+        /// Make a transaction : deposit or withdraw
         /// </summary>
         /// <returns>Wallet</returns>
         [HttpPost("transaction")]

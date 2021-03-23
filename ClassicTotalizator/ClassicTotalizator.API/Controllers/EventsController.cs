@@ -33,7 +33,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// All possible outcomes for events action
+        /// Get all possible outcomes for events.
         /// </summary>
         /// <returns>List of all possible outcomes</returns>
         [HttpGet("outcomes")]
@@ -43,7 +43,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Finding event by id.
+        /// Get event by id.
         /// </summary>
         /// <returns>Event by id</returns>
         [HttpGet("getById/{id}")]
@@ -61,7 +61,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Creates new event by template.
+        /// Add new event.
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPost("createEvent")]
@@ -90,7 +90,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Edites event.
+        /// Edit event.
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPatch("patchEvent")]
@@ -110,7 +110,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Gets all events.
+        /// Get all events.
         /// </summary>
         /// <returns>List of all events.</returns>
         [HttpGet("getAllEvents")]
@@ -139,7 +139,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Close event
+        /// Close event.
         /// </summary>
         /// <param name="finishedEvent">Event</param>
         /// <returns>Bool value, true id closed, another - false</returns>

@@ -18,6 +18,7 @@ namespace ClassicTotalizator.API.Controllers
     public class SportsController : Controller
     {
         private readonly ILogger<SportsController> _logger;
+
         private readonly ISportService _sportService;
 
         /// <summary>

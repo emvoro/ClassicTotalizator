@@ -18,6 +18,7 @@ namespace ClassicTotalizator.API.Controllers
     public class ParticipantsController : Controller
     {
         private readonly ILogger<ParticipantsController> _logger;
+
         private readonly IParticipantsService _participantsService;
 
         /// <summary>
