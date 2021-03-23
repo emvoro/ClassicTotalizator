@@ -30,7 +30,7 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
         /// <returns> Found event by requested id</returns>
-        Task<EventPreviewDTO> GetById(Guid id);
+        Task<EventDTO> GetById(Guid id);
         
         /// <summary>
         /// Creates event for backoffice.
@@ -58,5 +58,12 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <returns>True  if event closed and bets were calculated; Fasle if smth went wrong</returns>
         Task<bool> FinishEvent(FinishedEventDTO eventToClose);
+
+        /// <summary>
+        ///  Searching for an event in the database and backs detailed object
+        /// </summary>
+        /// <param name="id">Unique identifier of event</param>
+        /// <returns>Detatils</returns>
+        Task<EventPreviewDTO> GetEventPreview(Guid id);
     }
 }
