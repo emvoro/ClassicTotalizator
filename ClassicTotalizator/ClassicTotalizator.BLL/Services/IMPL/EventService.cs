@@ -1,4 +1,5 @@
-﻿using ClassicTotalizator.BLL.Mappings;
+﻿using ClassicTotalizator.BLL.Contracts.EventDTOs;
+using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
 using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClassicTotalizator.BLL.Contracts.EventDTOs;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -90,7 +90,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             await _context.SaveChangesAsync();
 
             var editedEvent = EventMapper.Map(oldEvent);
-       
+
             return editedEvent;
         }
 
@@ -127,7 +127,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             {
                 @event.Participant1 = await _context.Participants.FindAsync(@event.Participant_Id1);
                 @event.Participant2 = await _context.Participants.FindAsync(@event.Participant_Id2);
-                
+
                 @event.Sport = await _context.Sports.FindAsync(@event.Sport_Id);
 
                 eventPreviewDtos.Add(await GetAmountsOnResults(@event));
@@ -152,13 +152,13 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
             if (closingEvent == null)
                 return false;
-            
+
             if (!closingEvent.PossibleResults.Contains(eventToClose.Result))
                 return false;
 
             if (closingEvent.IsEnded)
                 return false;
-           
+
             closingEvent.Result = eventToClose.Result;
             closingEvent.IsEnded = true;
 
@@ -191,6 +191,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             if (eventToDelete == null)
                 return false;
+            var betPool = await _context.Bets.Where(bet => bet.Id == id).ToListAsync();
+
+            foreach (var bet in betPool)
+            {
+                var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
+
+                pendingWallet.Amount += bet.Amount;
+
+                _context.Wallets.Update(pendingWallet);
+                await _context.SaveChangesAsync();
+            }
 
             _context.Events.Remove(eventToDelete);
             await _context.SaveChangesAsync();
@@ -232,7 +243,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var betsInPool = await _context.Bets.Where(id => id.Event_Id == closedEvent.Id).ToListAsync();
 
             var winningBets = new List<Bet>();
- 
+
             foreach (var bet in betsInPool)
             {
                 if (bet.Choice.Equals(closedEvent.Result))
@@ -245,22 +256,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             }
 
             if (winningAmount == 0)
-                return false;
-
-            winningAmount -= (winningAmount * ((closedEvent.Margin/2) / 100m));
-            losingAmount -= (losingAmount * ((closedEvent.Margin / 2) / 100m));
-
+                return true;
 
             foreach (var bet in winningBets)
             {
-
-                var betPart = (bet.Amount / winningAmount) * (100m / 100m);
+                var betPart = (bet.Amount / winningAmount) * (100 / closedEvent.Margin);
                 var moneyForDep = (losingAmount / 100m) * betPart;
 
                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
 
                 pendingWallet.Amount += (bet.Amount) + moneyForDep;
- 
+
                 _context.Wallets.Update(pendingWallet);
                 await _context.SaveChangesAsync();
             }
