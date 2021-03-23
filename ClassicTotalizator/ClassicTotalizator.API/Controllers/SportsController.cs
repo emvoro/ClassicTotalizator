@@ -64,5 +64,25 @@ namespace ClassicTotalizator.API.Controllers
 
             return Ok(createdSport);
         }
+
+        /// <summary>
+        /// Adds new sport.
+        /// </summary>
+        /// <returns>Sport DTO</returns>
+        [HttpDelete("deleteSport")]
+        public async Task<ActionResult<bool>> DeleteSportSport([FromBody] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+            var deleted = await _sportService.DeleteSportAsync(id);
+            
+            if (!deleted)
+                return NotFound(deleted);
+
+            return Ok(deleted);
+        }
     }
 }
