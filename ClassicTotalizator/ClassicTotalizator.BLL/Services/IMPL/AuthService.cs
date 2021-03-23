@@ -55,8 +55,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (string.IsNullOrEmpty(registerDto.Email) || string.IsNullOrEmpty(registerDto.Password))
                 return null;
-
-            var years = (DateTime.UtcNow.Year - registerDto.DOB.Year) + registerDto.DOB.Month * 0.12;
+            
+            var years = (DateTime.UtcNow.Year + (double) DateTime.UtcNow.Month / 12) -
+                        (registerDto.DOB.Year + (double) registerDto.DOB.Month / 12);
             if (years < 18)
                 return null;
 
