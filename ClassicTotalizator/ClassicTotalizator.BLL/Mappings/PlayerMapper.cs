@@ -16,8 +16,8 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new PlayerDTO
                 {
-                   Id = obj.Id,
-                   Participant_Id = obj.Participant_Id,
+                   //Id = obj.Id,
+                   //Participant_Id = obj.Participant_Id,
                    Name = obj.Name
                 };
         }
@@ -27,8 +27,8 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new Player
                 {
-                    Id = obj.Id,
-                    Participant_Id = obj.Participant_Id,
+                    //Id = obj.Id,
+                    //Participant_Id = obj.Participant_Id,
                     Name = obj.Name
                 };
         }

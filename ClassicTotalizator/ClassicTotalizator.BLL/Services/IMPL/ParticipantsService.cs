@@ -49,7 +49,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var newParticipant = ParticipantsMapper.Map(participant);
             newParticipant.Id = newGuid;
             newParticipant.Players.FirstOrDefault().Participant_Id = newGuid;
-
+            newParticipant.Players.FirstOrDefault().Id = Guid.NewGuid();
             await _context.Participants.AddAsync(newParticipant);
             await _context.SaveChangesAsync();
             return participant;
