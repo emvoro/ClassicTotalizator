@@ -30,7 +30,7 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
         /// <returns> Found event by requested id</returns>
-        Task<EventDTO> GetById(Guid id);
+        Task<EventPreviewDTO> GetById(Guid id);
         
         /// <summary>
         /// Creates event for backoffice.
