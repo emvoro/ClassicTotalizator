@@ -185,5 +185,28 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
         }
+        /// <summary>
+        /// CAUTION! Be careful with this method. :)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("deleteEvent/{id}")]
+        public async Task<ActionResult<bool>> DeleteSportSport([FromRoute]Guid id)
+        {
+            try
+            {
+                var deleted = await _eventService.DeleteEvent(id);
+
+                if (!deleted)
+                    return NotFound(deleted);
+
+                return Ok(deleted);
+            }
+            catch (ArgumentException e)
+            {
+                _logger.LogWarning(e.Message);
+                return BadRequest();
+            }
+        }
     }
 }

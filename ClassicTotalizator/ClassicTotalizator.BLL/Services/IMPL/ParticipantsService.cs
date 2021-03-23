@@ -70,6 +70,18 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return ParticipantsMapper.Map(newParticipant);
         }
 
+        public async Task<bool> DeleteParticipantAsync(Guid id)
+        {
+            var participant = _context.Participants.FirstOrDefault(x => x.Id == id);
+
+            if (participant == null)
+                return false;
+
+            _context.Participants.Remove(participant);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         private async Task<IEnumerable<ParameterDTO>> GetParametersByPartId(Guid id)
         {
             if (id == Guid.Empty)
