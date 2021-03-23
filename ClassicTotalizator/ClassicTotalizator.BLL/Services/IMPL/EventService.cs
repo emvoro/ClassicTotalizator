@@ -198,12 +198,13 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
              decimal winningAmount = 0;
              decimal losingAmount = 0;
- 
-             var currentBetPool = await _context.BetPools.FindAsync(closedEvent.Id);
- 
+
+
+            var betsInPool = await _context.Bets.Where(id => id.Event_Id == closedEvent.Id).ToListAsync();
+
              var winningBets = new List<Bet>();
  
-             foreach (var bet in currentBetPool.Bets)
+             foreach (var bet in betsInPool)
              {
                  if (bet.Choice.Equals(closedEvent.Result))
                  {
