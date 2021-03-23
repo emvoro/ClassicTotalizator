@@ -218,12 +218,19 @@ namespace ClassicTotalizator.BLL.Services.IMPL
              if (winningAmount == 0)
                  return false;
 
-             foreach (var bet in winningBets)
+            winningAmount -= (winningAmount * ((closedEvent.Margin/2) / 100m));
+            losingAmount -= (losingAmount * ((closedEvent.Margin / 2) / 100m));
+
+
+            foreach (var bet in winningBets)
              {
-                 var moneyForDep = (losingAmount * bet.Amount) / winningAmount;
-                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
- 
-                 pendingWallet.Amount += moneyForDep;
+
+                var betPart = (bet.Amount / winningAmount) * (100m / 100m);
+                var moneyForDep = (losingAmount / 100m) * betPart;
+
+                var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
+
+                pendingWallet.Amount += moneyForDep;
  
                  _context.Wallets.Update(pendingWallet);
                  await _context.SaveChangesAsync();
