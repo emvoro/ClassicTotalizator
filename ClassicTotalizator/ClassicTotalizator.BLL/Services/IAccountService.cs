@@ -12,7 +12,5 @@ namespace ClassicTotalizator.BLL.Services
         Task<AccountDTO> GetByEmail(string email);
         
         Task<bool> Add(AccountDTO registeredAcc);
-        
-        Task<bool> Remove(Guid id);
     }
 }
