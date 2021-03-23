@@ -70,7 +70,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Deleting state.</returns>
         [HttpDelete("deleteSport/{id}")]
-        public async Task<ActionResult<bool>> DeleteSportSport([FromBody] int id)
+        public async Task<ActionResult<bool>> DeleteSportSport(int id)
         {
             if (!ModelState.IsValid)
             {
