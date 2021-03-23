@@ -187,6 +187,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             closingEvent.Result = eventToClose.Result;
             closingEvent.IsEnded = true;
 
+            _context.Update(closingEvent);
+            await _context.SaveChangesAsync();
+
+
             return await CashSettlementOfBetsOnEvents(closingEvent);
         }
 
