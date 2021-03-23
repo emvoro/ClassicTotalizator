@@ -95,13 +95,25 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return editedEvent;
         }
 
-        public async Task<EventsDTO> GetEventsAsync()
+        public async Task<EventsFeedDTO> GetEventsAsync()
         {
             var events = await _context.Events.ToListAsync() ?? new List<Event>();
 
-            return new EventsDTO
+            var eventPreviewDtos = new List<EventPreviewDTO>();
+
+            foreach (var @event in events)
             {
-                Events = events.Select(EventMapper.Map).ToList()
+                @event.Participant1 = await _context.Participants.FindAsync(@event.Participant_Id1);
+                @event.Participant2 = await _context.Participants.FindAsync(@event.Participant_Id2);
+
+                @event.Sport = await _context.Sports.FindAsync(@event.Sport_Id);
+
+                eventPreviewDtos.Add(await GetAmountsOnResults(@event));
+            }
+
+            return new EventsFeedDTO
+            {
+                Events = eventPreviewDtos
             };
         }
 

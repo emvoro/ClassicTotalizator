@@ -23,7 +23,7 @@ namespace ClassicTotalizator.BLL.Services
         /// Registers user and assigns unique account id.
         /// </summary>
         /// <returns>Returns jwt token or <c>null</c> if login already existed.</returns>
-        Task<EventsDTO> GetEventsAsync();
+        Task<EventsFeedDTO> GetEventsAsync();
 
         /// <summary>
         /// Searching for an event in the database
