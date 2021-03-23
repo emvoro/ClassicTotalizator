@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace ClassicTotalizator.API.Controllers
 {
     /// <summary>
-    /// API for wallet
+    /// This controller contains operations with wallet.
     /// </summary>
     [ApiController]
     [Authorize]
