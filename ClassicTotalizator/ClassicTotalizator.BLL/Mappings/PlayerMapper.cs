@@ -16,20 +16,31 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new PlayerDTO
                 {
-                   //Id = obj.Id,
-                   //Participant_Id = obj.Participant_Id,
+                   Id = obj.Id,
+                   Participant_Id = obj.Participant_Id,
                    Name = obj.Name
                 };
         }
+
         public static Player Map(PlayerDTO obj)
         {
             return obj == null
                 ? null
                 : new Player
                 {
-                    //Id = obj.Id,
-                    //Participant_Id = obj.Participant_Id,
+                    Id = obj.Id,
+                    Participant_Id = obj.Participant_Id,
                     Name = obj.Name
+                };
+        }
+
+        public static Player Map(PlayerRegisterDTO registerDTO)
+        {
+            return registerDTO == null
+                ? null
+                : new Player
+                {
+                    Name = registerDTO.Name
                 };
         }
     }

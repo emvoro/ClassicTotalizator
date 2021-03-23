@@ -230,7 +230,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
 
-                pendingWallet.Amount += moneyForDep;
+                pendingWallet.Amount += (bet.Amount) + moneyForDep;
  
                  _context.Wallets.Update(pendingWallet);
                  await _context.SaveChangesAsync();
