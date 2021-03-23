@@ -62,20 +62,5 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             
             return true;
         }
-
-        public async Task<bool> Remove(Guid id)
-        {
-            if (id == Guid.Empty)
-                return false;
-
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null)
-                return false;
-
-            _context.Accounts.Remove(account);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
     }
 }
