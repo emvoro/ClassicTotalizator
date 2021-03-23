@@ -66,7 +66,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Adds new sport.
+        /// Deletes sport (TESTING, do not use yet).
         /// </summary>
         /// <returns>Sport DTO</returns>
         [HttpDelete("deleteSport")]
