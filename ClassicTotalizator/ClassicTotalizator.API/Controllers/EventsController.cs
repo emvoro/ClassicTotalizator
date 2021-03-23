@@ -135,7 +135,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPost("addParticipant")]
-        public async Task<ActionResult<EventDTO>> AddParticipant([FromBody] ParticipantRegisterDTO registerDTO)
+        public async Task<ActionResult<ParticipantDTO>> AddParticipant([FromBody] ParticipantRegisterDTO registerDTO)
         {
             if (!ModelState.IsValid || registerDTO == null)
             {
