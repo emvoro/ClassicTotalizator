@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClassicTotalizator.API.Controllers
 {
     /// <summary>
-    /// Account controller
+    /// This controller contains operations with user accounts.
     /// </summary>
     [ApiController]
     [Authorize(Roles = Roles.Admin)]
