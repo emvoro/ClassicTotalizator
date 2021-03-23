@@ -44,14 +44,29 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (participant == null)
                 return null;
-
+            
             var newGuid = Guid.NewGuid();
             var newParticipant = ParticipantsMapper.Map(participant);
             newParticipant.Id = newGuid;
-            newParticipant.Players.FirstOrDefault().Participant_Id = newGuid;
-            newParticipant.Players.FirstOrDefault().Id = Guid.NewGuid();
+
+            var mainPlayer = newParticipant.Players.FirstOrDefault();
+            if (mainPlayer.Name == newParticipant.Name)
+            {
+                mainPlayer.Id = newParticipant.Id;
+
+                mainPlayer.Participant_Id = newGuid;
+            }
+            else
+            {
+                foreach (var p in newParticipant.Players)
+                {
+                    p.Id = Guid.NewGuid();
+                    p.Participant_Id = newGuid;
+                }
+            }
             await _context.Participants.AddAsync(newParticipant);
             await _context.SaveChangesAsync();
+
             return participant;
         }
 

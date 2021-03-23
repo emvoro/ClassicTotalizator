@@ -13,7 +13,7 @@ namespace ClassicTotalizator.BLL.Contracts.ParticipantDTOs
         public string Name { get; set; }
 
         [Required]
-        public IEnumerable<PlayerDTO> Players { get; set; }
+        public IEnumerable<PlayerRegisterDTO> Players { get; set; }
 
         [Required]
         public string PhotoLink { get; set; }
@@ -22,7 +22,7 @@ namespace ClassicTotalizator.BLL.Contracts.ParticipantDTOs
 
         public ParticipantRegisterDTO()
         {
-            Players = new List<PlayerDTO>();
+            Players = new List<PlayerRegisterDTO>();
             Parameters = new List<ParameterDTO>();
         }
     }
