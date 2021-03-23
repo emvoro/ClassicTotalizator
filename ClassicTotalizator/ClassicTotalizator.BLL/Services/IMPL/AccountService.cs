@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Context;
@@ -10,13 +10,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
-    public class UserService : IUserService
+    public class AccountService : IAccountService
     {
         private readonly DatabaseContext _context;
 
-        public UserService(DatabaseContext context)
+        public AccountService(DatabaseContext context)
         {
             _context = context;
+        }
+
+        public async Task<IEnumerable<AccountForAdminDTO>> GetAllAccounts()
+        {
+            var accounts = await _context.Accounts.ToListAsync();
+            foreach (var account in accounts)
+            {
+                account.Wallet = await _context.Wallets.FindAsync(account.Id);
+            }
+
+            return accounts.Select(AccountMapper.MapForAdmin).ToList();
         }
 
         public async Task<AccountDTO> GetByEmail(string email)
