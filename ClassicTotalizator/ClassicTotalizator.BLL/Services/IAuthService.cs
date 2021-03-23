@@ -22,9 +22,16 @@ namespace ClassicTotalizator.BLL.Services
         /// <summary>
         /// Login user and returns jwt token.
         /// </summary>
-        /// <param name="loginDto">User login.</param>
+        /// <param name="loginDto">Account login.</param>
         /// <returns>Returns user account id or <c>null</c> if user wasn't found or password is invalid.</returns>
         Task<string> LoginAsync(AccountLoginDTO loginDto);
+
+        /// <summary>
+        /// Login admin user
+        /// </summary>
+        /// <param name="loginDto">Account login</param>
+        /// <returns>Returns jwt token or <c>null</c> if login already existed and role is admin</returns>
+        Task<string> AdminLoginAsync(AccountLoginDTO loginDto);
 
         string SecurityKey { get; set; }
     }
