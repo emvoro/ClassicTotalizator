@@ -11,13 +11,13 @@ namespace ClassicTotalizator.BLL.Services.IMPL
     {
         public string SecurityKey { get; set; }
        
-        private readonly IUserService _userService;
+        private readonly IAccountService _accountService;
 
         private readonly IHashGenerator _hashGenerator;
         
-        public AuthService(IUserService userService, IHashGenerator hashGenerator)
+        public AuthService(IAccountService accountService, IHashGenerator hashGenerator)
         {
-            _userService = userService;
+            _accountService = accountService;
             _hashGenerator = hashGenerator;
         }
 
@@ -26,7 +26,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (loginDto.Login == null || loginDto.Password == null)
                 return null;
 
-            var accFromBase = await _userService.GetByEmail(loginDto.Login);
+            var accFromBase = await _accountService.GetByEmail(loginDto.Login);
             if (accFromBase == null)
                 return null;
             
@@ -51,7 +51,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 AccountCreationTime = registerDto.AccountCreationTime
             };
 
-            if (await _userService.Add(accountForRegister))
+            if (await _accountService.Add(accountForRegister))
                 return new JwtGenerator()
                     .GenerateJwt(accountForRegister, SecurityKey);
             
