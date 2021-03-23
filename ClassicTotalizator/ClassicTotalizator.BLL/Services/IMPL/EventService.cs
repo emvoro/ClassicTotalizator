@@ -265,7 +265,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             foreach (var bet in winningBets)
             {
-                var betPart = (bet.Amount / winningAmount) * (100 / closedEvent.Margin);
+                var betPart = (bet.Amount / winningAmount) * (100 - closedEvent.Margin);
                 var moneyForDep = (losingAmount / 100m) * betPart;
 
                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
