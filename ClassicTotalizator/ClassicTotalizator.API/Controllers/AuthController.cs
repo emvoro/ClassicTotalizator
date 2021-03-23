@@ -19,6 +19,8 @@ namespace ClassicTotalizator.API.Controllers
         private readonly IAuthService _authService;
         
         private readonly ILogger<AuthController> _logger;
+
+        private readonly IAccountService _accountService;
         
         private IConfiguration Configuration { get; }
 
@@ -28,18 +30,22 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="authService">Auth service</param>
         /// <param name="logger">Logger</param>
         /// <param name="configuration">Configuration</param>
+        /// <param name="accountService">Account service</param>
         public AuthController(
             IAuthService authService,
-            ILogger<AuthController> logger, IConfiguration configuration)
+            ILogger<AuthController> logger, 
+            IConfiguration configuration, 
+            IAccountService accountService)
         {
             _authService = authService;
             _logger = logger;
             Configuration = configuration;
+            _accountService = accountService;
             _authService.SecurityKey = Configuration.GetSection("AuthKey").GetValue<string>("Secret");
         }
 
         /// <summary>
-        /// Registration action.
+        /// Registration action
         /// </summary>
         /// <param name="registerDTO">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
@@ -70,7 +76,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Login action.
+        /// Login action
         /// </summary>
         /// <param name="loginDTO">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
@@ -84,6 +90,29 @@ namespace ClassicTotalizator.API.Controllers
             }
 
             var token = await _authService.LoginAsync(loginDTO);
+            var jwtReturnedDTO = new JwtDTO
+            {
+                JwtString = token
+            };
+            
+            return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
+        }
+        
+        /// <summary>
+        /// Admin login action
+        /// </summary>
+        /// <param name="loginDTO">Requested dto for login on platform</param>
+        /// <returns>Returns JWT</returns>
+        [HttpPost("admin/login")]
+        public async Task<ActionResult<JwtDTO>> AdminLoginAsync(AccountLoginDTO loginDTO)
+        {
+            if (!ModelState.IsValid || loginDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+
+            var token = await _authService.AdminLoginAsync(loginDTO);
             var jwtReturnedDTO = new JwtDTO
             {
                 JwtString = token
