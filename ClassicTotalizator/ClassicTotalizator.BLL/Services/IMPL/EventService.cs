@@ -36,6 +36,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 eventDTO.StartTime < DateTimeOffset.UtcNow || eventDTO.Margin <= 0)
                 return null;
 
+            if(eventDTO.Margin <= 0 && eventDTO.Margin > 100)
+                return null;
+
+
+
             var participant1 = await _context.Participants.FindAsync(eventDTO.Participant_Id1);
             if (participant1 == null)
                 return null;
@@ -78,7 +83,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventDTO> EditEventAsync(EdittedEventDTO newEvent)
         {
-            if (newEvent.StartTime < DateTimeOffset.UtcNow)
+            if (newEvent.StartTime < DateTimeOffset.UtcNow || (newEvent.Margin <= 0 && newEvent.Margin > 100))
                 return null;
 
             var oldEvent = await _context.Events.FindAsync(newEvent.Id);
@@ -260,7 +265,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             foreach (var bet in winningBets)
             {
-                var betPart = (bet.Amount / winningAmount) * (100 / closedEvent.Margin);
+                var betPart = (bet.Amount / winningAmount) * (100 - closedEvent.Margin);
                 var moneyForDep = (losingAmount / 100m) * betPart;
 
                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
