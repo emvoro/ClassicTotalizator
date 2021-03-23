@@ -76,5 +76,25 @@ namespace ClassicTotalizator.API.Controllers
                 return Forbid();
             }
         }
+
+        /// <summary>
+        /// Deletes participant (TESTING, DON'T USE).
+        /// </summary>
+        /// <returns>Deleting state.</returns>
+        [HttpDelete("deleteParticipant/{id}")]
+        public async Task<ActionResult<bool>> DeleteParticipant(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+            var deleted = await _participantsService.DeleteParticipantAsync(id);
+
+            if (!deleted)
+                return NotFound(deleted);
+
+            return Ok(deleted);
+        }
     }
 }
