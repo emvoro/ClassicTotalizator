@@ -191,6 +191,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             if (eventToDelete == null)
                 return false;
+            var betPool = await _context.Bets.Where(bet => bet.Id == id).ToListAsync();
+
+            foreach (var bet in betPool)
+            {
+                var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
+
+                pendingWallet.Amount += bet.Amount;
+
+                _context.Wallets.Update(pendingWallet);
+                await _context.SaveChangesAsync();
+            }
 
             _context.Events.Remove(eventToDelete);
             await _context.SaveChangesAsync();
