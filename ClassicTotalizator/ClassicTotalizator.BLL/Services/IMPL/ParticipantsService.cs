@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
+using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -44,8 +45,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (participant == null)
                 return null;
 
+            var newGuid = Guid.NewGuid();
             var newParticipant = ParticipantsMapper.Map(participant);
-            newParticipant.Id = Guid.NewGuid();
+            newParticipant.Id = newGuid;
+            newParticipant.Players.FirstOrDefault().Participant_Id = newGuid;
+
             await _context.Participants.AddAsync(newParticipant);
             await _context.SaveChangesAsync();
             return participant;
