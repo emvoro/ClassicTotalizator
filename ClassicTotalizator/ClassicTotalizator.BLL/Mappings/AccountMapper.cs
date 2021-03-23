@@ -18,7 +18,7 @@ namespace ClassicTotalizator.BLL.Mappings
                     AccountCreationTime = registerDTO.AccountCreationTime
                 };
         }
-        
+
         public static Account Map(AccountLoginDTO loginDTO)
         {
             return loginDTO == null
@@ -46,7 +46,7 @@ namespace ClassicTotalizator.BLL.Mappings
                     Wallet = WalletMapping.Map(obj.Wallet)
                 };
         }
-        
+
         public static AccountDTO Map(Account obj)
         {
             return obj == null
@@ -62,6 +62,23 @@ namespace ClassicTotalizator.BLL.Mappings
                     DOB = obj.DOB,
                     Wallet = WalletMapping.Map(obj.Wallet)
                 };
+        }
+        
+        public static AccountForAdminDTO MapForAdmin(Account obj)
+        {
+            if (obj == null)
+                return null;
+
+            var newObj = new AccountForAdminDTO
+            {
+                Email = obj.Email,
+                DOB = obj.DOB
+            };
+
+            if (obj.Wallet != null)
+                newObj.WalletAmount = obj.Wallet.Amount;
+
+            return newObj;
         }
     }
 }

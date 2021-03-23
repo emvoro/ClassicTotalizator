@@ -35,7 +35,7 @@ namespace ClassicTotalizator.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IBetService, BetService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<ISportService, SportService>();
