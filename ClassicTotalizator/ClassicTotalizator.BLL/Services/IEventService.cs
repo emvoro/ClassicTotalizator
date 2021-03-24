@@ -43,7 +43,7 @@ namespace ClassicTotalizator.BLL.Services
         /// </summary>
         /// <param name="newEvent">New variant of this event</param>
         /// <returns>Edited event</returns>
-        Task<EventDTO> EditEventAsync(EdittedEventDTO newEvent);
+        Task<EventDTO> EditEventAsync(EditedEventDTO newEvent);
 
         /// <summary>
         /// Produces list of all not ended events

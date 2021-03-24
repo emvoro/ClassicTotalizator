@@ -74,7 +74,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return EventMapper.Map(@event);
         }
 
-        public async Task<EventDTO> EditEventAsync(EdittedEventDTO editedEventDTO)
+        public async Task<EventDTO> EditEventAsync(EditedEventDTO editedEventDTO)
         {
             if (editedEventDTO.StartTime < DateTimeOffset.UtcNow || (editedEventDTO.Margin <= 0 && editedEventDTO.Margin > 100))
                 return null;

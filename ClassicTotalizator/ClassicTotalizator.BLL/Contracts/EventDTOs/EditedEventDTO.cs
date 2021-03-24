@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ClassicTotalizator.BLL.Contracts.EventDTOs
 {
-    public class EdittedEventDTO
+    public class EditedEventDTO
     {
         [Required]
         public Guid Id { get; set; }
