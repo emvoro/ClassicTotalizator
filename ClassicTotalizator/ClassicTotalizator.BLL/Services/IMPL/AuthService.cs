@@ -56,9 +56,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (string.IsNullOrEmpty(registerDto.Email) || string.IsNullOrEmpty(registerDto.Password))
                 return null;
             
-            var years = (DateTime.UtcNow.Year + (double) DateTime.UtcNow.Month / 12) -
+            var age = DateTime.UtcNow.Year + (double) DateTime.UtcNow.Month / 12 -
                         (registerDto.DOB.Year + (double) registerDto.DOB.Month / 12);
-            if (years < 18)
+
+            if (age < 18)
                 return null;
 
             var accountForRegister = new AccountDTO
@@ -67,6 +68,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 AccountType = Roles.User,
                 PasswordHash = _hashGenerator.GenerateHash(registerDto.Password),
                 Email = registerDto.Email,
+                Username = registerDto.Username,
                 DOB = registerDto.DOB,
                 AccountCreationTime = registerDto.AccountCreationTime
             };

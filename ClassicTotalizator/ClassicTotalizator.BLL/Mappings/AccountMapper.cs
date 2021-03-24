@@ -12,6 +12,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new Account
                 {
+                    Username = registerDTO.Username,
                     Email = registerDTO.Email,
                     PasswordHash = registerDTO.Password,
                     DOB = registerDTO.DOB,
@@ -38,6 +39,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Id = obj.Id,
                     Email = obj.Email,
+                    Username = obj.Username,
                     PasswordHash = obj.PasswordHash,
                     AccountCreationTime = obj.AccountCreationTime,
                     AccountType = obj.AccountType,
@@ -55,6 +57,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Id = obj.Id,
                     Email = obj.Email,
+                    Username = obj.Username,
                     PasswordHash = obj.PasswordHash,
                     AccountCreationTime = obj.AccountCreationTime,
                     AccountType = obj.AccountType,
@@ -72,6 +75,7 @@ namespace ClassicTotalizator.BLL.Mappings
             var newObj = new AccountForAdminDTO
             {
                 Email = obj.Email,
+                Username = obj.Username,
                 DOB = obj.DOB
             };
 
