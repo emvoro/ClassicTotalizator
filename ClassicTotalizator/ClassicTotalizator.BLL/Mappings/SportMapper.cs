@@ -1,30 +1,29 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Contracts.SportDTOs;
+﻿using ClassicTotalizator.BLL.Contracts.SportDTOs;
 using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Mappings
 {
     public static class SportMapper
     {
-        public static SportDTO Map(Sport obj)
+        public static SportDTO Map(Sport sport)
         {
-            return obj == null
+            return sport == null
                 ? null
                 : new SportDTO
                 {
-                    Id = obj.Id,
-                    Name = obj.Name
+                    Id = sport.Id,
+                    Name = sport.Name
                 };
         }
 
-        public static Sport Map(SportDTO obj)
+        public static Sport Map(SportDTO sportDTO)
         {
-            return obj == null
+            return sportDTO == null
                 ? null
                 : new Sport
                 {
-                    Id = obj.Id,
-                    Name = obj.Name
+                    Id = sportDTO.Id,
+                    Name = sportDTO.Name
                 };
         }
     }

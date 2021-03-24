@@ -21,35 +21,26 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<WalletDTO> Transaction(Guid accountId, TransactionDTO transactionDto)
         {
-            if (transactionDto == null)
-                throw new ArgumentNullException(nameof(transactionDto));
-            if (!ValidateTransactionDto(transactionDto))
-                return null;
+            if (transactionDto == null) throw new ArgumentNullException(nameof(transactionDto));
+
+            if (!ValidateTransactionDto(transactionDto)) return null;
             
             var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == accountId);
-            if (wallet == null)
-                return null;
+
+            if (wallet == null) return null;
 
             var transaction = TransactionMapper.Map(transactionDto);
-            
             transaction.DateTime = DateTimeOffset.UtcNow;
             transaction.Wallet = wallet;
 
             if(transaction.Type == "withdraw")
             {
-                if (wallet.Amount < transaction.Amount)
-                    return null;
+                if (wallet.Amount < transaction.Amount) return null;
                 
                 wallet.Amount -= transaction.Amount;
             }
-            else if (transaction.Type == "deposit")
-            {
-                wallet.Amount += transaction.Amount;
-            }
-            else
-            {
-                return null;
-            }
+            else if (transaction.Type == "deposit") wallet.Amount += transaction.Amount;
+            else return null;
             
             transaction.Id = Guid.NewGuid();
 
@@ -62,8 +53,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<WalletDTO> GetWalletByAccId(Guid id)
         {
-            if (id == Guid.Empty)
-                return null;
+            if (id == Guid.Empty) return null;
 
             var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == id);
 
@@ -72,18 +62,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccId(Guid id)
         {
-            if (id == Guid.Empty)
-                return null;
+            if (id == Guid.Empty) return null;
 
             var transactions = await _context.Transactions.Where(x => x.Account_Id == id).ToListAsync();
 
             return transactions.Select(TransactionMapper.MapWithTime).ToList();
         }
 
-        private bool ValidateTransactionDto(TransactionDTO obj)
+        private static bool ValidateTransactionDto(TransactionDTO transactionDTO)
         {
-            if (obj.Amount <= 0 || string.IsNullOrEmpty(obj.Type))
-                return false;
+            if (transactionDTO.Amount <= 0 || string.IsNullOrEmpty(transactionDTO.Type)) return false;
 
             return true;
         }

@@ -28,13 +28,20 @@ namespace ClassicTotalizator.BLL.Contracts.AccountDTOs
         public string Password { get; set; }
 
         /// <summary>
-        ///  User's date of birth for the ability to play on the platform
+        /// User name to show in chat
+        /// </summary>
+        [RegularExpression(@".+@.+\..+")]
+        public string Username { get; set; }
+
+
+        /// <summary>
+        /// User's date of birth for the ability to play on the platform
         /// </summary>
         [Required(AllowEmptyStrings = false)]
         public DateTimeOffset DOB { get; set; }
         
         /// <summary>
-        ///  Account creation request date
+        /// Account creation request date
         /// </summary>
         public DateTimeOffset AccountCreationTime { get; set; }
     }

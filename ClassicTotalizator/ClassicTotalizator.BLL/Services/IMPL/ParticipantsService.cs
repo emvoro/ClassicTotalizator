@@ -22,8 +22,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<ParticipantsDTO> GetAllParticipantsAsync()
         {
             var participantsListInDal = await _context.Participants.ToListAsync();
-            if (participantsListInDal == null)
-                return null;
+
+            if (participantsListInDal == null) return null;
 
             var participants = new ParticipantsDTO
             {
@@ -39,63 +39,62 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return participants;
         }
 
-        public async Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participant)
+        public async Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participantRegisterDTO)
         {
-            if (participant == null)
-                return null;
+            if (participantRegisterDTO == null) return null;
             
             var newGuid = Guid.NewGuid();
-            var newParticipant = ParticipantsMapper.Map(participant);
-            newParticipant.Id = newGuid;
+            var participant = ParticipantsMapper.Map(participantRegisterDTO);
+            participant.Id = newGuid;
+            var mainPlayer = participant.Players.FirstOrDefault();
 
-            var mainPlayer = newParticipant.Players.FirstOrDefault();
-            if (mainPlayer.Name == newParticipant.Name)
+            if (mainPlayer.Name == participant.Name)
             {
-                mainPlayer.Id = newParticipant.Id;
-
+                mainPlayer.Id = participant.Id;
                 mainPlayer.Participant_Id = newGuid;
             }
             else
             {
-                foreach (var p in newParticipant.Players)
+                foreach (var player in participant.Players)
                 {
-                    p.Id = Guid.NewGuid();
-                    p.Participant_Id = newGuid;
+                    player.Id = Guid.NewGuid();
+                    player.Participant_Id = newGuid;
                 }
             }
-            await _context.Participants.AddAsync(newParticipant);
+
+            await _context.Participants.AddAsync(participant);
             await _context.SaveChangesAsync();
 
-            return ParticipantsMapper.Map(newParticipant);
+            return ParticipantsMapper.Map(participant);
         }
 
         public async Task<bool> DeleteParticipantAsync(Guid id)
         {
             var participant = _context.Participants.FirstOrDefault(x => x.Id == id);
 
-            if (participant == null)
-                return false;
+            if (participant == null) return false;
 
             _context.Participants.Remove(participant);
             await _context.SaveChangesAsync();
+
             return true;
         }
 
         private async Task<IEnumerable<ParameterDTO>> GetParametersByPartId(Guid id)
         {
-            if (id == Guid.Empty)
-                return null;
+            if (id == Guid.Empty) return null;
 
             var parameters = await _context.Parameters.Where(x => x.Participant_Id == id).ToListAsync();
+
             return parameters.Select(ParameterMapper.Map).ToList();
         }
 
         private async Task<IEnumerable<PlayerDTO>> GetPlayersByPartId(Guid id)
         {
-            if (id == Guid.Empty)
-                return null;
+            if (id == Guid.Empty) return null;
 
             var players = await _context.Players.Where(x => x.Participant_Id == id).ToListAsync();
+
             return players.Select(PlayerMapper.Map).ToList();
         }
     }

@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.DAL.Entities;
+﻿using ClassicTotalizator.DAL.Entities;
 using System.Linq;
 using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
 
@@ -7,42 +6,42 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public  static class ParticipantsMapper
     {
-        public static ParticipantDTO Map(Participant obj)
+        public static ParticipantDTO Map(Participant participant)
         {
-            return obj == null
+            return participant == null
                 ? null
                 : new ParticipantDTO
                 {
-                    Id = obj.Id,
-                    Name = obj.Name,
-                    PhotoLink = obj.PhotoLink,
-                    Players = obj.Players.Select(PlayerMapper.Map).ToList()
+                    Id = participant.Id,
+                    Name = participant.Name,
+                    PhotoLink = participant.PhotoLink,
+                    Players = participant.Players.Select(PlayerMapper.Map).ToList()
                 };
         }
 
-        public static Participant Map(ParticipantRegisterDTO registerDTO)
+        public static Participant Map(ParticipantRegisterDTO participantRegisterDTO)
         {
-            return registerDTO == null
+            return participantRegisterDTO == null
                 ? null
                 : new Participant
                 {
-                    Name = registerDTO.Name,
-                    PhotoLink = registerDTO.PhotoLink,
-                    Players = registerDTO.Players.Select(PlayerMapper.Map).ToList()
+                    Name = participantRegisterDTO.Name,
+                    PhotoLink = participantRegisterDTO.PhotoLink,
+                    Players = participantRegisterDTO.Players.Select(PlayerMapper.Map).ToList()
                 };
         }
 
-        public static Participant Map(ParticipantDTO obj)
+        public static Participant Map(ParticipantDTO participantDTO)
         {
-            return obj == null
-                       ? null
-                       : new Participant
-                       {
-                           Id = obj.Id,
-                           Name = obj.Name,
-                           PhotoLink = obj.PhotoLink,
-                           Players = obj.Players.Select(PlayerMapper.Map).ToList()
-                       };
+            return participantDTO == null
+                ? null
+                : new Participant
+                {
+                    Id = participantDTO.Id,
+                    Name = participantDTO.Name,
+                    PhotoLink = participantDTO.PhotoLink,
+                    Players = participantDTO.Players.Select(PlayerMapper.Map).ToList()
+                };
         }
     } 
 }

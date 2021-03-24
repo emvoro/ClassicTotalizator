@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
+using ClassicTotalizator.API.Services;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Contracts.TransactionDTOs;
 using ClassicTotalizator.BLL.Services;
@@ -17,7 +16,7 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Authorize]
-    [Route("api/v1/wallet")]
+    [Route("api/[controller]")]
     public class WalletController : ControllerBase
     {
         private readonly ILogger<WalletController> _logger;
@@ -42,11 +41,13 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet]
         public async Task<ActionResult<WalletDTO>> GetWalletByAccId()
         {
-            var accountId = GetIdFromToken();
+            var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
             
             var wallet = await _walletService.GetWalletByAccId(accountId);
+
             if (wallet == null)
                 return NotFound();
             
@@ -60,11 +61,13 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet("transactionHistory")]
         public async Task<ActionResult<IEnumerable<TransactionWithTimeDTO>>> GetTransactionHistory()
         {
-            var accountId = GetIdFromToken();
+            var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             var transactionHistoryByAccId = await _walletService.GetTransactionHistoryByAccId(accountId);
+
             if (transactionHistoryByAccId == null)
                 return NotFound();
 
@@ -74,6 +77,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Make a transaction : deposit or withdraw
         /// </summary>
+        /// <param name="transactionDto">DTO of transaction</param>
         /// <returns>Wallet</returns>
         [HttpPost("transaction")]
         public async Task<ActionResult<WalletDTO>> AddTransaction([FromBody] TransactionDTO transactionDto)
@@ -81,13 +85,15 @@ namespace ClassicTotalizator.API.Controllers
             if (transactionDto == null)
                 return BadRequest("Invalid parameter!");
 
-            var accountId = GetIdFromToken();
+            var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             try
             {
                 var wallet = await _walletService.Transaction(accountId, transactionDto);
+
                 if (wallet == null)
                     return BadRequest("Invalid transaction!");
 
@@ -95,21 +101,9 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return Conflict();
             }
-        }
-        
-        private Guid GetIdFromToken()
-        {
-            if (!(User.Identity is ClaimsIdentity identity))
-                return Guid.Empty;
-            
-            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(stringId, out var accountId))
-                return Guid.Empty;
-
-            return accountId;
         }
     }
 }

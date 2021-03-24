@@ -1,4 +1,3 @@
-using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Contracts.TransactionDTOs;
 using ClassicTotalizator.DAL.Entities;
 
@@ -6,49 +5,49 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class TransactionMapper
     {
-        public static TransactionDTO Map(Transaction obj)
+        public static TransactionDTO Map(Transaction transaction)
         {
-            return obj == null
+            return transaction == null
                 ? null
                 : new TransactionDTO
                 {
-                    Amount = obj.Amount,
-                    Type = obj.Type
+                    Amount = transaction.Amount,
+                    Type = transaction.Type
                 };
         } 
         
-        public static Transaction Map(TransactionDTO obj)
+        public static Transaction Map(TransactionDTO transactionDTO)
         {
-            return obj == null
+            return transactionDTO == null
                 ? null
                 : new Transaction
                 {
-                    Amount = obj.Amount,
-                    Type = obj.Type
+                    Amount = transactionDTO.Amount,
+                    Type = transactionDTO.Type
                 };
         } 
         
-        public static Transaction Map(TransactionWithTimeDTO obj)
+        public static Transaction Map(TransactionWithTimeDTO transactionWithTimeDTO)
         {
-            return obj == null
+            return transactionWithTimeDTO == null
                 ? null
                 : new Transaction
                 {
-                    DateTime = obj.DateTime,
-                    Amount = obj.Amount,
-                    Type = obj.Type
+                    DateTime = transactionWithTimeDTO.DateTime,
+                    Amount = transactionWithTimeDTO.Amount,
+                    Type = transactionWithTimeDTO.Type
                 };
         }
         
-        public static TransactionWithTimeDTO MapWithTime(Transaction obj)
+        public static TransactionWithTimeDTO MapWithTime(Transaction transaction)
         {
-            return obj == null
+            return transaction == null
                 ? null
                 : new TransactionWithTimeDTO
                 {
-                    DateTime = obj.DateTime,
-                    Amount = obj.Amount,
-                    Type = obj.Type
+                    DateTime = transaction.DateTime,
+                    Amount = transaction.Amount,
+                    Type = transaction.Type
                 };
         }
     }

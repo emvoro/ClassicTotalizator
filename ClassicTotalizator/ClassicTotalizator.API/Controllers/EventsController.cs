@@ -142,7 +142,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPatch("patchEvent")]
-        public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EdittedEventDTO eventDTO)
+        public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
         {
             if (!ModelState.IsValid || eventDTO == null)
             {
@@ -182,17 +182,17 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return BadRequest();
             }
         }
         /// <summary>
-        /// CAUTION! Be careful with this method. :)
+        /// Deletes event BUT be careful:)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("deleteEvent/{id}")]
-        public async Task<ActionResult<bool>> DeleteSportSport([FromRoute]Guid id)
+        public async Task<ActionResult<bool>> DeleteEvent([FromRoute]Guid id)
         {
             try
             {
@@ -205,7 +205,7 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument exception. " + e.ParamName);
                 return BadRequest();
             }
         }

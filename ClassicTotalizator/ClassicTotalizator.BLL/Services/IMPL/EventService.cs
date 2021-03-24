@@ -21,37 +21,30 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventDTO> GetById(Guid id)
         {
-            if (id == Guid.Empty)
-                return null;
+            if (id == Guid.Empty) return null;
 
             return EventMapper.Map(await _context.Events.FindAsync(id));
         }
 
         public async Task<EventDTO> CreateEventAsync(EventRegisterDTO eventDTO)
         {
-            if (eventDTO == null)
-                throw new ArgumentNullException(nameof(eventDTO));
+            if (eventDTO == null) throw new ArgumentNullException(nameof(eventDTO));
+
             if (string.IsNullOrEmpty(eventDTO.Participant_Id1.ToString()) ||
                 string.IsNullOrEmpty(eventDTO.Participant_Id2.ToString()) ||
                 eventDTO.StartTime < DateTimeOffset.UtcNow || eventDTO.Margin <= 0)
                 return null;
 
-            if(eventDTO.Margin <= 0 && eventDTO.Margin > 100)
-                return null;
-
-
+            if(eventDTO.Margin <= 0 && eventDTO.Margin > 100)  return null;
 
             var participant1 = await _context.Participants.FindAsync(eventDTO.Participant_Id1);
-            if (participant1 == null)
-                return null;
+            if (participant1 == null) return null;
 
             var participant2 = await _context.Participants.FindAsync(eventDTO.Participant_Id2);
-            if (participant2 == null)
-                return null;
+            if (participant2 == null) return null;
 
             var sport = await _context.Sports.FindAsync(eventDTO.SportId);
-            if (sport == null)
-                return null;
+            if (sport == null) return null;
 
             var newId = Guid.NewGuid();
             var @event = new Event
@@ -81,15 +74,15 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return EventMapper.Map(@event);
         }
 
-        public async Task<EventDTO> EditEventAsync(EdittedEventDTO newEvent)
+        public async Task<EventDTO> EditEventAsync(EditedEventDTO editedEventDTO)
         {
-            if (newEvent.StartTime < DateTimeOffset.UtcNow || (newEvent.Margin <= 0 && newEvent.Margin > 100))
+            if (editedEventDTO.StartTime < DateTimeOffset.UtcNow || (editedEventDTO.Margin <= 0 && editedEventDTO.Margin > 100))
                 return null;
 
-            var oldEvent = await _context.Events.FindAsync(newEvent.Id);
+            var oldEvent = await _context.Events.FindAsync(editedEventDTO.Id);
 
-            oldEvent.Margin = newEvent.Margin;
-            oldEvent.StartTime = newEvent.StartTime;
+            oldEvent.Margin = editedEventDTO.Margin;
+            oldEvent.StartTime = editedEventDTO.StartTime;
 
             _context.Update(oldEvent);
             await _context.SaveChangesAsync();
@@ -103,50 +96,40 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             var events = await _context.Events.ToListAsync() ?? new List<Event>();
 
-            var eventPreviewDtos = new List<EventPreviewDTO>();
+            var eventPreviewDTOs = new List<EventPreviewDTO>();
 
             foreach (var @event in events)
             {
                 @event.Participant1 = await _context.Participants.FindAsync(@event.Participant_Id1);
                 @event.Participant2 = await _context.Participants.FindAsync(@event.Participant_Id2);
-
                 @event.Sport = await _context.Sports.FindAsync(@event.Sport_Id);
-
-                eventPreviewDtos.Add(await GetAmountsOnResults(@event));
+                eventPreviewDTOs.Add(await GetAmountsOnResults(@event));
             }
 
             return new EventsFeedDTO
             {
-                Events = eventPreviewDtos
+                Events = eventPreviewDTOs
             };
         }
 
         public async Task<EventsFeedDTO> GetCurrentLineOfEvents()
         {
-            var currentLine = await _context
-                   .Events.Where(e => e.IsEnded == false).ToListAsync();
+            var currentLine = await _context.Events.Where(e => e.IsEnded == false).ToListAsync();
 
-            var eventPreviewDtos = new List<EventPreviewDTO>();
+            var eventPreviewDTOs = new List<EventPreviewDTO>();
 
             foreach (var @event in currentLine)
             {
                 @event.Participant1 = await _context.Participants.FindAsync(@event.Participant_Id1);
                 @event.Participant2 = await _context.Participants.FindAsync(@event.Participant_Id2);
-
                 @event.Sport = await _context.Sports.FindAsync(@event.Sport_Id);
-
-                eventPreviewDtos.Add(await GetAmountsOnResults(@event));
+                eventPreviewDTOs.Add(await GetAmountsOnResults(@event));
             }
 
             return new EventsFeedDTO
             {
-                Events = eventPreviewDtos
+                Events = eventPreviewDTOs
             };
-        }
-
-        public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> FinishEvent(FinishedEventDTO eventToClose)
@@ -155,14 +138,12 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 throw new ArgumentNullException(nameof(eventToClose));
 
             var closingEvent = await _context.Events.FindAsync(eventToClose.Id);
-            if (closingEvent == null)
-                return false;
 
-            if (!closingEvent.PossibleResults.Contains(eventToClose.Result))
-                return false;
+            if (closingEvent == null) return false;
 
-            if (closingEvent.IsEnded)
-                return false;
+            if (!closingEvent.PossibleResults.Contains(eventToClose.Result)) return false;
+
+            if (closingEvent.IsEnded) return false;
 
             closingEvent.Result = eventToClose.Result;
             closingEvent.IsEnded = true;
@@ -170,15 +151,14 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _context.Update(closingEvent);
             await _context.SaveChangesAsync();
 
-
             return await CashSettlementOfBetsOnEvents(closingEvent);
         }
 
         public async Task<EventPreviewDTO> GetEventPreview(Guid id)
         {
             var eventInBase = await _context.Events.FindAsync(id);
-            if (eventInBase == null)
-                return null;
+
+            if (eventInBase == null) return null;
 
             eventInBase.Participant1 = await _context.Participants.FindAsync(eventInBase.Participant_Id1);
             eventInBase.Participant2 = await _context.Participants.FindAsync(eventInBase.Participant_Id2);
@@ -189,19 +169,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> DeleteEvent(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
-                throw new ArgumentException();
+            if (string.IsNullOrEmpty(id.ToString())) throw new ArgumentException();
 
             var eventToDelete = _context.Events.FirstOrDefault(@event => @event.Id == id);
 
-            if (eventToDelete == null)
-                return false;
+            if (eventToDelete == null) return false;
+
             var betPool = await _context.Bets.Where(bet => bet.Id == id).ToListAsync();
 
             foreach (var bet in betPool)
             {
                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
-
                 pendingWallet.Amount += bet.Amount;
 
                 _context.Wallets.Update(pendingWallet);
@@ -210,6 +188,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             _context.Events.Remove(eventToDelete);
             await _context.SaveChangesAsync();
+
             return true;
         }
 
@@ -244,7 +223,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             decimal winningAmount = 0;
             decimal losingAmount = 0;
 
-
             var betsInPool = await _context.Bets.Where(id => id.Event_Id == closedEvent.Id).ToListAsync();
 
             var winningBets = new List<Bet>();
@@ -256,27 +234,28 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                     winningAmount = bet.Amount;
                     winningBets.Add(bet);
                 }
-                else
-                    losingAmount = bet.Amount;
+                else losingAmount = bet.Amount;
             }
 
-            if (winningAmount == 0)
-                return true;
+            if (winningAmount == 0) return true;
 
             foreach (var bet in winningBets)
             {
-                var betPart = (bet.Amount / winningAmount) * (100 - closedEvent.Margin);
-                var moneyForDep = (losingAmount / 100m) * betPart;
-
+                var betPart = bet.Amount / winningAmount * (100m - closedEvent.Margin);
+                var moneyForDep = losingAmount / 100m * betPart;
                 var pendingWallet = await _context.Wallets.FindAsync(bet.Account_Id);
-
-                pendingWallet.Amount += (bet.Amount) + moneyForDep;
+                pendingWallet.Amount += bet.Amount + moneyForDep;
 
                 _context.Wallets.Update(pendingWallet);
                 await _context.SaveChangesAsync();
             }
 
             return true;
+        }
+
+        public Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport)
+        {
+            throw new NotImplementedException();
         }
     }
 }

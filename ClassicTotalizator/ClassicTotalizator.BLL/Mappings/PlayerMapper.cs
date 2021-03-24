@@ -1,46 +1,41 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClassicTotalizator.BLL.Mappings
 {
     public static class PlayerMapper
     {
-        public static PlayerDTO Map(Player obj)
+        public static PlayerDTO Map(Player player)
         {
-            return obj == null
+            return player == null
                 ? null
                 : new PlayerDTO
                 {
-                   Id = obj.Id,
-                   Participant_Id = obj.Participant_Id,
-                   Name = obj.Name
+                   Id = player.Id,
+                   Participant_Id = player.Participant_Id,
+                   Name = player.Name
                 };
         }
 
-        public static Player Map(PlayerDTO obj)
+        public static Player Map(PlayerDTO playerDTO)
         {
-            return obj == null
+            return playerDTO == null
                 ? null
                 : new Player
                 {
-                    Id = obj.Id,
-                    Participant_Id = obj.Participant_Id,
-                    Name = obj.Name
+                    Id = playerDTO.Id,
+                    Participant_Id = playerDTO.Participant_Id,
+                    Name = playerDTO.Name
                 };
         }
 
-        public static Player Map(PlayerRegisterDTO registerDTO)
+        public static Player Map(PlayerRegisterDTO playerRegisterDTO)
         {
-            return registerDTO == null
+            return playerRegisterDTO == null
                 ? null
                 : new Player
                 {
-                    Name = registerDTO.Name
+                    Name = playerRegisterDTO.Name
                 };
         }
     }

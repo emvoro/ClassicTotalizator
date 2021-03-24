@@ -41,6 +41,7 @@ namespace ClassicTotalizator.API
             services.AddTransient<ISportService, SportService>();
             services.AddTransient<IParticipantsService, ParticipantsService>();
             services.AddTransient<IWalletService, WalletService>();
+            services.AddTransient<IChatService, ChatService>();
             
             services.AddTransient<IHashGenerator, HashGenerator>(provider =>
                 new HashGenerator(Configuration.GetSection("HashOptions").GetValue<string>("Salt")));

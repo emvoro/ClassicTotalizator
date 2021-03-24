@@ -1,7 +1,6 @@
 using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
+using ClassicTotalizator.API.Services;
 using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Contracts.BetDTOs;
 using ClassicTotalizator.BLL.Services;
@@ -15,7 +14,7 @@ namespace ClassicTotalizator.API.Controllers
     /// This controller contains operations with bets for logged in users.
     /// </summary>
     [ApiController]
-    [Route("api/v1/bet")]
+    [Route("api/[controller]")]
     public class BetController : ControllerBase
     {
         private readonly IBetService _betService;
@@ -41,11 +40,13 @@ namespace ClassicTotalizator.API.Controllers
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> GetBetsByAccId()
         {
-            var accountId = GetIdFromToken();
+            var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             var bets = await _betService.GetBetsByAccId(accountId);
+
             if (bets == null)
                 return NotFound("Bets not found!");
 
@@ -83,36 +84,22 @@ namespace ClassicTotalizator.API.Controllers
             if (!ModelState.IsValid || bet == null)
                 return BadRequest("Model is invalid!");
 
-            var accountId = GetIdFromToken();
+            var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             try
             {
-                if (await _betService.AddBet(bet, accountId))
-                {
-                    return Ok();
-                }
-                
+                if (await _betService.AddBet(bet, accountId)) return Ok();
+
                 return BadRequest();
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return BadRequest("Argument null exception!");
             }
-        }
-
-        private Guid GetIdFromToken()
-        {
-            if (!(User.Identity is ClaimsIdentity identity))
-                return Guid.Empty;
-            
-            var stringId = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(stringId, out var accountId))
-                return Guid.Empty;
-
-            return accountId;
         }
     }
 }
