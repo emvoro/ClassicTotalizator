@@ -4,8 +4,8 @@ using ClassicTotalizator.DAL.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -33,17 +33,29 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return true;
         }
 
+        public async Task<IEnumerable<MessageDTO>> GetMessages()
+        {
+            var messages = await _context.Messages.TakeLast(100).ToListAsync();
+            var messagesDto = messages.Select(ChatMessageMapper.Map).ToList();
+            
+            foreach (var message in messagesDto)
+            {
+                var account = await _context.Accounts.FindAsync(message.Account_Id);
+                message.Username = account.Username;
+            }
+
+            return messagesDto;
+        }
+
         public async Task<bool> PostMessageAsync(MessageToPostDTO messageToPost, Guid accountId)
         {
             if (messageToPost == null || string.IsNullOrEmpty(accountId.ToString()))
                 throw new ArgumentNullException();
-            if (messageToPost.CreationTime > DateTimeOffset.UtcNow)
-                return false;
 
             var newMessage = ChatMessageMapper.Map(messageToPost);
             newMessage.Id = Guid.NewGuid();
             newMessage.Account_Id = accountId;
-
+            newMessage.Time = DateTimeOffset.UtcNow;
             newMessage.Account = await _context.Accounts.FindAsync(accountId);
 
             await _context.Messages.AddAsync(newMessage);

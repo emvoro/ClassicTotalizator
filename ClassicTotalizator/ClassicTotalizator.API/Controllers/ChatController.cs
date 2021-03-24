@@ -25,7 +25,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Bet controller Constructor
         /// </summary>
-        /// <param name="betService">Bet service</param>
+        /// <param name="chatService">Chat service</param>
         /// <param name="logger">Logger</param>
         public ChatController(IChatService chatService,
             ILogger<ChatController> logger)
@@ -34,7 +34,6 @@ namespace ClassicTotalizator.API.Controllers
             _logger = logger;
         }
 
-
         /// <summary>
         /// Get current message list (Be careful, this api is not yet implemented)
         /// </summary>
@@ -42,7 +41,14 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet]
         public async Task<ActionResult<CurrentChatMessagesDTO>> GetMessagesInChat()
         {
-            throw new NotImplementedException();
+            var messages = await _chatService.GetMessages();
+            if (messages == null)
+                return NotFound();
+
+            return Ok(new CurrentChatMessagesDTO
+            {
+                Messages = messages
+            });
         }
 
         /// <summary>
@@ -78,7 +84,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Only for admins permissions(Deleting Messages from chat)
         /// </summary>
-        /// <param name="messageId">Deletes message from chat action</param>
+        /// <param name="id">Deletes message from chat action</param>
         /// <returns>True if message was deleted</returns>
         [HttpDelete("{id}")]
         [Authorize(Roles = Roles.Admin)]

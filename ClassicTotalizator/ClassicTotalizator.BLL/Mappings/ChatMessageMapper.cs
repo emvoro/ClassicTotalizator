@@ -11,8 +11,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new Message
                 {
-                   Text = obj.Text,
-                   Time = obj.CreationTime
+                   Text = obj.Text
                 };
         }
         
