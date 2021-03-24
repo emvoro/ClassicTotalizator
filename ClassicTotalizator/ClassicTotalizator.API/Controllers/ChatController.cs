@@ -15,7 +15,6 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = Roles.User)]
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;
@@ -39,6 +38,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all messages now in chat(100)</returns>
         [HttpGet]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<CurrentChatMessagesDTO>> GetMessagesInChat()
         {
             var messages = await _chatService.GetMessages();
@@ -57,6 +57,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="toPostDTO">Text dto that user trying to post</param>
         /// <returns>True if message was posted or false if smth went wrong</returns>
         [HttpPost]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<bool>> PostMessageInChat([FromBody] MessageToPostDTO toPostDTO)
         {
             if (!ModelState.IsValid || toPostDTO == null)
