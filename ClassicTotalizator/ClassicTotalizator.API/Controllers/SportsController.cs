@@ -36,7 +36,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get all sports.
         /// </summary>
         /// <returns>List of all possible sports on the platform</returns>
-        [HttpGet("sports")]
+        [HttpGet]
         public async Task<ActionResult<SportsDTO>> GetAllSportsInPlatform()
         {
             var sports = await _sportService.GetCurrentListOfSports();
@@ -51,7 +51,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Adds new sport.
         /// </summary>
         /// <returns>Sport DTO</returns>
-        [HttpPost("addSport")]
+        [HttpPost]
         public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDTO)
         {
             if (!ModelState.IsValid || sportDTO == null)
@@ -69,7 +69,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Deletes sport.
         /// </summary>
         /// <returns>Deleting state.</returns>
-        [HttpDelete("deleteSport/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteSportSport([FromRoute] int id)
         {
             var deleted = await _sportService.DeleteSportAsync(id);

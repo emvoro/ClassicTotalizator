@@ -58,7 +58,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             var account = AccountMapper.Map(registeredAccount);
 
-            if (account.Username == null)
+            if (string.IsNullOrEmpty(account.Username.Trim()))
                 account.Username = account.Email.Split("@")[0];
             
             account.Wallet = new Wallet

@@ -36,7 +36,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get bets on account.
         /// </summary>
         /// <returns>Bets on account</returns>
-        [HttpGet("account")]
+        [HttpGet("{token}")]
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> GetBetsByAccId()
         {
@@ -58,7 +58,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="id">Event id</param>
         /// <returns>Event bet's</returns>
-        [HttpGet("event/{id}")]
+        [HttpGet("{eventId}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult> GetEventBets([FromRoute] Guid id)
         {

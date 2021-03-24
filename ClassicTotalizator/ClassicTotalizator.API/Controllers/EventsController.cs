@@ -46,7 +46,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get event by id.
         /// </summary>
         /// <returns>Event by id</returns>
-        [HttpGet("getById/{id}")]
+        [HttpGet("event/{id}")]
         public async Task<ActionResult<EventDTO>> GetEventById([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
@@ -64,7 +64,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
         /// <returns>Event preview</returns>
-        [HttpGet("getEventPreview/{id}")]
+        [HttpGet("preview/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<EventPreviewDTO>> GetEventPreviewById([FromRoute] Guid id)
         {
@@ -83,10 +83,11 @@ namespace ClassicTotalizator.API.Controllers
         /// Get all events.
         /// </summary>
         /// <returns>List of all events.</returns>
-        [HttpGet("getAllEvents")]
+        [HttpGet]
         public async Task<ActionResult<EventsFeedDTO>> GetAllEvents()
         {
             var events = await _eventService.GetEventsAsync();
+
             if (events == null)
                 return NotFound();
 
@@ -102,6 +103,7 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<EventsFeedDTO>> GetCurrentLine()
         {
             var currentLine = await _eventService.GetCurrentLineOfEvents();
+
             if (currentLine == null)
                 return NotFound();
 
@@ -112,7 +114,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Add new event.
         /// </summary>
         /// <returns>Event DTO</returns>
-        [HttpPost("createEvent")]
+        [HttpPost]
         public async Task<ActionResult<EventDTO>> AddEvent([FromBody] EventRegisterDTO registerDTO)
         {
             if (!ModelState.IsValid || registerDTO == null)
@@ -141,7 +143,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Edit event.
         /// </summary>
         /// <returns>Event DTO</returns>
-        [HttpPatch("patchEvent")]
+        [HttpPatch("edit")]
         public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
         {
             if (!ModelState.IsValid || eventDTO == null)
@@ -162,7 +164,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="finishedEvent">Event</param>
         /// <returns>Bool value, true id closed, another - false</returns>
-        [HttpPatch("finishEvent")]
+        [HttpPatch("finish")]
         public async Task<ActionResult<bool>> FinishEvent([FromBody] FinishedEventDTO finishedEvent)
         {
             if (!ModelState.IsValid || finishedEvent == null)
@@ -191,7 +193,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("deleteEvent/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteEvent([FromRoute]Guid id)
         {
             try

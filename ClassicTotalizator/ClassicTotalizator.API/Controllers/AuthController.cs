@@ -75,7 +75,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="loginDTO">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult<JwtDTO>> LoginAsync(AccountLoginDTO loginDTO)
         {
             if (!ModelState.IsValid || loginDTO == null)
@@ -124,7 +124,7 @@ namespace ClassicTotalizator.API.Controllers
             if (!string.IsNullOrEmpty(message)) 
                 _logger.LogWarning(message);
                 
-            return NotFound();
+            return BadRequest("Authorization failed.");
         }
     }
 }

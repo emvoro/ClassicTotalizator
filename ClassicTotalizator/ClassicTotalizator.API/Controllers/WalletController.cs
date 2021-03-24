@@ -35,30 +35,10 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get account wallet.
-        /// </summary>
-        /// <returns>Account wallet</returns>
-        [HttpGet]
-        public async Task<ActionResult<WalletDTO>> GetWalletByAccId()
-        {
-            var accountId = ClaimsIdentityService.GetIdFromToken(User);
-
-            if (accountId == Guid.Empty)
-                return BadRequest("Token value is invalid!");
-            
-            var wallet = await _walletService.GetWalletByAccId(accountId);
-
-            if (wallet == null)
-                return NotFound();
-            
-            return Ok(wallet);
-        }
-
-        /// <summary>
         /// Get account transaction history.
         /// </summary>
         /// <returns>Transaction history</returns>
-        [HttpGet("transactionHistory")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<TransactionWithTimeDTO>>> GetTransactionHistory()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
@@ -75,11 +55,31 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
+        /// Get account wallet by id.
+        /// </summary>
+        /// <returns>Account wallet</returns>
+        [HttpGet("token")]
+        public async Task<ActionResult<WalletDTO>> GetWalletByAccId()
+        {
+            var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
+            if (accountId == Guid.Empty)
+                return BadRequest("Token value is invalid!");
+            
+            var wallet = await _walletService.GetWalletByAccId(accountId);
+
+            if (wallet == null)
+                return NotFound();
+            
+            return Ok(wallet);
+        }
+
+        /// <summary>
         /// Make a transaction : deposit or withdraw
         /// </summary>
         /// <param name="transactionDto">DTO of transaction</param>
         /// <returns>Wallet</returns>
-        [HttpPost("transaction")]
+        [HttpPost]
         public async Task<ActionResult<WalletDTO>> AddTransaction([FromBody] TransactionDTO transactionDto)
         {
             if (transactionDto == null)
