@@ -14,8 +14,5 @@ namespace ClassicTotalizator.BLL.Contracts.ChatDTOs
         [Required(AllowEmptyStrings = false)]
         [MinLength(1)]
         public string Text { get; set; }
-
-        [Required(AllowEmptyStrings = false)]
-        public DateTimeOffset CreationTime { get; set; }
     }
 }
