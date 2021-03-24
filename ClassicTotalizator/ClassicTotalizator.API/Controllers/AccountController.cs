@@ -54,6 +54,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>All accounts</returns>
         [HttpGet("account")]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<IEnumerable<AccountInfoDTO>>> GetAccountForChat()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
