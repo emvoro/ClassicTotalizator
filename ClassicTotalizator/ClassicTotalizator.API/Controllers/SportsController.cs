@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.SportDTOs;
 
-
 namespace ClassicTotalizator.API.Controllers
 {
     /// <summary>

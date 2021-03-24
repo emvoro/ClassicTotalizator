@@ -30,6 +30,13 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return accounts.Select(AccountMapper.MapForAdmin).ToList();
         }
 
+        public async Task<AccountInfoDTO> GetById(Guid id)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
+
+            return AccountMapper.MapForChatInfo(account);
+        }
+
         public async Task<AccountDTO> GetByEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
@@ -48,6 +55,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return false;
 
             var account = AccountMapper.Map(registeredAcc);
+
+            if (account.Username == null)
+                account.Username = account.Email.Split("@")[0];
             
             account.Wallet = new Wallet
             {

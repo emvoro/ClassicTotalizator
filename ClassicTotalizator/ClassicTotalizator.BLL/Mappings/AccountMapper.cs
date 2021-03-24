@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Contracts.AccountDTOs;
+﻿using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Mappings
@@ -12,6 +11,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new Account
                 {
+                    Username = registerDTO.Username,
                     Email = registerDTO.Email,
                     PasswordHash = registerDTO.Password,
                     DOB = registerDTO.DOB,
@@ -38,6 +38,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Id = obj.Id,
                     Email = obj.Email,
+                    Username = obj.Username,
                     PasswordHash = obj.PasswordHash,
                     AccountCreationTime = obj.AccountCreationTime,
                     AccountType = obj.AccountType,
@@ -55,6 +56,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Id = obj.Id,
                     Email = obj.Email,
+                    Username = obj.Username,
                     PasswordHash = obj.PasswordHash,
                     AccountCreationTime = obj.AccountCreationTime,
                     AccountType = obj.AccountType,
@@ -72,11 +74,27 @@ namespace ClassicTotalizator.BLL.Mappings
             var newObj = new AccountForAdminDTO
             {
                 Email = obj.Email,
+                Username = obj.Username,
                 DOB = obj.DOB
             };
 
             if (obj.Wallet != null)
                 newObj.WalletAmount = obj.Wallet.Amount;
+
+            return newObj;
+        }
+
+        public static AccountInfoDTO MapForChatInfo(Account obj)
+        {
+            if (obj == null)
+                return null;
+
+            var newObj = new AccountInfoDTO
+            {
+                Id = obj.Id,
+                Username = obj.Username,
+                AvatarLink = obj.AvatarLink
+            };
 
             return newObj;
         }
