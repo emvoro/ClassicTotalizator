@@ -82,11 +82,11 @@ namespace ClassicTotalizator.API.Controllers
         /// <returns>True if message was deleted</returns>
         [HttpDelete("deleteMessage/{id}")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<ActionResult<bool>> DeleteMessage([FromRoute] Guid messageId)
+        public async Task<ActionResult<bool>> DeleteMessage([FromRoute] Guid id)
         {
             try
             {
-                var deleted = await _chatService.DeleteMessageAsync(messageId);
+                var deleted = await _chatService.DeleteMessageAsync(id);
 
                 if (!deleted)
                     return NotFound(deleted);
