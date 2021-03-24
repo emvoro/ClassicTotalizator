@@ -43,7 +43,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var newMessage = ChatMessageMapper.Map(messageToPost);
             newMessage.Id = Guid.NewGuid();
             newMessage.Account_Id = accountId;
-
+            newMessage.Time = DateTimeOffset.UtcNow;
             newMessage.Account = await _context.Accounts.FindAsync(accountId);
 
             await _context.Messages.AddAsync(newMessage);
