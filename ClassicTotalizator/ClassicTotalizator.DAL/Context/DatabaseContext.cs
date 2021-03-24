@@ -26,6 +26,8 @@ namespace ClassicTotalizator.DAL.Context
 
         public DbSet<Sport> Sports { get; set; }
 
+        public DbSet<Message> Messages { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
@@ -45,6 +47,11 @@ namespace ClassicTotalizator.DAL.Context
 
             builder.Entity<Account>()
                 .HasMany(s => s.BetsHistory)
+                .WithOne(s => s.Account)
+                .HasForeignKey(s => s.Account_Id);
+
+            builder.Entity<Account>()
+                .HasMany(s => s.Messages)
                 .WithOne(s => s.Account)
                 .HasForeignKey(s => s.Account_Id);
 
@@ -99,6 +106,10 @@ namespace ClassicTotalizator.DAL.Context
             builder.Entity<Sport>().HasKey(s => s.Id);
 
             builder.Entity<Sport>().HasIndex(s => s.Id).IsUnique();
+
+            builder.Entity<Message>().HasKey(s => s.Id);
+
+            builder.Entity<Message>().HasIndex(s => s.Id).IsUnique();
         }
     }
 }
