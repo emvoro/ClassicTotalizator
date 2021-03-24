@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClassicTotalizator.BLL.Contracts.ChatDTOs
 {
@@ -13,5 +14,8 @@ namespace ClassicTotalizator.BLL.Contracts.ChatDTOs
         [Required(AllowEmptyStrings = false)]
         [MinLength(1)]
         public string Text { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public DateTimeOffset CreationTime { get; set; }
     }
 }
