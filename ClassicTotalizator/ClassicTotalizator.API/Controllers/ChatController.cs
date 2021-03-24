@@ -14,7 +14,7 @@ namespace ClassicTotalizator.API.Controllers
     /// This controller contains operations with bets for logged in users.
     /// </summary>
     [ApiController]
-    [Route("api/v1/wallet")]
+    [Route("api/[controller]")]
     [Authorize(Roles = Roles.User)]
     public class ChatController : ControllerBase
     {
