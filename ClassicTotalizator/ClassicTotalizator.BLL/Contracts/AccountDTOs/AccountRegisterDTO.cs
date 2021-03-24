@@ -30,7 +30,6 @@ namespace ClassicTotalizator.BLL.Contracts.AccountDTOs
         /// <summary>
         /// User name to show in chat
         /// </summary>
-        [RegularExpression(@".+@.+\..+")]
         public string Username { get; set; }
 
 
