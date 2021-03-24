@@ -33,7 +33,6 @@ namespace ClassicTotalizator.BLL.Generators.IMPL
                  signingCredentials: credentials
                  );
 
-
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }

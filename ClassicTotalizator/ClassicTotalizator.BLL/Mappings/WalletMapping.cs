@@ -5,23 +5,23 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class WalletMapping
     {
-        public static WalletDTO Map(Wallet obj)
+        public static WalletDTO Map(Wallet wallet)
         {
-            return obj == null
+            return wallet == null
                 ? null
                 : new WalletDTO
                 {
-                    Amount = obj.Amount
+                    Amount = wallet.Amount
                 };
         }
         
-        public static Wallet Map(WalletDTO obj)
+        public static Wallet Map(WalletDTO walletDTO)
         {
-            return obj == null
+            return walletDTO == null
                 ? null
                 : new Wallet
                 {
-                    Amount = obj.Amount
+                    Amount = walletDTO.Amount
                 };
         }
     }

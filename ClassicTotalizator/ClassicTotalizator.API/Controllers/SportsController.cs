@@ -59,13 +59,14 @@ namespace ClassicTotalizator.API.Controllers
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
+
             var createdSport = await _sportService.Add(sportDTO);
 
             return Ok(createdSport);
         }
 
         /// <summary>
-        /// Deletes sport (TESTING, DON'T USE).
+        /// Deletes sport.
         /// </summary>
         /// <returns>Deleting state.</returns>
         [HttpDelete("deleteSport/{id}")]

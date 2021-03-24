@@ -16,7 +16,7 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Authorize(Roles = Roles.Admin)]
-    [Route("api/v1/account")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly ILogger<AccountController> _logger;
@@ -42,6 +42,7 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<IEnumerable<AccountForAdminDTO>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccounts();
+
             if (accounts == null)
                 return NotFound();
 

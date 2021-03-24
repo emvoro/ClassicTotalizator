@@ -72,13 +72,13 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return Forbid();
             }
         }
 
         /// <summary>
-        /// Deletes participant (TESTING, DON'T USE)
+        /// Deletes participant.
         /// </summary>
         /// <returns>Deleting state</returns>
         [HttpDelete("deleteParticipant/{id}")]

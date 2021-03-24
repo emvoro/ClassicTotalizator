@@ -14,12 +14,5 @@ namespace ClassicTotalizator.BLL.Generators
         /// <param name="account"></param>
         /// <returns>Jwt token with encrypted [snth to add]</returns>       //ToDo: smth inserted in jwt
         string GenerateJwt(AccountDTO account, string securityKey); // ToDo: delte plug and set user
-
-        /*/// <summary>
-        /// Creates new Jwt token
-        /// </summary>
-        /// <param name="loginDTO"></param>
-        /// <returns>Jwt token with encrypted [snth to add]</returns>       //ToDo: smth inserted in jwt
-        string GenerateJwt(AccountLoginDTO loginDTO, string se);*/
     }
 }

@@ -16,7 +16,7 @@ namespace ClassicTotalizator.API.Controllers
     /// </summary>
     [ApiController]
     [Authorize]
-    [Route("api/v1/wallet")]
+    [Route("api/[controller]")]
     public class WalletController : ControllerBase
     {
         private readonly ILogger<WalletController> _logger;
@@ -42,10 +42,12 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<WalletDTO>> GetWalletByAccId()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
             
             var wallet = await _walletService.GetWalletByAccId(accountId);
+
             if (wallet == null)
                 return NotFound();
             
@@ -60,10 +62,12 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<IEnumerable<TransactionWithTimeDTO>>> GetTransactionHistory()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             var transactionHistoryByAccId = await _walletService.GetTransactionHistoryByAccId(accountId);
+
             if (transactionHistoryByAccId == null)
                 return NotFound();
 
@@ -73,6 +77,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Make a transaction : deposit or withdraw
         /// </summary>
+        /// <param name="transactionDto">DTO of transaction</param>
         /// <returns>Wallet</returns>
         [HttpPost("transaction")]
         public async Task<ActionResult<WalletDTO>> AddTransaction([FromBody] TransactionDTO transactionDto)
@@ -81,12 +86,14 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest("Invalid parameter!");
 
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             try
             {
                 var wallet = await _walletService.Transaction(accountId, transactionDto);
+
                 if (wallet == null)
                     return BadRequest("Invalid transaction!");
 
@@ -94,7 +101,7 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return Conflict();
             }
         }

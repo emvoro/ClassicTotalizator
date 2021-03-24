@@ -14,7 +14,7 @@ namespace ClassicTotalizator.API.Controllers
     /// This controller contains operations with bets for logged in users.
     /// </summary>
     [ApiController]
-    [Route("api/v1/bet")]
+    [Route("api/[controller]")]
     public class BetController : ControllerBase
     {
         private readonly IBetService _betService;
@@ -41,10 +41,12 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult> GetBetsByAccId()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             var bets = await _betService.GetBetsByAccId(accountId);
+
             if (bets == null)
                 return NotFound("Bets not found!");
 
@@ -83,21 +85,19 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest("Model is invalid!");
 
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             try
             {
-                if (await _betService.AddBet(bet, accountId))
-                {
-                    return Ok();
-                }
-                
+                if (await _betService.AddBet(bet, accountId)) return Ok();
+
                 return BadRequest();
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return BadRequest("Argument null exception!");
             }
         }

@@ -20,15 +20,15 @@ namespace ClassicTotalizator.BLL.Mappings
                 };
         }
 
-        public static Event Map(EventRegisterDTO registerDTO)
+        public static Event Map(EventRegisterDTO eventRegisterDTO)
         {
-            return registerDTO == null
+            return eventRegisterDTO == null
                 ? null
                 : new Event
                 {
-                    StartTime = registerDTO.StartTime,
-                    Margin = registerDTO.Margin,
-                    PossibleResults = registerDTO.PossibleResults
+                    StartTime = eventRegisterDTO.StartTime,
+                    Margin = eventRegisterDTO.Margin,
+                    PossibleResults = eventRegisterDTO.PossibleResults
                 };
         }
 

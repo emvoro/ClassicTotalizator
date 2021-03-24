@@ -24,20 +24,20 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<SportDTO> Add(SportDTO sport)
         {
-            if (sport == null)
-                throw new ArgumentNullException(nameof(sport));
+            if (sport == null) throw new ArgumentNullException(nameof(sport));
 
             var sportEntity = SportMapper.Map(sport);
+
             try
             {
                 await _context.Sports.AddAsync(sportEntity);
                 await _context.SaveChangesAsync();
-
             }
             catch (Exception)
             {
                 return null;
             }
+
             return sport;
         }
 
@@ -55,11 +55,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             var sport = _context.Sports.FirstOrDefault(x => x.Id == id);
 
-            if (sport == null)
-                return false;
+            if (sport == null) return false;
 
             _context.Sports.Remove(sport);
             await _context.SaveChangesAsync();
+
             return true;
         }
     }

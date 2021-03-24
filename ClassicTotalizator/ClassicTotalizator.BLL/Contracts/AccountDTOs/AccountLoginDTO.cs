@@ -3,7 +3,7 @@
 namespace ClassicTotalizator.BLL.Contracts.AccountDTOs
 {
     /// <summary>
-    /// The contract coming from UI, for authentication purposes
+    /// The contract is coming from UI, for authentication purposes
     /// </summary>
     public class AccountLoginDTO
     {

@@ -39,10 +39,12 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (betDto == null)
                 throw new ArgumentNullException(nameof(betDto));
+
             if (betDto.Amount <= 0 || betDto.Event_Id == Guid.Empty || string.IsNullOrEmpty(betDto.Choice) || accountId == Guid.Empty)
                 return false;
             
             var @event = await _eventService.GetById(betDto.Event_Id);
+
             if (@event == null)
                 return false;
 
@@ -50,15 +52,16 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return false;
 
             var betPool = await _context.BetPools.FirstOrDefaultAsync(x => x.Event_Id == @event.Id);
+
             if (betPool == null)
                 return false;
             
             var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == accountId);
+
             if (wallet == null || wallet.Amount < betDto.Amount)
                 return false;
             
             wallet.Amount -= betDto.Amount;
-
             var bet = BetMapper.Map(betDto);
             bet.Id = Guid.NewGuid();
             bet.Account_Id = accountId;

@@ -13,7 +13,7 @@ namespace ClassicTotalizator.API.Controllers
     /// This controller contains authorization operations.
     /// </summary>
     [ApiController]
-    [Route("api/v1/auth")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -49,7 +49,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (!ModelState.IsValid || registerDTO == null)
             {
-                _logger.LogWarning("Model invalid!");
+                //_logger.LogWarning("Model is invalid!");
                 return BadRequest();
             }
 
@@ -65,7 +65,7 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return BadRequest();
             }
         }
@@ -80,7 +80,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (!ModelState.IsValid || loginDTO == null)
             {
-                _logger.LogWarning("Model invalid!");
+                //_logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 
@@ -103,7 +103,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (!ModelState.IsValid || loginDTO == null)
             {
-                _logger.LogWarning("Model invalid!");
+                //_logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 

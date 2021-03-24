@@ -182,12 +182,12 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument null exception. " + e.ParamName);
                 return BadRequest();
             }
         }
         /// <summary>
-        /// CAUTION! Be careful with this method. :)
+        /// Deletes event BUT be careful:)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -205,7 +205,7 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentException e)
             {
-                _logger.LogWarning(e.Message);
+                _logger.LogWarning("Argument exception. " + e.ParamName);
                 return BadRequest();
             }
         }

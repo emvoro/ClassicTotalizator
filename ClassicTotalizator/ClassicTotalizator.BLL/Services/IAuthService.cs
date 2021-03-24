@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 
