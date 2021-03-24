@@ -192,7 +192,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("deleteEvent/{id}")]
-        public async Task<ActionResult<bool>> DeleteSportSport([FromRoute]Guid id)
+        public async Task<ActionResult<bool>> DeleteEvent([FromRoute]Guid id)
         {
             try
             {
