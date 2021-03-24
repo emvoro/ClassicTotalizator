@@ -1,8 +1,6 @@
 ﻿using ClassicTotalizator.BLL.Contracts.ChatDTOs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClassicTotalizator.BLL.Services
@@ -13,10 +11,17 @@ namespace ClassicTotalizator.BLL.Services
     public interface IChatService
     {
         /// <summary>
+        /// Get last 100 messages
+        /// </summary>
+        /// <returns>Messages</returns>
+        Task<IEnumerable<MessageDTO>> GetMessages();
+        
+        /// <summary>
         ///  Add new message in message pool
         /// </summary>
-        /// <param name="messageToPost"></param>
-        /// <returns>True if message was posted; False if smth went wrong/returns>
+        /// <param name="messageToPost">Message</param>
+        /// <param name="accountId">Account id</param>
+        /// <returns>True if message was posted; False if smth went wrong</returns>
         Task<bool> PostMessageAsync(MessageToPostDTO messageToPost, Guid accountId);
 
         /// <summary>
