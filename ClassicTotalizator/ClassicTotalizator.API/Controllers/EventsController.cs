@@ -141,7 +141,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Edit event.
         /// </summary>
         /// <returns>Event DTO</returns>
-        [HttpPatch("patchEvent")]
+        [HttpPut("patchEvent")]
         public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
         {
             if (!ModelState.IsValid || eventDTO == null)
@@ -162,7 +162,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="finishedEvent">Event</param>
         /// <returns>Bool value, true id closed, another - false</returns>
-        [HttpPatch("finishEvent")]
+        [HttpPut("finishEvent")]
         public async Task<ActionResult<bool>> FinishEvent([FromBody] FinishedEventDTO finishedEvent)
         {
             if (!ModelState.IsValid || finishedEvent == null)
