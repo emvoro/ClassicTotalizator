@@ -39,7 +39,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get current message list (Be careful, this api is not yet implemented)
         /// </summary>
         /// <returns>List of all messages now in chat(100)</returns>
-        [HttpGet("getCurrentMessages")]
+        [HttpGet]
         public async Task<ActionResult<CurrentChatMessagesDTO>> GetMessagesInChat()
         {
             throw new NotImplementedException();
@@ -50,7 +50,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="toPostDTO">Text dto that user trying to post</param>
         /// <returns>True if message was posted or false if smth went wrong</returns>
-        [HttpPost("postMessage")]
+        [HttpPost]
         public async Task<ActionResult<bool>> PostMessageInChat([FromBody] MessageToPostDTO toPostDTO)
         {
             if (!ModelState.IsValid || toPostDTO == null)
@@ -80,7 +80,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="messageId">Deletes message from chat action</param>
         /// <returns>True if message was deleted</returns>
-        [HttpDelete("deleteMessage/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult<bool>> DeleteMessage([FromRoute] Guid id)
         {

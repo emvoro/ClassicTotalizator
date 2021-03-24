@@ -37,7 +37,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get all participants
         /// </summary>
         /// <returns>Collection of all registered participants for [CURRENT SPORT]</returns>
-        [HttpGet("participants")]
+        [HttpGet]
         public async Task<ActionResult<ParticipantsDTO>> GetAllParticipantsAsync()
         {
             var participants = await _participantsService.GetAllParticipantsAsync();
@@ -52,7 +52,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Add new participant
         /// </summary>
         /// <returns>Event DTO</returns>
-        [HttpPost("addParticipant")]
+        [HttpPost]
         public async Task<ActionResult<ParticipantDTO>> AddParticipant([FromBody] ParticipantRegisterDTO registerDTO)
         {
             if (!ModelState.IsValid || registerDTO == null)
@@ -81,7 +81,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Deletes participant.
         /// </summary>
         /// <returns>Deleting state</returns>
-        [HttpDelete("deleteParticipant/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteParticipant([FromRoute] Guid id)
         {
             var deleted = await _participantsService.DeleteParticipantAsync(id);
