@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Contracts.AccountDTOs;
+﻿using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Mappings
@@ -81,6 +80,21 @@ namespace ClassicTotalizator.BLL.Mappings
 
             if (obj.Wallet != null)
                 newObj.WalletAmount = obj.Wallet.Amount;
+
+            return newObj;
+        }
+
+        public static AccountInfoDTO MapForChatInfo(Account obj)
+        {
+            if (obj == null)
+                return null;
+
+            var newObj = new AccountInfoDTO
+            {
+                Id = obj.Id,
+                Username = obj.Username,
+                AvatarLink = obj.AvatarLink
+            };
 
             return newObj;
         }
