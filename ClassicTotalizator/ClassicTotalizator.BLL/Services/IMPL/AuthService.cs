@@ -63,15 +63,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             if (age < 18) return null;
 
+            var newId = Guid.NewGuid();
             var accountForRegister = new AccountDTO
             {
-                Id = Guid.NewGuid(),
+                Id = newId,
                 AccountType = Roles.User,
                 PasswordHash = _hashGenerator.GenerateHash(accountRegisterDTO.Password),
                 Email = accountRegisterDTO.Email,
                 Username = accountRegisterDTO.Username,
                 DOB = accountRegisterDTO.DOB,
-                AccountCreationTime = accountRegisterDTO.AccountCreationTime
+                AccountCreationTime = accountRegisterDTO.AccountCreationTime,
+                AvatarLink =$"https://avatars.dicebear.com/api/human/{newId}.png"
             };
 
             if (await _accountService.Add(accountForRegister))
