@@ -15,7 +15,6 @@ namespace ClassicTotalizator.API.Controllers
     /// This controller contains operations with user accounts.
     /// </summary>
     [ApiController]
-    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
@@ -39,6 +38,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>All accounts</returns>
         [HttpGet]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult<IEnumerable<AccountForAdminDTO>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccounts();

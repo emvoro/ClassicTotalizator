@@ -143,7 +143,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Edit event.
         /// </summary>
         /// <returns>Event DTO</returns>
-        [HttpPatch("edit")]
+        [HttpPut("edit")]
         public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
         {
             if (!ModelState.IsValid || eventDTO == null)
@@ -151,6 +151,7 @@ namespace ClassicTotalizator.API.Controllers
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
+			
             var editedEvent = await _eventService.EditEventAsync(eventDTO);
             
             if (editedEvent == null)
@@ -164,7 +165,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="finishedEvent">Event</param>
         /// <returns>Bool value, true id closed, another - false</returns>
-        [HttpPatch("finish")]
+        [HttpPut("finish")]
         public async Task<ActionResult<bool>> FinishEvent([FromBody] FinishedEventDTO finishedEvent)
         {
             if (!ModelState.IsValid || finishedEvent == null)
@@ -188,6 +189,7 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
         }
+		
         /// <summary>
         /// Deletes event BUT be careful:)
         /// </summary>
