@@ -35,7 +35,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<IEnumerable<MessageDTO>> GetMessages()
         {
-            var messages = await _context.Messages.OrderBy(x => x.Time).Take(100).ToListAsync();
+            var messages = await _context.Messages.OrderByDescending(x => x.Time).Take(100).ToListAsync();
             var messagesDto = messages.Select(ChatMessageMapper.Map).ToList();
             
             foreach (var message in messagesDto)
