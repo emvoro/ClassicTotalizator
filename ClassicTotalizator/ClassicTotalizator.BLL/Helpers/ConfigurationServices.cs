@@ -1,4 +1,7 @@
 ﻿using ClassicTotalizator.DAL.Context;
+using ClassicTotalizator.DAL.Entities;
+using ClassicTotalizator.DAL.Repositories;
+using ClassicTotalizator.DAL.Repositories.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +15,18 @@ namespace ClassicTotalizator.BLL.Helpers
             services.AddDbContext<DatabaseContext>(
                 options => options.UseNpgsql(configuration.GetConnectionString("DatabaseContext")),
                 ServiceLifetime.Transient);
+
+            services.AddTransient<IRepository<Message>, Repository<Message>>();
+            services.AddTransient<IRepository<Sport>, Repository<Sport>>();
+            services.AddTransient<IRepository<BetPool>, Repository<BetPool>>();
+            services.AddTransient<IRepository<Wallet>, Repository<Wallet>>();
+            services.AddTransient<IRepository<Participant>, Repository<Participant>>();
+            services.AddTransient<IBetRepository, BetRepository>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<IParameterRepository, ParameterRepository>();
+            services.AddTransient<IPlayerRepository, PlayerRepository>();
+            services.AddTransient<IEventRepository, EventRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
         }
     }
 }
