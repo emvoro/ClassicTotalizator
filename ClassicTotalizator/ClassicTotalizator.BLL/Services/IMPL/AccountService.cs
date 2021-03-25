@@ -48,12 +48,25 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return AccountMapper.Map(account);
         }
 
+        public async Task<AccountDTO> GetByUsername(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+                return null;
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Username == username);
+
+            return AccountMapper.Map(account);
+        }
+
         public async Task<bool> Add(AccountDTO registeredAccount)
         {
             if (registeredAccount == null)
                 throw new ArgumentNullException(nameof(registeredAccount));
 
             if (await GetByEmail(registeredAccount.Email) != null)
+                return false;
+
+            if (await GetByUsername(registeredAccount.Username) != null)
                 return false;
 
             var account = AccountMapper.Map(registeredAccount);
