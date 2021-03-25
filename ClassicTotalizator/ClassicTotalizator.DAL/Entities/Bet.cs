@@ -22,5 +22,13 @@ namespace ClassicTotalizator.DAL.Entities
         public string Choice { get; set; }
 
         public decimal Amount { get; set; }
+
+
+        /*
+        Part that you can see after this comment needs to be added in new migration
+         */
+        public DateTimeOffset BetTime { get; set; }
+
+        public string Status { get; set; }
     }
 }

@@ -21,6 +21,25 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _eventService = eventService;
         }
 
+
+
+        /*
+         
+            Here you need to develop mapper for         
+            -BetPreviewForUserDTO
+            -BetPreviewForAdninDTO
+            
+        + develop method for users purpose
+
+        + make new method for admins purpose (Checl bets preview dto for admins)
+
+            Please check DAL, added new properties to bet entity
+         
+         
+            !!!WE NEED TO ADD NEW MIGRATION!!!!
+         */
+
+
         public async Task<IEnumerable<BetDTO>> GetEventBets(Guid id)
         {
             var bets = await _context.Bets.Where(x => x.Event_Id == id).ToListAsync();
