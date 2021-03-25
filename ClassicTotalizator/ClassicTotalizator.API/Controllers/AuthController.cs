@@ -98,7 +98,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <param name="loginDTO">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
-        [HttpPost("admin/login")]
+        [HttpPost("login/admin")]
         public async Task<ActionResult<JwtDTO>> AdminLoginAsync([FromBody] AccountLoginDTO loginDTO)
         {
             if (!ModelState.IsValid || loginDTO == null)

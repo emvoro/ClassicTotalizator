@@ -42,6 +42,7 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<CurrentChatMessagesDTO>> GetMessagesInChat()
         {
             var messages = await _chatService.GetMessages();
+
             if (messages == null)
                 return NotFound();
 
@@ -54,21 +55,23 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Add message to message pool
         /// </summary>
-        /// <param name="toPostDTO">Text dto that user trying to post</param>
+        /// <param name="messageToPostDTO">Text dto that user trying to post</param>
         /// <returns>True if message was posted or false if smth went wrong</returns>
         [HttpPost]
         [Authorize(Roles = Roles.User)]
-        public async Task<ActionResult<bool>> PostMessageInChat([FromBody] MessageToPostDTO toPostDTO)
+        public async Task<ActionResult<bool>> PostMessageInChat([FromBody] MessageToPostDTO messageToPostDTO)
         {
-            if (!ModelState.IsValid || toPostDTO == null)
+            if (!ModelState.IsValid || messageToPostDTO == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest($"You tried to post invalid message");
             }
+
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
+
             try
             {
-                var posted = await _chatService.PostMessageAsync(toPostDTO, accountId);
+                var posted = await _chatService.PostMessageAsync(messageToPostDTO, accountId);
 
                 if (!posted)
                     return BadRequest("The message was not memorized");
@@ -83,7 +86,7 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Only for admins permissions(Deleting Messages from chat)
+        /// Only with admin permission(Deleting Messages from chat)
         /// </summary>
         /// <param name="id">Deletes message from chat action</param>
         /// <returns>True if message was deleted</returns>

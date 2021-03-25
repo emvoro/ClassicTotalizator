@@ -53,7 +53,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get user account for chat view
         /// </summary>
         /// <returns>All accounts</returns>
-        [HttpGet("{token}")]
+        [HttpGet("profile")]
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult<IEnumerable<AccountInfoDTO>>> GetAccountForChat()
         {
