@@ -33,53 +33,6 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Get all possible outcomes for events.
-        /// </summary>
-        /// <returns>List of all possible outcomes</returns>
-        [HttpGet("outcomes")]
-        public IActionResult GetAllPossibleOutcomes()
-        {
-            return Ok(new OutcomesDTO());
-        }
-
-        /// <summary>
-        /// Get event by id.
-        /// </summary>
-        /// <returns>Event by id</returns>
-        [HttpGet("event/{id}")]
-        public async Task<ActionResult<EventDTO>> GetEventById([FromRoute] Guid id)
-        {
-            if (id == Guid.Empty)
-                return BadRequest();
-
-            var foundEvent = await _eventService.GetById(id);
-            if (foundEvent == null)
-                return NotFound();
-
-            return Ok(foundEvent);
-        }
-
-        /// <summary>
-        /// Get event preview by id
-        /// </summary>
-        /// <param name="id">Unique identifier of event</param>
-        /// <returns>Event preview</returns>
-        [HttpGet("preview/{id}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<EventPreviewDTO>> GetEventPreviewById([FromRoute] Guid id)
-        {
-            if (id == Guid.Empty)
-                return BadRequest($"This guid: [{id}] not valid!");
-            
-            var eventPreview = await _eventService.GetEventPreview(id);
-
-            if (eventPreview == null)
-                return NotFound($"Event by this id [{id}] was not found");
-
-            return Ok(eventPreview);
-        }
-
-        /// <summary>
         /// Get all events.
         /// </summary>
         /// <returns>List of all events.</returns>
@@ -108,6 +61,53 @@ namespace ClassicTotalizator.API.Controllers
                 return NotFound();
 
             return Ok(currentLine);
+        }
+
+        /// <summary>
+        /// Get all possible outcomes for events.
+        /// </summary>
+        /// <returns>List of all possible outcomes</returns>
+        [HttpGet("outcomes")]
+        public IActionResult GetAllPossibleOutcomes()
+        {
+            return Ok(new OutcomesDTO());
+        }
+
+        /// <summary>
+        /// Get event by id.
+        /// </summary>
+        /// <returns>Event by id</returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<EventDTO>> GetEventById([FromRoute] Guid id)
+        {
+            if (id == Guid.Empty)
+                return BadRequest();
+
+            var foundEvent = await _eventService.GetById(id);
+            if (foundEvent == null)
+                return NotFound();
+
+            return Ok(foundEvent);
+        }
+
+        /// <summary>
+        /// Get event preview by id
+        /// </summary>
+        /// <param name="id">Unique identifier of event</param>
+        /// <returns>Event preview</returns>
+        [HttpGet("{id}/preview")]
+        [AllowAnonymous]
+        public async Task<ActionResult<EventPreviewDTO>> GetEventPreviewById([FromRoute] Guid id)
+        {
+            if (id == Guid.Empty)
+                return BadRequest($"This guid: [{id}] not valid!");
+            
+            var eventPreview = await _eventService.GetEventPreview(id);
+
+            if (eventPreview == null)
+                return NotFound($"Event by this id [{id}] was not found");
+
+            return Ok(eventPreview);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Edit event.
         /// </summary>
         /// <returns>Event DTO</returns>
-        [HttpPut("edit")]
+        [HttpPut("{id}/edit")]
         public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
         {
             if (!ModelState.IsValid || eventDTO == null)
