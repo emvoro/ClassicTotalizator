@@ -139,33 +139,13 @@ namespace ClassicTotalizator.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Edit event.
-        /// </summary>
-        /// <returns>Event DTO</returns>
-        [HttpPut("{id}/edit")]
-        public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
-        {
-            if (!ModelState.IsValid || eventDTO == null)
-            {
-                _logger.LogWarning("Model invalid!");
-                return BadRequest();
-            }
-			
-            var editedEvent = await _eventService.EditEventAsync(eventDTO);
-            
-            if (editedEvent == null)
-                return BadRequest();
-
-            return Ok(editedEvent);
-        }
 
         /// <summary>
         /// Close event.
         /// </summary>
         /// <param name="finishedEvent">Event</param>
         /// <returns>Bool value, true id closed, another - false</returns>
-        [HttpPut("finish")]
+        [HttpPost("finish")]
         public async Task<ActionResult<bool>> FinishEvent([FromBody] FinishedEventDTO finishedEvent)
         {
             if (!ModelState.IsValid || finishedEvent == null)
@@ -189,7 +169,29 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
         }
-		
+
+
+        /// <summary>
+        /// Edit event.
+        /// </summary>
+        /// <returns>Event DTO</returns>
+        [HttpPut("{id}/edit")]
+        public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
+        {
+            if (!ModelState.IsValid || eventDTO == null)
+            {
+                _logger.LogWarning("Model invalid!");
+                return BadRequest();
+            }
+			
+            var editedEvent = await _eventService.EditEventAsync(eventDTO);
+            
+            if (editedEvent == null)
+                return BadRequest();
+
+            return Ok(editedEvent);
+        }
+
         /// <summary>
         /// Deletes event BUT be careful:)
         /// </summary>
