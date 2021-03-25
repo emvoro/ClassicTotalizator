@@ -36,7 +36,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get bets on account.
         /// </summary>
         /// <returns>Bets on account</returns>
-        [HttpGet("{token}")]
+        [HttpGet("history")]
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> GetBetsByAccId()
         {

@@ -58,7 +58,7 @@ namespace ClassicTotalizator.API.Controllers
         /// Get account transaction history.
         /// </summary>
         /// <returns>Transaction history</returns>
-        [HttpGet("transaction")]
+        [HttpGet("history")]
         public async Task<ActionResult<IEnumerable<TransactionWithTimeDTO>>> GetTransactionHistory()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
