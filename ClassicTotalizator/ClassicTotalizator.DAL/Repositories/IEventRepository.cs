@@ -5,8 +5,8 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface ITransactionRepository
+    public interface IEventRepository
     {
-        Task<IEnumerable<Transaction>> GetAccountTransaction(Guid accountId);
+        Task<IEnumerable<Event>> GetEventsBySportId(int sportId);
     }
 }

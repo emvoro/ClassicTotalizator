@@ -5,8 +5,10 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface ITransactionRepository
+    public interface IBetRepository
     {
-        Task<IEnumerable<Transaction>> GetAccountTransaction(Guid accountId);
+        Task<IEnumerable<Bet>> GetBetsByAccountId(Guid accId);
+        
+        Task<IEnumerable<Bet>> GetBetsByEventId(Guid eventId);
     }
 }

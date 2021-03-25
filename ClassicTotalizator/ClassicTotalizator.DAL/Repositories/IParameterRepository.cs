@@ -5,8 +5,8 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface ITransactionRepository
+    public interface IParameterRepository
     {
-        Task<IEnumerable<Transaction>> GetAccountTransaction(Guid accountId);
+        Task<IEnumerable<Parameter>> GetParametersByParticipantId(Guid partId);
     }
 }
