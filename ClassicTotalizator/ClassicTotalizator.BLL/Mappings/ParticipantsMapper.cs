@@ -27,7 +27,8 @@ namespace ClassicTotalizator.BLL.Mappings
                 {
                     Name = participantRegisterDTO.Name,
                     PhotoLink = participantRegisterDTO.PhotoLink,
-                    Players = participantRegisterDTO.Players.Select(PlayerMapper.Map).ToList()
+                    Players = participantRegisterDTO.Players.Select(PlayerMapper.Map).ToList(),
+                    Parameters = participantRegisterDTO.Parameters.Select(ParameterMapper.Map).ToList()
                 };
         }
 

@@ -71,6 +71,13 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                     player.Participant_Id = newGuid;
                 }
             }
+            
+            foreach (var parameter in participant.Parameters)
+            {
+                parameter.Participant_Id = participant.Id;
+                    
+                await _parameterRepository.AddAsync(parameter);
+            }
 
             await _repository.AddAsync(participant);
 
