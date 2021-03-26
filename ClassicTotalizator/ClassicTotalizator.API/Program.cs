@@ -5,7 +5,8 @@ using Serilog;
 
 namespace ClassicTotalizator.API
 {
-    public class Program
+#pragma warning disable 1591
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -27,4 +28,5 @@ namespace ClassicTotalizator.API
                  webBuilder.UseStartup<Startup>();
              });
     }
+#pragma warning restore 1591
 }

@@ -1,10 +1,10 @@
-﻿using ClassicTotalizator.API.Options;
-using ClassicTotalizator.BLL.Services;
+﻿using ClassicTotalizator.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 
 namespace ClassicTotalizator.API.Controllers

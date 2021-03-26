@@ -263,7 +263,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 var pendingWallet = await _walletRepository.GetByIdAsync(bet.Account_Id);
                 if (losingAmount == 0)
                 {
-                    var refundedMoney = bet.Amount - (closedEvent.Margin / 100m);
+                    var refundedMoney = bet.Amount * (100m - closedEvent.Margin / 100m);
                     pendingWallet.Amount += refundedMoney;
                    
                     await _walletRepository.UpdateAsync(pendingWallet);
