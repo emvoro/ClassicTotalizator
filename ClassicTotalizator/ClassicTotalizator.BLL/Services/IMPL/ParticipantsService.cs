@@ -89,7 +89,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return true;
         }
 
-        private async Task<IEnumerable<ParameterDTO>> GetParametersByPartId(Guid id)
+        private async Task<ICollection<ParameterDTO>> GetParametersByPartId(Guid id)
         {
             if (id == Guid.Empty) return null;
 
@@ -98,7 +98,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return parameters.Select(ParameterMapper.Map).ToList();
         }
 
-        private async Task<IEnumerable<PlayerDTO>> GetPlayersByPartId(Guid id)
+        private async Task<ICollection<PlayerDTO>> GetPlayersByPartId(Guid id)
         {
             if (id == Guid.Empty) return null;
 

@@ -21,17 +21,21 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private readonly IRepository<Wallet> _walletRepository;
 
+        private readonly IParameterRepository _parameterRepository;
+
         public EventService(IEventRepository repository,
             IRepository<Participant> participantRepository,
             ISportRepository sportRepository,
             IBetRepository betRepository,
-            IRepository<Wallet> walletRepository)
+            IRepository<Wallet> walletRepository, 
+            IParameterRepository parameterRepository)
         {
             _repository = repository;
             _participantRepository = participantRepository;
             _sportRepository = sportRepository;
             _betRepository = betRepository;
             _walletRepository = walletRepository;
+            _parameterRepository = parameterRepository;
         }
 
         public async Task<EventDTO> GetById(Guid id)
@@ -219,6 +223,18 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                     default:
                         continue;
                 }
+            }
+
+            var parameters1 = await _parameterRepository.GetParametersByParticipantId(eventRes.Participant1.Id);
+            var parameters2 = await _parameterRepository.GetParametersByParticipantId(eventRes.Participant2.Id);
+            foreach (var parameter in parameters1)
+            {
+                eventRes.Participant1.Parameters.Add(ParameterMapper.Map(parameter));
+            }
+
+            foreach (var parameter in parameters2)
+            {
+                eventRes.Participant2.Parameters.Add(ParameterMapper.Map(parameter));
             }
 
             return eventRes;

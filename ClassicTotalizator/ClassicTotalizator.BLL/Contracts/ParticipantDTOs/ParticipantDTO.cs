@@ -14,12 +14,12 @@ namespace ClassicTotalizator.BLL.Contracts.ParticipantDTOs
         public string Name { get; set; }
 
         [Required]
-        public IEnumerable<PlayerDTO> Players { get; set; }
+        public ICollection<PlayerDTO> Players { get; set; }
 
         [Required]
         public string PhotoLink { get; set; }
 
-        public IEnumerable<ParameterDTO> Parameters { get; set; }
+        public ICollection<ParameterDTO> Parameters { get; set; }
 
         public ParticipantDTO()
         {

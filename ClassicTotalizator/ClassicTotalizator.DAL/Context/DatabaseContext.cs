@@ -1,5 +1,4 @@
-﻿using System;
-using ClassicTotalizator.DAL.Entities;
+﻿using ClassicTotalizator.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClassicTotalizator.DAL.Context
