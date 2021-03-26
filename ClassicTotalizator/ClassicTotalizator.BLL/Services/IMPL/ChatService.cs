@@ -40,6 +40,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             {
                 var account = await _accountRepository.GetByIdAsync(message.Account_Id);
                 message.Username = account.Username;
+                message.AvatarLink = account.AvatarLink;
             }
 
             return messagesDto;
