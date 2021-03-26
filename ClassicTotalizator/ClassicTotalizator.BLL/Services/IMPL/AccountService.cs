@@ -79,8 +79,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             account.Wallet = new Wallet
             {
                 Account = account,
-                Account_Id = account.Id,
-                TransactionsHistory = new List<Transaction>()   
+                Account_Id = account.Id 
             };
             account.BetsHistory = new List<Bet>();
 

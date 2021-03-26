@@ -16,7 +16,7 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
 
         public async Task<IEnumerable<Transaction>> GetAccountTransaction(Guid accountId)
         {
-            return await _set.Where(x => x.Account_Id == accountId).ToListAsync();
+            return await Set.Where(x => x.Wallet_Id == accountId).ToListAsync();
         }
     }
 }

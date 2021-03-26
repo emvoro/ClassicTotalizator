@@ -15,7 +15,7 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
 
         public async Task<IEnumerable<Message>> GetLastMessages()
         {
-            return await _set.OrderByDescending(x => x.Time).Take(100).ToListAsync();
+            return await Set.OrderByDescending(x => x.Time).Take(100).ToListAsync();
         }
     }
 }

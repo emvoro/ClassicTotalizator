@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
@@ -55,7 +54,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             newMessage.Id = Guid.NewGuid();
             newMessage.Account_Id = accountId;
             newMessage.Time = DateTimeOffset.UtcNow;
-            newMessage.Account = await _accountRepository.GetByIdAsync(newMessage.Account_Id);
 
             await _repository.AddAsync(newMessage);
 

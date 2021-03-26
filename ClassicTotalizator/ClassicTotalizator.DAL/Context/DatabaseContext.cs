@@ -97,7 +97,7 @@ namespace ClassicTotalizator.DAL.Context
             builder.Entity<Wallet>()
                 .HasMany(s => s.TransactionsHistory)
                 .WithOne(s => s.Wallet)
-                .HasForeignKey(s => s.Account_Id);
+                .HasForeignKey(s => s.Wallet_Id);
 
             builder.Entity<Parameter>().HasKey(s => s.Id);
 

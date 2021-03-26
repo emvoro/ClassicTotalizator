@@ -3,15 +3,17 @@ using System;
 using ClassicTotalizator.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ClassicTotalizator.DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210326131307_AccountUpdate")]
+    partial class AccountUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,6 +265,9 @@ namespace ClassicTotalizator.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("Account_Id")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
@@ -272,15 +277,12 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("Wallet_Id")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("Account_Id");
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("Wallet_Id");
 
                     b.ToTable("Transactions");
                 });
@@ -390,13 +392,13 @@ namespace ClassicTotalizator.DAL.Migrations
 
             modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Transaction", b =>
                 {
-                    b.HasOne("ClassicTotalizator.DAL.Entities.Wallet", "Wallet")
+                    b.HasOne("ClassicTotalizator.DAL.Entities.Account", "Account")
                         .WithMany("TransactionsHistory")
-                        .HasForeignKey("Wallet_Id")
+                        .HasForeignKey("Account_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Wallet");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Wallet", b =>
@@ -416,6 +418,8 @@ namespace ClassicTotalizator.DAL.Migrations
 
                     b.Navigation("Messages");
 
+                    b.Navigation("TransactionsHistory");
+
                     b.Navigation("Wallet");
                 });
 
@@ -434,11 +438,6 @@ namespace ClassicTotalizator.DAL.Migrations
                     b.Navigation("Parameters");
 
                     b.Navigation("Players");
-                });
-
-            modelBuilder.Entity("ClassicTotalizator.DAL.Entities.Wallet", b =>
-                {
-                    b.Navigation("TransactionsHistory");
                 });
 #pragma warning restore 612, 618
         }
