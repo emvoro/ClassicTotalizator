@@ -21,10 +21,6 @@ namespace ClassicTotalizator.Tests
         public async Task GetEventBets_MustReturnNull_If_EventBetsIsEmpty()
         {
 
-            
-            var bets = await _betService.GetEventBets(Guid.NewGuid());
-
-            Assert.Null(bets);
         }
     }
 }
