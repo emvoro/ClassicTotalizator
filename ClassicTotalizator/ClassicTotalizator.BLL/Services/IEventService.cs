@@ -29,14 +29,6 @@ namespace ClassicTotalizator.BLL.Services
         /// <param name="id">Unique identifier of event</param>
         /// <returns> Found event by requested id</returns>
         Task<EventDTO> GetById(Guid id);
-        
-        /// <summary>
-        /// Creates event for backoffice.
-        /// </summary>
-        /// <param name="sport">Contract for event.</param>
-        /// <returns>Returns jwt token or <c>null</c> if login already existed.</returns>
-        /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
-        Task<IEnumerable<EventDTO>> GetEventsBySportAsync(string sport);
 
         /// <summary>
         /// Trying to edit already created event
@@ -61,7 +53,7 @@ namespace ClassicTotalizator.BLL.Services
         ///  Searching for an event in the database and backs detailed object
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
-        /// <returns>Detatils</returns>
+        /// <returns>Details</returns>
         Task<EventPreviewDTO> GetEventPreview(Guid id);
 
         /// <summary>

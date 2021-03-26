@@ -1,21 +1,25 @@
 ﻿using ClassicTotalizator.BLL.Contracts.ChatDTOs;
 using ClassicTotalizator.BLL.Mappings;
-using ClassicTotalizator.DAL.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using ClassicTotalizator.DAL.Entities;
+using ClassicTotalizator.DAL.Repositories;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
     public class ChatService : IChatService
     {
-        private readonly DatabaseContext _context;
+        private readonly IMessageRepository _repository;
 
-        public ChatService(DatabaseContext context)
+        private readonly IAccountRepository _accountRepository;
+
+        public ChatService(IMessageRepository repository, 
+            IAccountRepository accountRepository)
         {
-            _context = context;
+            _repository = repository;
+            _accountRepository = accountRepository;
         }
 
         public async Task<bool> DeleteMessageAsync(Guid id)
@@ -23,24 +27,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (string.IsNullOrEmpty(id.ToString()))
                 throw new ArgumentException();
 
-            var message = _context.Messages.FirstOrDefault(msg => msg.Id == id);
-
-            if (message == null)
-                return false;
-
-            _context.Messages.Remove(message);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _repository.RemoveByIdAsync(id);
         }
 
         public async Task<IEnumerable<MessageDTO>> GetMessages()
         {
-            var messages = await _context.Messages.OrderByDescending(x => x.Time).Take(100).ToListAsync();
+            var messages = await _repository.GetLastMessages();
             var messagesDto = messages.Select(ChatMessageMapper.Map).ToList();
             
             foreach (var message in messagesDto)
             {
-                var account = await _context.Accounts.FindAsync(message.Account_Id);
+                var account = await _accountRepository.GetByIdAsync(message.Account_Id);
                 message.Username = account.Username;
             }
 
@@ -56,12 +53,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             newMessage.Id = Guid.NewGuid();
             newMessage.Account_Id = accountId;
             newMessage.Time = DateTimeOffset.UtcNow;
-            newMessage.Account = await _context.Accounts.FindAsync(accountId);
+            newMessage.Account = await _accountRepository.GetByIdAsync(newMessage.Account_Id);
 
-            await _context.Messages.AddAsync(newMessage);
-            await _context.SaveChangesAsync();
-
-            return true;
+            return await _repository.AddAsync(newMessage);
         }
     }
 }

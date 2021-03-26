@@ -1,12 +1,11 @@
 ﻿using ClassicTotalizator.BLL.Mappings;
-using ClassicTotalizator.DAL.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.SportDTOs;
-using Microsoft.EntityFrameworkCore;
 using ClassicTotalizator.DAL.Entities;
+using ClassicTotalizator.DAL.Repositories;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -15,11 +14,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
     /// </summary>
     public class SportService : ISportService
     {
-        private readonly DatabaseContext _context;
+        private readonly ISportRepository _repository;
 
-        public SportService(DatabaseContext context)
+        public SportService(ISportRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<SportDTO> Add(SportDTO sport)
@@ -30,8 +29,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             try
             {
-                await _context.Sports.AddAsync(sportEntity);
-                await _context.SaveChangesAsync();
+                await _repository.AddAsync(sportEntity);
             }
             catch (Exception)
             {
@@ -43,7 +41,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<SportsDTO> GetCurrentListOfSports()
         {
-            var sports = await _context.Sports.ToListAsync() ?? new List<Sport>();
+            var sports = await _repository.GetAllAsync() ?? new List<Sport>();
 
             return new SportsDTO
             {
@@ -53,12 +51,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> DeleteSportAsync(int id)
         {
-            var sport = _context.Sports.FirstOrDefault(x => x.Id == id);
+            var sport = await _repository.GetByIdAsync(id);
+            if (sport == null) 
+                return false;
 
-            if (sport == null) return false;
-
-            _context.Sports.Remove(sport);
-            await _context.SaveChangesAsync();
+            await _repository.RemoveAsync(sport);
 
             return true;
         }

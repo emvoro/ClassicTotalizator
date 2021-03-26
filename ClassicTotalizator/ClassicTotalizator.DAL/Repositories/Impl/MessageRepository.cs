@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,15 +7,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClassicTotalizator.DAL.Repositories.Impl
 {
-    public class EventRepository : Repository<Event>, IEventRepository
+    public class MessageRepository : Repository<Message>, IMessageRepository
     {
-        public EventRepository(DatabaseContext context) : base(context)
+        public MessageRepository(DatabaseContext context) : base(context)
         {
         }
 
-        public async Task<IEnumerable<Event>> GetNotEndedEvents()
+        public async Task<IEnumerable<Message>> GetLastMessages()
         {
-            return await _set.Where(x => x.IsEnded == false).ToListAsync();
+            return await _set.OrderByDescending(x => x.Time).Take(100).ToListAsync();
         }
     }
 }

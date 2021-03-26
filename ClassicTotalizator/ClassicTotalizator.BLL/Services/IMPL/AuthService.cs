@@ -15,7 +15,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private readonly IHashGenerator _hashGenerator;
 
-        public AuthService(IAccountService accountService, IHashGenerator hashGenerator)
+        public AuthService(IAccountService accountService, 
+            IHashGenerator hashGenerator)
         {
             _accountService = accountService;
             _hashGenerator = hashGenerator;

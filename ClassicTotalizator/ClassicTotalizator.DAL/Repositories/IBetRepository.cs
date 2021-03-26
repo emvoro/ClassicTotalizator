@@ -5,7 +5,7 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface IBetRepository
+    public interface IBetRepository : IRepository<Bet>
     {
         Task<IEnumerable<Bet>> GetBetsByAccountId(Guid accId);
         

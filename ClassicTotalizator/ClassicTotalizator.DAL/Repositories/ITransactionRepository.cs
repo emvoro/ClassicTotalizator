@@ -5,7 +5,7 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface ITransactionRepository
+    public interface ITransactionRepository : IRepository<Transaction>
     {
         Task<IEnumerable<Transaction>> GetAccountTransaction(Guid accountId);
     }

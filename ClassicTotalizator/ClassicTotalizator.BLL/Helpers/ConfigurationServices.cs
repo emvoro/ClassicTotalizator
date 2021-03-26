@@ -16,8 +16,8 @@ namespace ClassicTotalizator.BLL.Helpers
                 options => options.UseNpgsql(configuration.GetConnectionString("DatabaseContext")),
                 ServiceLifetime.Transient);
 
-            services.AddTransient<IRepository<Message>, Repository<Message>>();
-            services.AddTransient<IRepository<Sport>, Repository<Sport>>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<ISportRepository, SportRepository>();
             services.AddTransient<IRepository<BetPool>, Repository<BetPool>>();
             services.AddTransient<IRepository<Wallet>, Repository<Wallet>>();
             services.AddTransient<IRepository<Participant>, Repository<Participant>>();

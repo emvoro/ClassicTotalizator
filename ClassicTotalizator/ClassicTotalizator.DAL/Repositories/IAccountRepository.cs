@@ -3,7 +3,7 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface IAccountRepository
+    public interface IAccountRepository : IRepository<Account>
     {
         Task<Account> GetAccountByEmail(string email);
 
