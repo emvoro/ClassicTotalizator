@@ -7,9 +7,9 @@ namespace ClassicTotalizator.DAL.Entities
     {
         public Guid Id { get; set; }
 
-        public Guid Account_Id { get; set; }
+        public Guid Wallet_Id { get; set; }
 
-        [ForeignKey("Account_Id")]
+        [ForeignKey("Wallet_Id")]
         public virtual Wallet Wallet { get; set; }
 
         public decimal Amount { get; set; }

@@ -10,11 +10,11 @@ namespace ClassicTotalizator.DAL.Entities
         [Key]
         public Guid Account_Id { get; set; }
 
-        [ForeignKey("User_Id")]
+        [ForeignKey("Account_Id")]
         public virtual Account Account { get; set; }
 
         public decimal Amount { get; set; }
-
+        
         public ICollection<Transaction> TransactionsHistory { get; set; }
 
         public Wallet()

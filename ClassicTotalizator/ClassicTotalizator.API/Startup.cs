@@ -16,8 +16,7 @@ using System.Reflection;
 using System.Text;
 using ClassicTotalizator.BLL.Generators;
 using ClassicTotalizator.BLL.Generators.IMPL;
-
-using ClassicTotalizator.API.Options;
+using ClassicTotalizator.BLL.Services.Impl;
 
 namespace ClassicTotalizator.API
 {

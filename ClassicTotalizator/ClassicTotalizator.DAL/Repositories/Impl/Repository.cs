@@ -8,29 +8,29 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly DbSet<T> _set;
-        protected readonly DatabaseContext _context;
+        protected readonly DbSet<T> Set;
+        protected readonly DatabaseContext Context;
 
         public Repository(DatabaseContext context)
         {
-            _context = context;
-            _set = context.Set<T>();
+            Context = context;
+            Set = context.Set<T>();
         }
         
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await _set.FindAsync(id);
+            return await Set.FindAsync(id);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _set.ToListAsync();
+            return await Set.ToListAsync();
         }
 
         public async Task AddAsync(T obj)
         {
-            await _set.AddAsync(obj);
-            await _context.SaveChangesAsync();
+            await Set.AddAsync(obj);
+            await Context.SaveChangesAsync();
         }
 
         public async Task RemoveByIdAsync(Guid id)
@@ -42,16 +42,16 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
 
         public async Task RemoveAsync(T obj)
         {
-            _set.Remove(obj);
+            Set.Remove(obj);
             
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(T obj)
         {
-            _set.Update(obj);
+            Set.Update(obj);
             
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

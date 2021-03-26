@@ -52,16 +52,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 eventDto.StartTime < DateTimeOffset.UtcNow || eventDto.Margin <= 0)
                 return null;
 
-            if(eventDto.Margin <= 0 && eventDto.Margin > 100)  return null;
-
-            var participant1 = await _participantRepository.GetByIdAsync(eventDto.Participant_Id1);
-            if (participant1 == null) return null;
-
-            var participant2 = await _participantRepository.GetByIdAsync(eventDto.Participant_Id2);
-            if (participant2 == null) return null;
-
-            var sport = await _sportRepository.GetByIdAsync(eventDto.SportId);
-            if (sport == null) return null;
+            if(eventDto.Margin <= 0 && eventDto.Margin > 100)  
+                return null;
 
             var newId = Guid.NewGuid();
             var @event = new Event
@@ -74,13 +66,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 },
                 IsEnded = false,
                 Margin = eventDto.Margin,
-                Participant_Id1 = participant1.Id,
-                Participant1 = participant1,
-                Participant_Id2 = participant2.Id,
-                Participant2 = participant2,
+                Participant_Id1 = eventDto.Participant_Id1,
+                Participant_Id2 = eventDto.Participant_Id2,
                 PossibleResults = eventDto.PossibleResults,
-                Sport = sport,
-                Sport_Id = sport.Id,
+                Sport_Id = eventDto.SportId,
                 StartTime = eventDto.StartTime,
                 Result = null
             };

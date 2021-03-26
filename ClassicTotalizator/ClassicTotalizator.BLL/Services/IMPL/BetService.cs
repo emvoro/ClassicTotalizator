@@ -94,9 +94,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var bet = BetMapper.Map(betDto);
             bet.Id = Guid.NewGuid();
             bet.Account_Id = accountId;
-            bet.Account = await _accountRepository.GetByIdAsync(bet.Account_Id);
             
-            betPool.Bets.Add(bet);
             betPool.TotalAmount += bet.Amount;
 
             await _betpoolRepository.UpdateAsync(betPool);

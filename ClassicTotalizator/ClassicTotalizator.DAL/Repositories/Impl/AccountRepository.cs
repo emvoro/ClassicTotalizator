@@ -13,12 +13,12 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
 
         public async Task<Account> GetAccountByEmail(string email)
         {
-            return await _set.FirstOrDefaultAsync(x => x.Email == email);
+            return await Set.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<Account> GetAccountByUsername(string username)
         {
-            return await _set.FirstOrDefaultAsync(x => x.Username == username);
+            return await Set.FirstOrDefaultAsync(x => x.Username == username);
         }
     }
 }

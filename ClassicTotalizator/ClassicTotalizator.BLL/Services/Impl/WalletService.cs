@@ -8,7 +8,7 @@ using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class WalletService : IWalletService
     {
@@ -36,7 +36,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             var transaction = TransactionMapper.Map(transactionDto);
             transaction.DateTime = DateTimeOffset.UtcNow;
-            transaction.Wallet = wallet;
 
             if(transaction.Type == "withdraw")
             {
@@ -51,6 +50,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return null;
             
             transaction.Id = Guid.NewGuid();
+            transaction.Wallet_Id = accountId;
 
             await _repository.UpdateAsync(wallet);
             await _transactionRepository.AddAsync(transaction);
