@@ -1,11 +1,11 @@
 ﻿using ClassicTotalizator.BLL.Contracts.EventDTOs;
 using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Entities;
+using ClassicTotalizator.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClassicTotalizator.DAL.Repositories;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
@@ -21,10 +21,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private readonly IRepository<Wallet> _walletRepository;
 
-        public EventService(IEventRepository repository, 
-            IRepository<Participant> participantRepository, 
-            ISportRepository sportRepository, 
-            IBetRepository betRepository, 
+        public EventService(IEventRepository repository,
+            IRepository<Participant> participantRepository,
+            ISportRepository sportRepository,
+            IBetRepository betRepository,
             IRepository<Wallet> walletRepository)
         {
             _repository = repository;
@@ -36,7 +36,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventDTO> GetById(Guid id)
         {
-            if (id == Guid.Empty) 
+            if (id == Guid.Empty)
                 return null;
 
             return EventMapper.Map(await _repository.GetByIdAsync(id));
@@ -44,7 +44,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<EventDTO> CreateEventAsync(EventRegisterDTO eventDto)
         {
-            if (eventDto == null) 
+            if (eventDto == null)
                 throw new ArgumentNullException(nameof(eventDto));
 
             if (string.IsNullOrEmpty(eventDto.Participant_Id1.ToString()) ||
@@ -52,7 +52,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 eventDto.StartTime < DateTimeOffset.UtcNow || eventDto.Margin <= 0)
                 return null;
 
-            if(eventDto.Margin <= 0 && eventDto.Margin > 100)  
+            if (eventDto.Margin <= 0 && eventDto.Margin > 100)
                 return null;
 
             var newId = Guid.NewGuid();
@@ -142,13 +142,13 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 throw new ArgumentNullException(nameof(eventToClose));
 
             var closingEvent = await _repository.GetByIdAsync(eventToClose.Id);
-            if (closingEvent == null) 
+            if (closingEvent == null)
                 return false;
 
-            if (!closingEvent.PossibleResults.Contains(eventToClose.Result)) 
+            if (!closingEvent.PossibleResults.Contains(eventToClose.Result))
                 return false;
 
-            if (closingEvent.IsEnded) 
+            if (closingEvent.IsEnded)
                 return false;
 
             closingEvent.Result = eventToClose.Result;
@@ -162,7 +162,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<EventPreviewDTO> GetEventPreview(Guid id)
         {
             var eventInBase = await _repository.GetByIdAsync(id);
-            if (eventInBase == null) 
+            if (eventInBase == null)
                 return null;
 
             eventInBase.Participant1 = await _participantRepository.GetByIdAsync(eventInBase.Participant_Id1);
@@ -174,11 +174,11 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> DeleteEvent(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString())) 
+            if (string.IsNullOrEmpty(id.ToString()))
                 throw new ArgumentException();
 
             var eventToDelete = await _repository.GetByIdAsync(id);
-            if (eventToDelete == null) 
+            if (eventToDelete == null)
                 return false;
 
             var betPool = await _betRepository.GetBetsByEventId(id);
@@ -187,8 +187,10 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             {
                 var pendingWallet = await _walletRepository.GetByIdAsync(bet.Account_Id);
                 pendingWallet.Amount += bet.Amount;
-
                 await _walletRepository.UpdateAsync(pendingWallet);
+
+                bet.Status = $"Refund";
+                await _betRepository.UpdateAsync(bet);
             }
 
             await _repository.RemoveAsync(eventToDelete);
@@ -231,6 +233,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             var winningBets = new List<Bet>();
 
+            var losingBets = new List<Bet>();
+
             foreach (var bet in betsInPool)
             {
                 if (bet.Choice.Equals(closedEvent.Result))
@@ -238,19 +242,47 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                     winningAmount = bet.Amount;
                     winningBets.Add(bet);
                 }
-                else losingAmount = bet.Amount;
+                else
+                {
+                    losingAmount = bet.Amount;
+                    losingBets.Add(bet);
+                }
+            }
+
+            foreach (var bet in losingBets)
+            {
+                bet.Status = $"Bet lost";
+                await _betRepository.UpdateAsync(bet);
             }
 
             if (winningAmount == 0) return true;
 
+
             foreach (var bet in winningBets)
             {
+                var pendingWallet = await _walletRepository.GetByIdAsync(bet.Account_Id);
+                if (losingAmount == 0)
+                {
+                    var refundedMoney = bet.Amount - (closedEvent.Margin / 100m);
+                    pendingWallet.Amount += refundedMoney;
+                   
+                    await _walletRepository.UpdateAsync(pendingWallet);
+
+                    bet.Status = $"Win(No losing bets): {refundedMoney}";
+                    await _betRepository.UpdateAsync(bet);
+
+                    continue;
+                }
+
                 var betPart = bet.Amount / winningAmount * (100m - closedEvent.Margin);
                 var moneyForDep = losingAmount / 100m * betPart;
-                var pendingWallet = await _walletRepository.GetByIdAsync(bet.Account_Id);
+
                 pendingWallet.Amount += bet.Amount + moneyForDep;
 
                 await _walletRepository.UpdateAsync(pendingWallet);
+
+                bet.Status = $"Win: {moneyForDep}";
+                await _betRepository.UpdateAsync(bet);                
             }
 
             return true;

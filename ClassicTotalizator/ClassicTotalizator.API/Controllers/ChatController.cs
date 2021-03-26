@@ -58,7 +58,7 @@ namespace ClassicTotalizator.API.Controllers
         /// <param name="messageToPostDTO">Text dto that user trying to post</param>
         /// <returns>True if message was posted or false if smth went wrong</returns>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = Roles.AdminOrUser)]
         public async Task<ActionResult<bool>> PostMessageInChat([FromBody] MessageToPostDTO messageToPostDTO)
         {
             if (!ModelState.IsValid || messageToPostDTO == null)

@@ -19,52 +19,72 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private readonly IRepository<BetPool> _betpoolRepository;
 
+        private readonly IRepository<Participant> _participantRepository;
+
         private readonly IEventService _eventService;
+
+        private readonly IRepository<Event> _eventRepository;
 
         public BetService(IBetRepository repository, 
             IEventService eventService, 
             IAccountRepository accountRepository, 
             IRepository<Wallet> walletRepository, 
-            IRepository<BetPool> betpoolRepository)
+            IRepository<BetPool> betpoolRepository,
+            IRepository<Event> eventRepository,
+            IRepository<Participant> participantRepository)
         {
             _repository = repository;
             _eventService = eventService;
             _accountRepository = accountRepository;
             _walletRepository = walletRepository;
             _betpoolRepository = betpoolRepository;
+            _eventRepository = eventRepository;
+            _participantRepository = participantRepository;
         }
 
 
-
-        /*
-         
-            Here you need to develop mapper for         
-            -BetPreviewForUserDTO
-            -BetPreviewForAdninDTO
-            
-        + develop method for users purpose
-
-        + make new method for admins purpose (Checl bets preview dto for admins)
-
-            Please check DAL, added new properties to bet entity
-         
-         
-            !!!WE NEED TO ADD NEW MIGRATION!!!!
-         */
-
-
-        public async Task<IEnumerable<BetDTO>> GetEventBets(Guid id)
+        public async Task<IEnumerable<BetPreviewForAdminsDTO>> GetAllEventBets()
         {
-            var bets = await _repository.GetBetsByEventId(id);
+            var bets = await _repository.GetAllAsync();
 
-            return bets.Select(BetMapper.Map).ToList();
+            var previewBets = new List<BetPreviewForAdminsDTO>();
+
+            foreach (var bet in bets)
+            {
+                var currentEvent = await _eventRepository.GetByIdAsync(bet.Event_Id);
+                var previewBet = BetMapper.MapPreviewForAdmins(bet);
+                previewBet.EventStartime = currentEvent.StartTime;
+
+                var participantPreview1 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id1);
+                var participantPreview2 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id2);
+
+                previewBet.TeamConfrontation = $"{participantPreview1.Name} - {participantPreview2.Name}";
+                previewBets.Add(previewBet);
+            }
+
+            return previewBets;
         }
 
-        public async Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id)
+        public async Task<IEnumerable<BetPreviewForUserDTO>> GetBetsByAccId(Guid id)
         {
-            var bets = await _repository.GetBetsByAccountId(id);
+            var userBets = await _repository.GetBetsByAccountId(id);
 
-            return bets.Select(BetMapper.Map).ToList();
+            var previewBets = new List<BetPreviewForUserDTO>();
+
+            foreach (var bet in userBets)
+            {
+               var currentEvent = await  _eventRepository.GetByIdAsync(bet.Event_Id);
+               var previewBet = BetMapper.MapPreview(bet);
+               previewBet.EventStartime = currentEvent.StartTime;
+
+                var participantPreview1 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id1);
+                var participantPreview2 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id2);
+
+                previewBet.TeamConfrontation = $"{participantPreview1.Name} - {participantPreview2.Name}";
+                previewBets.Add(previewBet);
+            }
+
+            return previewBets;
         }
 
         public async Task<bool> AddBet(BetNewDTO betDto, Guid accountId)
@@ -94,6 +114,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var bet = BetMapper.Map(betDto);
             bet.Id = Guid.NewGuid();
             bet.Account_Id = accountId;
+            bet.Status = "Active";
+            bet.BetTime = DateTimeOffset.UtcNow;
             
             betPool.TotalAmount += bet.Amount;
 

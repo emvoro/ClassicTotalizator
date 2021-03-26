@@ -23,10 +23,6 @@ namespace ClassicTotalizator.DAL.Entities
 
         public decimal Amount { get; set; }
 
-
-        /*
-        Part that you can see after this comment needs to be added in new migration
-         */
         public DateTimeOffset BetTime { get; set; }
 
         public string Status { get; set; }
