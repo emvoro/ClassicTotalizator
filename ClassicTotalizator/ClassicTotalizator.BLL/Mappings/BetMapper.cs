@@ -42,5 +42,34 @@ namespace ClassicTotalizator.BLL.Mappings
                     Event_Id = betNewDTO.Event_Id
                 };
         }
+
+        public static BetPreviewForUserDTO MapPreview(Bet obj)
+        {
+            return obj == null
+                ? null
+                : new BetPreviewForUserDTO
+                {
+                    Bet_Id = obj.Id,
+                    Status = obj.Status,
+                    Choice = obj.Choice,
+                    BetTime = obj.BetTime,
+                    Amount = obj.Amount,
+                };
+        }
+
+        public static BetPreviewForAdminsDTO MapPreviewForAdmins(Bet obj)
+        {
+            return obj == null
+                ? null
+                : new BetPreviewForAdminsDTO
+                {
+                    Bet_Id = obj.Id,
+                    Account_Id =obj.Account_Id,
+                    Status = obj.Status,
+                    Choice = obj.Choice,
+                    BetTime = obj.BetTime,
+                    Amount = obj.Amount,
+                };
+        }
     }
 }
