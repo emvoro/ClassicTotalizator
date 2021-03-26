@@ -41,7 +41,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<ParticipantsDTO>> GetAllParticipantsAsync()
         {
             var participants = await _participantsService.GetAllParticipantsAsync();
-
             if (participants == null)
                 return NotFound();
 

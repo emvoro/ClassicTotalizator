@@ -5,7 +5,7 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface IParameterRepository
+    public interface IParameterRepository : IRepository<Parameter>
     {
         Task<IEnumerable<Parameter>> GetParametersByParticipantId(Guid partId);
     }
