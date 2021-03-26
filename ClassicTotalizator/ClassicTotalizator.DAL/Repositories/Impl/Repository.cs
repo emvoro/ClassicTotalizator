@@ -27,47 +27,31 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
             return await _set.ToListAsync();
         }
 
-        public async Task<bool> AddAsync(T obj)
+        public async Task AddAsync(T obj)
         {
-            var result = await _set.AddAsync(obj);
-            if (result.State == EntityState.Added)
-            {
-                await _context.SaveChangesAsync();
-                return true;
-            }
-
-            return false;
+            await _set.AddAsync(obj);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> RemoveByIdAsync(Guid id)
+        public async Task RemoveByIdAsync(Guid id)
         {
             var obj = await GetByIdAsync(id);
             
-            return await RemoveAsync(obj);
+            await RemoveAsync(obj);
         }
 
-        public async Task<bool> RemoveAsync(T obj)
+        public async Task RemoveAsync(T obj)
         {
-            var result = _set.Remove(obj);
-            if (result.State == EntityState.Deleted)
-            {
-                await _context.SaveChangesAsync();
-                return true;
-            }
-
-            return false;
+            _set.Remove(obj);
+            
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateAsync(T obj)
+        public async Task UpdateAsync(T obj)
         {
-            var result = _set.Update(obj);
-            if(result.State == EntityState.Modified)
-            {
-                await _context.SaveChangesAsync();
-                return true;
-            }
-
-            return false;
+            _set.Update(obj);
+            
+            await _context.SaveChangesAsync();
         }
     }
 }
