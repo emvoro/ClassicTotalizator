@@ -40,9 +40,6 @@ namespace ClassicTotalizator.API.Controllers
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> GetBetsByAccId()
         {
-
-            throw new NotImplementedException();
-            /*
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
 
             if (accountId == Guid.Empty)
@@ -53,35 +50,30 @@ namespace ClassicTotalizator.API.Controllers
             if (bets == null)
                 return NotFound("Bets not found!");
 
-            return Ok(bets);
-            */
+            return Ok(new BetsUserHistoryDTO
+            {
+                BetsPreviewForUsers = bets
+            }) ;           
         }
-
-        /*
-        [HttpGet("history")]
-        public async Task<ActionResult<BetsHistoryForAdminsDTO>> GetBetsForAdmin()
-        {
-            throw new NotImplementedException();
-        }
-        */
 
         /// <summary>
         /// Getting event bet's
         /// </summary>
         /// <param name="id">Event id</param>
         /// <returns>Event bet's</returns>
-        [HttpGet("{eventId}")]
+        [HttpGet("history/admin")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<ActionResult> GetEventBets([FromRoute] Guid id)
+        public async Task<ActionResult> GetEventBets()
         {
-            if (id == Guid.Empty)
-                return BadRequest("Id is empty!");
             
-            var bets = await _betService.GetEventBets(id);
+            var bets = await _betService.GetAllEventBets();
             if (bets == null)
                 return NotFound("Bets not found!");
 
-            return Ok(bets);
+            return Ok(new BetsHistoryForAdminsDTO
+            {
+                BetsPreviewForAdmins = bets
+            }) ;
         }
 
         /// <summary>
