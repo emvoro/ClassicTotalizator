@@ -6,16 +6,16 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        Task<T> GetById(Guid id);
+        Task<T> GetByIdAsync(Guid id);
 
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
 
-        Task<bool> Add(T obj);
+        Task<bool> AddAsync(T obj);
 
-        Task<bool> RemoveById(Guid id);
+        Task<bool> RemoveByIdAsync(Guid id);
         
-        Task<bool> Remove(T obj);
+        Task<bool> RemoveAsync(T obj);
 
-        Task<bool> Update(T obj);
+        Task<bool> UpdateAsync(T obj);
     }
 }

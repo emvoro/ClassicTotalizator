@@ -40,6 +40,9 @@ namespace ClassicTotalizator.API.Controllers
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> GetBetsByAccId()
         {
+
+            throw new NotImplementedException();
+            /*
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
 
             if (accountId == Guid.Empty)
@@ -51,7 +54,16 @@ namespace ClassicTotalizator.API.Controllers
                 return NotFound("Bets not found!");
 
             return Ok(bets);
+            */
         }
+
+        /*
+        [HttpGet("history")]
+        public async Task<ActionResult<BetsHistoryForAdminsDTO>> GetBetsForAdmin()
+        {
+            throw new NotImplementedException();
+        }
+        */
 
         /// <summary>
         /// Getting event bet's

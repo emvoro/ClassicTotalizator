@@ -1,29 +1,37 @@
 ﻿using ClassicTotalizator.BLL.Contracts;
 using ClassicTotalizator.BLL.Mappings;
-using ClassicTotalizator.DAL.Context;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
+using ClassicTotalizator.DAL.Entities;
+using ClassicTotalizator.DAL.Repositories;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
     public class ParticipantsService : IParticipantsService
     {
-        private readonly DatabaseContext _context;
+        private readonly IRepository<Participant> _repository;
+
+        private readonly IParameterRepository _parameterRepository;
+
+        private readonly IPlayerRepository _playerRepository;
         
-        public ParticipantsService(DatabaseContext context)
+        public ParticipantsService(IRepository<Participant> repository, 
+            IParameterRepository parameterRepository, 
+            IPlayerRepository playerRepository)
         {
-            _context = context;
+            _repository = repository;
+            _parameterRepository = parameterRepository;
+            _playerRepository = playerRepository;
         }
 
         public async Task<ParticipantsDTO> GetAllParticipantsAsync()
         {
-            var participantsListInDal = await _context.Participants.ToListAsync();
-
-            if (participantsListInDal == null) return null;
+            var participantsListInDal = await _repository.GetAllAsync();
+            if (participantsListInDal == null) 
+                return null;
 
             var participants = new ParticipantsDTO
             {
@@ -39,16 +47,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return participants;
         }
 
-        public async Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participantRegisterDTO)
+        public async Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participantRegisterDto)
         {
-            if (participantRegisterDTO == null) return null;
+            if (participantRegisterDto == null) 
+                return null;
             
             var newGuid = Guid.NewGuid();
-            var participant = ParticipantsMapper.Map(participantRegisterDTO);
+            var participant = ParticipantsMapper.Map(participantRegisterDto);
             participant.Id = newGuid;
+            
             var mainPlayer = participant.Players.FirstOrDefault();
-
-            if (mainPlayer.Name == participant.Name)
+            if (mainPlayer != null && mainPlayer.Name == participant.Name)
             {
                 mainPlayer.Id = participant.Id;
                 mainPlayer.Participant_Id = newGuid;
@@ -62,20 +71,19 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 }
             }
 
-            await _context.Participants.AddAsync(participant);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(participant);
 
             return ParticipantsMapper.Map(participant);
         }
 
         public async Task<bool> DeleteParticipantAsync(Guid id)
         {
-            var participant = _context.Participants.FirstOrDefault(x => x.Id == id);
+            var participant = await _repository.GetByIdAsync(id);
 
-            if (participant == null) return false;
+            if (participant == null) 
+                return false;
 
-            _context.Participants.Remove(participant);
-            await _context.SaveChangesAsync();
+            await _repository.RemoveAsync(participant);
 
             return true;
         }
@@ -84,7 +92,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (id == Guid.Empty) return null;
 
-            var parameters = await _context.Parameters.Where(x => x.Participant_Id == id).ToListAsync();
+            var parameters = await _parameterRepository.GetParametersByParticipantId(id);
 
             return parameters.Select(ParameterMapper.Map).ToList();
         }
@@ -93,7 +101,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (id == Guid.Empty) return null;
 
-            var players = await _context.Players.Where(x => x.Participant_Id == id).ToListAsync();
+            var players = await _playerRepository.GetPlayersByParticipantId(id);
 
             return players.Select(PlayerMapper.Map).ToList();
         }

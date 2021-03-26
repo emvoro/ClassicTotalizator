@@ -38,7 +38,7 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>List of all messages now in chat(100)</returns>
         [HttpGet]
-        [Authorize(Roles = Roles.User)]
+        [AllowAnonymous]
         public async Task<ActionResult<CurrentChatMessagesDTO>> GetMessagesInChat()
         {
             var messages = await _chatService.GetMessages();

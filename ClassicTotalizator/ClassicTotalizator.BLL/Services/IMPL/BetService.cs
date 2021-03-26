@@ -4,33 +4,65 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.BetDTOs;
 using ClassicTotalizator.BLL.Mappings;
-using ClassicTotalizator.DAL.Context;
-using Microsoft.EntityFrameworkCore;
+using ClassicTotalizator.DAL.Entities;
+using ClassicTotalizator.DAL.Repositories;
 
 namespace ClassicTotalizator.BLL.Services.IMPL
 {
     public class BetService : IBetService
     {
-        private readonly DatabaseContext _context;
+        private readonly IBetRepository _repository;
+
+        private readonly IAccountRepository _accountRepository;
+
+        private readonly IRepository<Wallet> _walletRepository;
+
+        private readonly IRepository<BetPool> _betpoolRepository;
 
         private readonly IEventService _eventService;
 
-        public BetService(DatabaseContext context, IEventService eventService)
+        public BetService(IBetRepository repository, 
+            IEventService eventService, 
+            IAccountRepository accountRepository, 
+            IRepository<Wallet> walletRepository, 
+            IRepository<BetPool> betpoolRepository)
         {
-            _context = context;
+            _repository = repository;
             _eventService = eventService;
+            _accountRepository = accountRepository;
+            _walletRepository = walletRepository;
+            _betpoolRepository = betpoolRepository;
         }
+
+
+
+        /*
+         
+            Here you need to develop mapper for         
+            -BetPreviewForUserDTO
+            -BetPreviewForAdninDTO
+            
+        + develop method for users purpose
+
+        + make new method for admins purpose (Checl bets preview dto for admins)
+
+            Please check DAL, added new properties to bet entity
+         
+         
+            !!!WE NEED TO ADD NEW MIGRATION!!!!
+         */
+
 
         public async Task<IEnumerable<BetDTO>> GetEventBets(Guid id)
         {
-            var bets = await _context.Bets.Where(x => x.Event_Id == id).ToListAsync();
+            var bets = await _repository.GetBetsByEventId(id);
 
             return bets.Select(BetMapper.Map).ToList();
         }
 
         public async Task<IEnumerable<BetDTO>> GetBetsByAccId(Guid id)
         {
-            var bets = await _context.Bets.Where(x => x.Account_Id == id).ToListAsync();
+            var bets = await _repository.GetBetsByAccountId(id);
 
             return bets.Select(BetMapper.Map).ToList();
         }
@@ -44,20 +76,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return false;
             
             var @event = await _eventService.GetById(betDto.Event_Id);
-
             if (@event == null)
                 return false;
 
             if (@event.StartTime < DateTimeOffset.UtcNow || @event.IsEnded)
                 return false;
 
-            var betPool = await _context.BetPools.FirstOrDefaultAsync(x => x.Event_Id == @event.Id);
-
+            var betPool = await _betpoolRepository.GetByIdAsync(@event.Id);
             if (betPool == null)
                 return false;
             
-            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Account_Id == accountId);
-
+            var wallet = await _walletRepository.GetByIdAsync(accountId);
             if (wallet == null || wallet.Amount < betDto.Amount)
                 return false;
             
@@ -65,17 +94,15 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             var bet = BetMapper.Map(betDto);
             bet.Id = Guid.NewGuid();
             bet.Account_Id = accountId;
-            bet.Account = await _context.Accounts.FindAsync(bet.Account_Id);
+            bet.Account = await _accountRepository.GetByIdAsync(bet.Account_Id);
             
             betPool.Bets.Add(bet);
             betPool.TotalAmount += bet.Amount;
 
-            _context.BetPools.Update(betPool);
-            _context.Wallets.Update(wallet);
-            await _context.Bets.AddAsync(bet);
-            await _context.SaveChangesAsync();
-
-            return true;
+            await _betpoolRepository.UpdateAsync(betPool);
+            await _walletRepository.UpdateAsync(wallet);
+            
+            return await _repository.AddAsync(bet);
         }
     }
 }
