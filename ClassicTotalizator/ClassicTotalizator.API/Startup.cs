@@ -87,8 +87,7 @@ namespace ClassicTotalizator.API
                 if (File.Exists(documentationPath))
                     c.IncludeXmlComments(documenation, includeControllerXmlComments: true);
             });
-
-
+            
             services.AddCors();
 
             services.AddAuthentication(options =>

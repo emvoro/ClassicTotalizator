@@ -31,7 +31,7 @@ namespace ClassicTotalizator.API.Middlewares
         /// <summary>
         /// Invokes logging
         /// </summary>
-        /// /// <param name="context"></param>
+        /// <param name="context"></param>
         public async Task InvokeAsync(HttpContext context)
         {
             _logger.LogInformation("=======================================");

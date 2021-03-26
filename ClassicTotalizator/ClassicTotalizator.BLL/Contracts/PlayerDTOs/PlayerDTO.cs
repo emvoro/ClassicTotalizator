@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ClassicTotalizator.BLL.Contracts
+namespace ClassicTotalizator.BLL.Contracts.PlayerDTOs
 {
     public class PlayerDTO
     {

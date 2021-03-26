@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
+using ClassicTotalizator.BLL.Contracts.PlayerDTOs;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
