@@ -98,7 +98,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private async Task<ICollection<ParameterDTO>> GetParametersByPartId(Guid id)
         {
-            if (id == Guid.Empty) return null;
+            if (id == Guid.Empty) 
+                return null;
 
             var parameters = await _parameterRepository.GetParametersByParticipantId(id);
 
@@ -107,7 +108,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private async Task<ICollection<PlayerDTO>> GetPlayersByPartId(Guid id)
         {
-            if (id == Guid.Empty) return null;
+            if (id == Guid.Empty) 
+                return null;
 
             var players = await _playerRepository.GetPlayersByParticipantId(id);
 
