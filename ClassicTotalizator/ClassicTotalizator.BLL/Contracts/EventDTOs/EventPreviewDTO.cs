@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ClassicTotalizator.BLL.Contracts.ParticipantDTOs;
 
 namespace ClassicTotalizator.BLL.Contracts.EventDTOs
