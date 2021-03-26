@@ -27,7 +27,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (string.IsNullOrEmpty(id.ToString()))
                 throw new ArgumentException();
 
-            return await _repository.RemoveByIdAsync(id);
+            await _repository.RemoveByIdAsync(id);
+
+            return true;
         }
 
         public async Task<IEnumerable<MessageDTO>> GetMessages()
@@ -55,7 +57,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             newMessage.Time = DateTimeOffset.UtcNow;
             newMessage.Account = await _accountRepository.GetByIdAsync(newMessage.Account_Id);
 
-            return await _repository.AddAsync(newMessage);
+            await _repository.AddAsync(newMessage);
+
+            return true;
         }
     }
 }

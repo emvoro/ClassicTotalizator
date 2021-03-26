@@ -101,8 +101,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
             await _betpoolRepository.UpdateAsync(betPool);
             await _walletRepository.UpdateAsync(wallet);
-            
-            return await _repository.AddAsync(bet);
+            await _repository.AddAsync(bet);
+
+            return true;
         }
     }
 }

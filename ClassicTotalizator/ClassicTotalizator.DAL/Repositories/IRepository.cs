@@ -10,12 +10,12 @@ namespace ClassicTotalizator.DAL.Repositories
 
         Task<IEnumerable<T>> GetAllAsync();
 
-        Task<bool> AddAsync(T obj);
+        Task AddAsync(T obj);
 
-        Task<bool> RemoveByIdAsync(Guid id);
+        Task RemoveByIdAsync(Guid id);
         
-        Task<bool> RemoveAsync(T obj);
+        Task RemoveAsync(T obj);
 
-        Task<bool> UpdateAsync(T obj);
+        Task UpdateAsync(T obj);
     }
 }
