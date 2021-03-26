@@ -75,6 +75,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             foreach (var parameter in participant.Parameters)
             {
                 parameter.Participant_Id = participant.Id;
+                parameter.Id = Guid.NewGuid();
                     
                 await _parameterRepository.AddAsync(parameter);
             }
