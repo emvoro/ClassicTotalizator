@@ -55,6 +55,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             
             var newGuid = Guid.NewGuid();
             var participant = ParticipantsMapper.Map(participantRegisterDto);
+
             participant.Id = newGuid;
             
             var mainPlayer = participant.Players.FirstOrDefault();
@@ -72,14 +73,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 }
             }
             
-            foreach (var parameter in participant.Parameters)
-            {
-                parameter.Participant_Id = participant.Id;
-                parameter.Id = Guid.NewGuid();
-                    
-                await _parameterRepository.AddAsync(parameter);
-            }
-
             await _repository.AddAsync(participant);
 
             return ParticipantsMapper.Map(participant);

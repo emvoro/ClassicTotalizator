@@ -5,7 +5,7 @@ using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.DAL.Repositories
 {
-    public interface IPlayerRepository
+    public interface IPlayerRepository : IRepository<Player>
     {
         Task<IEnumerable<Player>> GetPlayersByParticipantId(Guid partId);
     }
