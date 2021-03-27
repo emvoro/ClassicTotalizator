@@ -73,15 +73,17 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 }
             }
             
-            await _repository.AddAsync(participant);
+            await _repository.AddAsync(participant); 
 
             return ParticipantsMapper.Map(participant);
         }
 
         public async Task<bool> DeleteParticipantAsync(Guid id)
         {
+            if (id == Guid.Empty)
+                return false;
+            
             var participant = await _repository.GetByIdAsync(id);
-
             if (participant == null) 
                 return false;
 

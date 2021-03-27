@@ -18,6 +18,7 @@ namespace ClassicTotalizator.API.Controllers
     public class EventsController : ControllerBase
     {
         private readonly ILogger<EventsController> _logger;
+        
         private readonly IEventService _eventService;
 
         /// <summary>
@@ -40,7 +41,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<EventsFeedDTO>> GetAllEvents()
         {
             var events = await _eventService.GetEventsAsync();
-
             if (events == null)
                 return NotFound();
 
@@ -56,7 +56,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<EventsFeedDTO>> GetCurrentLine()
         {
             var currentLine = await _eventService.GetCurrentLineOfEvents();
-
             if (currentLine == null)
                 return NotFound();
 
@@ -103,7 +102,6 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest($"This guid: [{id}] not valid!");
             
             var eventPreview = await _eventService.GetEventPreview(id);
-
             if (eventPreview == null)
                 return NotFound($"Event by this id [{id}] was not found");
 
@@ -126,7 +124,6 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var createdEvent = await _eventService.CreateEventAsync(registerDTO);
-
                 if (createdEvent == null)
                     return BadRequest();
 
@@ -157,7 +154,6 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var finished = await _eventService.FinishEvent(finishedEvent);
-
                 if (!finished)
                     BadRequest();
 
@@ -185,7 +181,6 @@ namespace ClassicTotalizator.API.Controllers
             }
 			
             var editedEvent = await _eventService.EditEventAsync(eventDTO);
-            
             if (editedEvent == null)
                 return BadRequest();
 
@@ -203,7 +198,6 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var deleted = await _eventService.DeleteEvent(id);
-
                 if (!deleted)
                     return NotFound(deleted);
 
@@ -211,7 +205,7 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentException e)
             {
-                _logger.LogWarning("Argument exception. " + e.ParamName);
+                _logger.LogWarning(e.Message);
                 return BadRequest();
             }
         }

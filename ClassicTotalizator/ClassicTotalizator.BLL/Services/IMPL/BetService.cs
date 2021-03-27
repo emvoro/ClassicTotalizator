@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.BetDTOs;
 using ClassicTotalizator.BLL.Mappings;
@@ -41,8 +40,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _eventRepository = eventRepository;
             _participantRepository = participantRepository;
         }
-
-
+        
         public async Task<IEnumerable<BetPreviewForAdminsDTO>> GetAllEventBets()
         {
             var bets = await _repository.GetAllAsync();
@@ -91,7 +89,6 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         {
             if (betDto == null)
                 throw new ArgumentNullException(nameof(betDto));
-
             if (betDto.Amount <= 0 || betDto.Event_Id == Guid.Empty || string.IsNullOrEmpty(betDto.Choice) || accountId == Guid.Empty)
                 return false;
             

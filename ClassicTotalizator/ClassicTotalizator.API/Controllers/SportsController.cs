@@ -40,7 +40,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<SportsDTO>> GetAllSportsInPlatform()
         {
             var sports = await _sportService.GetCurrentListOfSports();
-
             if (sports == null)
                 return NotFound();
 
@@ -73,7 +72,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<bool>> DeleteSportSport([FromRoute] int id)
         {
             var deleted = await _sportService.DeleteSportAsync(id);
-            
             if (!deleted)
                 return NotFound(deleted);
 

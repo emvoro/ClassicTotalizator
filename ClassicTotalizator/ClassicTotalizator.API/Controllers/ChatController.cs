@@ -42,7 +42,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<CurrentChatMessagesDTO>> GetMessagesInChat()
         {
             var messages = await _chatService.GetMessages();
-
             if (messages == null)
                 return NotFound();
 
@@ -72,7 +71,6 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var posted = await _chatService.PostMessageAsync(messageToPostDTO, accountId);
-
                 if (!posted)
                     return BadRequest("The message was not memorized");
 
@@ -97,13 +95,12 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var deleted = await _chatService.DeleteMessageAsync(id);
-
                 if (!deleted)
                     return NotFound(deleted);
 
                 return Ok(deleted);
             }
-            catch (ArgumentException e)
+            catch (ArgumentNullException e)
             {
                 _logger.LogWarning(e.Message);
                 return BadRequest();

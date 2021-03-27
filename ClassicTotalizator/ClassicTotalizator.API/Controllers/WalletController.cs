@@ -42,12 +42,10 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<WalletDTO>> GetWalletByAccId()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
-
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             var wallet = await _walletService.GetWalletByAccId(accountId);
-
             if (wallet == null)
                 return NotFound();
 
@@ -62,12 +60,10 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<IEnumerable<TransactionWithTimeDTO>>> GetTransactionHistory()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
-
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             var transactionHistoryByAccId = await _walletService.GetTransactionHistoryByAccId(accountId);
-
             if (transactionHistoryByAccId == null)
                 return NotFound();
 
@@ -86,14 +82,12 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest("Invalid parameter!");
 
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
-
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             try
             {
                 var wallet = await _walletService.Transaction(accountId, transactionDto);
-
                 if (wallet == null)
                     return BadRequest("Invalid transaction!");
 
@@ -101,8 +95,8 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning("Argument null exception. " + e.ParamName);
-                return Conflict();
+                _logger.LogWarning(e.Message);
+                return BadRequest();
             }
         }
     }

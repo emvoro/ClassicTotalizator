@@ -41,12 +41,10 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult> GetBetsByAccId()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
-
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             var bets = await _betService.GetBetsByAccId(accountId);
-
             if (bets == null)
                 return NotFound("Bets not found!");
 
@@ -89,19 +87,19 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest("Model is invalid!");
 
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
-
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             try
             {
-                if (await _betService.AddBet(bet, accountId)) return Ok();
+                if (await _betService.AddBet(bet, accountId)) 
+                    return Ok();
 
                 return BadRequest();
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning("Argument null exception. " + e.ParamName);
+                _logger.LogWarning(e.Message);
                 return BadRequest("Argument null exception!");
             }
         }

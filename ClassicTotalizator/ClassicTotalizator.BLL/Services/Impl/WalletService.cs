@@ -60,7 +60,8 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<WalletDTO> GetWalletByAccId(Guid id)
         {
-            if (id == Guid.Empty) return null;
+            if (id == Guid.Empty) 
+                return null;
 
             var wallet = await _repository.GetByIdAsync(id);
 
@@ -69,7 +70,8 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccId(Guid id)
         {
-            if (id == Guid.Empty) return null;
+            if (id == Guid.Empty) 
+                return null;
 
             var transactions = await _transactionRepository.GetAccountTransaction(id);
 

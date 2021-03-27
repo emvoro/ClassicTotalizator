@@ -35,6 +35,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<AccountInfoDTO> GetById(Guid id)
         {
+            if (id == Guid.Empty)
+                return null;
+            
             var account = await _repository.GetByIdAsync(id);
 
             return AccountMapper.MapForChatInfo(account);
