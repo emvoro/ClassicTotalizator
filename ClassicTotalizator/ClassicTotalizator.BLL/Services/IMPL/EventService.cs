@@ -51,9 +51,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (eventDto == null)
                 throw new ArgumentNullException(nameof(eventDto));
 
-            if (string.IsNullOrEmpty(eventDto.Participant_Id1.ToString()) ||
-                string.IsNullOrEmpty(eventDto.Participant_Id2.ToString()) ||
-                eventDto.StartTime < DateTimeOffset.UtcNow || eventDto.Margin <= 0)
+            if (eventDto.Participant_Id1 == Guid.Empty ||
+                eventDto.Participant_Id2 == Guid.Empty ||
+                eventDto.StartTime < DateTimeOffset.UtcNow )
                 return null;
 
             if (eventDto.Margin <= 0 && eventDto.Margin > 100)
@@ -291,7 +291,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 }
 
                 var betPart = bet.Amount / winningAmount * (100m - closedEvent.Margin);
-                var moneyForDep = losingAmount / 100m * betPart;
+                var moneyForDep = (losingAmount / 100m) * betPart;
 
                 pendingWallet.Amount += bet.Amount + moneyForDep;
 
