@@ -210,7 +210,7 @@ namespace ClassicTotalizator.Tests
             var id = Guid.NewGuid();
             var transactions = new List<Transaction>
             {
-                new() {Wallet_Id = id},
+                new () {Wallet_Id = id},
                 new () {Wallet_Id = id}
             };
 
