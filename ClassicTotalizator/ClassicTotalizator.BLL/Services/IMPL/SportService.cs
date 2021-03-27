@@ -23,7 +23,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<SportDTO> Add(SportDTO sport)
         {
-            if (sport == null) throw new ArgumentNullException(nameof(sport));
+            if (sport == null) 
+                throw new ArgumentNullException(nameof(sport));
 
             var sportEntity = SportMapper.Map(sport);
 
@@ -51,6 +52,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<bool> DeleteSportAsync(int id)
         {
+            if (id <= 0)
+                return false;
+            
             var sport = await _repository.GetByIdAsync(id);
             if (sport == null) 
                 return false;

@@ -24,7 +24,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
         public async Task<bool> DeleteMessageAsync(Guid id)
         {
             if (string.IsNullOrEmpty(id.ToString()))
-                throw new ArgumentException();
+                throw new ArgumentNullException();
 
             await _repository.RemoveByIdAsync(id);
 

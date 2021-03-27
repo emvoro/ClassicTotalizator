@@ -49,7 +49,6 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (!ModelState.IsValid || registerDTO == null)
             {
-                //_logger.LogWarning("Model is invalid!");
                 return BadRequest();
             }
 
@@ -80,17 +79,24 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (!ModelState.IsValid || loginDTO == null)
             {
-                //_logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 
-            var token = await _authService.LoginAsync(loginDTO);
-            var jwtReturnedDTO = new JwtDTO
+            try
             {
-                JwtString = token
-            };
+                var token = await _authService.LoginAsync(loginDTO);
+                var jwtReturnedDTO = new JwtDTO
+                {
+                    JwtString = token
+                };
             
-            return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
+                return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogWarning(e.Message);
+                return BadRequest();
+            }
         }
         
         /// <summary>
@@ -103,7 +109,6 @@ namespace ClassicTotalizator.API.Controllers
         {
             if (!ModelState.IsValid || loginDTO == null)
             {
-                //_logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 

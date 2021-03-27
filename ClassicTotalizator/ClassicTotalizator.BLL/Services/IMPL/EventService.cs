@@ -284,7 +284,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                    
                     await _walletRepository.UpdateAsync(pendingWallet);
 
-                    bet.Status = $"Win(No losing bets): {refundedMoney}";
+                    bet.Status = $"Win(No losing bets): {Math.Round(refundedMoney,2)}";
                     await _betRepository.UpdateAsync(bet);
 
                     continue;
@@ -297,7 +297,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
                 await _walletRepository.UpdateAsync(pendingWallet);
 
-                bet.Status = $"Win: {moneyForDep}";
+                bet.Status = $"Win: {Math.Round(moneyForDep,2)}";
                 await _betRepository.UpdateAsync(bet);                
             }
 

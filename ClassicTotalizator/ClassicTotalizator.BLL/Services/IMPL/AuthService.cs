@@ -40,6 +40,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         public async Task<string> LoginAsync(AccountLoginDTO accountLoginDTO)
         {
+            if (accountLoginDTO == null)
+                throw new ArgumentNullException(nameof(accountLoginDTO));
+            
             if (string.IsNullOrEmpty(accountLoginDTO.Login) || string.IsNullOrEmpty(accountLoginDTO.Password))
                 return null;
 

@@ -42,7 +42,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<IEnumerable<AccountForAdminDTO>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccounts();
-
             if (accounts == null)
                 return NotFound();
 
@@ -58,14 +57,12 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<IEnumerable<AccountInfoDTO>>> GetAccountForChat()
         {
             var accountId = ClaimsIdentityService.GetIdFromToken(User);
-
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
             try
             {
                 var account = await _accountService.GetById(accountId);
-
                 if (account == null)
                     return BadRequest("Invalid user account!");
 

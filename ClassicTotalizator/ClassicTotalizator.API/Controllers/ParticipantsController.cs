@@ -63,7 +63,6 @@ namespace ClassicTotalizator.API.Controllers
             try
             {
                 var createdParticipant = await _participantsService.AddNewParticipant(registerDTO);
-
                 if (createdParticipant == null)
                     return BadRequest();
 
@@ -71,8 +70,8 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning("Argument null exception. " + e.ParamName);
-                return Forbid();
+                _logger.LogWarning(e.Message);
+                return BadRequest();
             }
         }
 
@@ -84,7 +83,6 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult<bool>> DeleteParticipant([FromRoute] Guid id)
         {
             var deleted = await _participantsService.DeleteParticipantAsync(id);
-
             if (!deleted)
                 return NotFound(deleted);
 
