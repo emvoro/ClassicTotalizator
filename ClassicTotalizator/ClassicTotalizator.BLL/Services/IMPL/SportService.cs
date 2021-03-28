@@ -7,7 +7,7 @@ using ClassicTotalizator.BLL.Contracts.SportDTOs;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     /// <summary>
     /// Adds sports

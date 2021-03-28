@@ -1,14 +1,11 @@
 ﻿using ClassicTotalizator.BLL.Contracts.EventDTOs;
 using ClassicTotalizator.BLL.Services;
-using ClassicTotalizator.BLL.Services.IMPL;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Services.Impl;
 using Xunit;
 
 namespace ClassicTotalizator.Tests

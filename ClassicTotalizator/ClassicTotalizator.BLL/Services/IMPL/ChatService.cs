@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class ChatService : IChatService
     {

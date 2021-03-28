@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using ClassicTotalizator.BLL.Contracts.SportDTOs;
 using ClassicTotalizator.BLL.Services;
-using ClassicTotalizator.BLL.Services.IMPL;
+using ClassicTotalizator.BLL.Services.Impl;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 using Moq;

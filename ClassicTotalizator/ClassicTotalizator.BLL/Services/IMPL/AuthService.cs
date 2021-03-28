@@ -1,11 +1,11 @@
 ﻿using System;
 using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Generators.IMPL;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 using ClassicTotalizator.BLL.Generators;
+using ClassicTotalizator.BLL.Generators.Impl;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class AuthService : IAuthService
     {

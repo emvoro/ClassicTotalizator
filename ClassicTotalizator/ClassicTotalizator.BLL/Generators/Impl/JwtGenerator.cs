@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 
-namespace ClassicTotalizator.BLL.Generators.IMPL
+namespace ClassicTotalizator.BLL.Generators.Impl
 {
     public class JwtGenerator : IJwtGenerator
     {

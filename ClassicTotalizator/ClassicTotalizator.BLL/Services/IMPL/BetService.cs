@@ -6,7 +6,7 @@ using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class BetService : IBetService
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.BetDTOs;
 using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.BLL.Services;
-using ClassicTotalizator.BLL.Services.IMPL;
+using ClassicTotalizator.BLL.Services.Impl;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 using Moq;
