@@ -377,7 +377,8 @@ namespace ClassicTotalizator.Tests
             var @event = new Event
             {
                 Id = id,
-                PossibleResults = new string[] { "W1", "W2" }
+                PossibleResults = new string[] { "W1", "W2" },
+                Margin = 3
             };
             var betList = new List<Bet>
             {
