@@ -14,7 +14,7 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
         {
         }
 
-        public async Task<IEnumerable<Parameter>> GetParametersByParticipantId(Guid partId)
+        public async Task<IEnumerable<Parameter>> GetParametersByParticipantIdAsync(Guid partId)
         {
             return await Set.Where(x => x.Participant_Id == partId).ToListAsync();
         }

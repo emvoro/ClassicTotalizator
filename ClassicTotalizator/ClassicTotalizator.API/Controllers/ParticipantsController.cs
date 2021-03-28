@@ -62,7 +62,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var createdParticipant = await _participantsService.AddNewParticipant(registerDTO);
+                var createdParticipant = await _participantsService.AddNewParticipantAsync(registerDTO);
                 if (createdParticipant == null)
                     return BadRequest();
 

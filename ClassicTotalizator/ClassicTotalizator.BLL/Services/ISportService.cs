@@ -15,13 +15,13 @@ namespace ClassicTotalizator.BLL.Services
         /// /// <param name="sportDTO">Contract for event.</param>
         /// <returns>Boolean result of sport creation</returns>
         /// <exception cref="ArgumentNullException">Throws when one of the arguments is null.</exception>
-        Task<SportDTO> Add(SportDTO sportDTO);
+        Task<SportDTO> AddAsync(SportDTO sportDTO);
 
         /// <summary>
         /// Producing list of all sports on the platform
         /// </summary>
         /// <returns>List of current registered sports</returns>
-        Task<SportsDTO> GetCurrentListOfSports();
+        Task<SportsDTO> GetCurrentListOfSportsAsync();
 
         /// <summary>
         /// Creates new sport.

@@ -20,7 +20,7 @@ namespace ClassicTotalizator.BLL.Services
         /// Add new participant.
         /// </summary>
         /// <returns>Returns true if Participant was added, false if smth went wrong</returns>
-        Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participant);
+        Task<ParticipantDTO> AddNewParticipantAsync(ParticipantRegisterDTO participant);
 
         /// <summary>
         /// Delete participant.

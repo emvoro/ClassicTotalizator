@@ -6,6 +6,6 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface IMessageRepository : IRepository<Message>
     {
-        Task<IEnumerable<Message>> GetLastMessages();
+        Task<IEnumerable<Message>> GetLastMessagesAsync();
     }
 }

@@ -39,7 +39,7 @@ namespace ClassicTotalizator.API.Controllers
         [HttpGet]
         public async Task<ActionResult<SportsDTO>> GetAllSportsInPlatform()
         {
-            var sports = await _sportService.GetCurrentListOfSports();
+            var sports = await _sportService.GetCurrentListOfSportsAsync();
             if (sports == null)
                 return NotFound();
 
@@ -59,7 +59,7 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
 
-            var createdSport = await _sportService.Add(sportDTO);
+            var createdSport = await _sportService.AddAsync(sportDTO);
 
             return Ok(createdSport);
         }

@@ -9,7 +9,7 @@ using ClassicTotalizator.BLL.Contracts.PlayerDTOs;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class ParticipantsService : IParticipantsService
     {
@@ -48,7 +48,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return participants;
         }
 
-        public async Task<ParticipantDTO> AddNewParticipant(ParticipantRegisterDTO participantRegisterDto)
+        public async Task<ParticipantDTO> AddNewParticipantAsync(ParticipantRegisterDTO participantRegisterDto)
         {
             if (participantRegisterDto == null) 
                 return null;
@@ -97,7 +97,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (id == Guid.Empty) 
                 return null;
 
-            var parameters = await _parameterRepository.GetParametersByParticipantId(id);
+            var parameters = await _parameterRepository.GetParametersByParticipantIdAsync(id);
 
             return parameters.Select(ParameterMapper.Map).ToList();
         }
@@ -107,7 +107,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (id == Guid.Empty) 
                 return null;
 
-            var players = await _playerRepository.GetPlayersByParticipantId(id);
+            var players = await _playerRepository.GetPlayersByParticipantIdAsync(id);
 
             return players.Select(PlayerMapper.Map).ToList();
         }

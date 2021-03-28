@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ClassicTotalizator.API</name>
+    </assembly>
+    <members>
+        <member name="T:ClassicTotalizator.API.Controllers.AccountController">
+            <summary>
+            This controller contains operations with user accounts.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.AccountController.#ctor(ClassicTotalizator.BLL.Services.IAccountService,Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.AccountController})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="accountService">Account service</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.AccountController.GetAllAccounts">
+            <summary>
+            Get all accounts for admin
+            </summary>
+            <returns>All accounts</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.AccountController.GetAccountForChat">
+            <summary>
+            Get user account for chat view
+            </summary>
+            <returns>All accounts</returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Controllers.AuthController">
+            <summary>
+            This controller contains authorization operations.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.AuthController.#ctor(ClassicTotalizator.BLL.Services.IAuthService,Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.AuthController},Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="authService">Auth service</param>
+            <param name="logger">Logger</param>
+            <param name="configuration">Configuration</param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.AuthController.RegisterAsync(ClassicTotalizator.BLL.Contracts.AccountDTOs.AccountRegisterDTO)">
+            <summary>
+            Registration action
+            </summary>
+            <param name="registerDTO">Requested dto for registration on platform</param>
+            <returns>Returns JWT</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.AuthController.LoginAsync(ClassicTotalizator.BLL.Contracts.AccountDTOs.AccountLoginDTO)">
+            <summary>
+            Login action
+            </summary>
+            <param name="loginDTO">Requested dto for login on platform</param>
+            <returns>Returns JWT</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.AuthController.AdminLoginAsync(ClassicTotalizator.BLL.Contracts.AccountDTOs.AccountLoginDTO)">
+            <summary>
+            Admin login action
+            </summary>
+            <param name="loginDTO">Requested dto for login on platform</param>
+            <returns>Returns JWT</returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Controllers.BetController">
+            <summary>
+            This controller contains operations with bets for logged in users.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.BetController.#ctor(ClassicTotalizator.BLL.Services.IBetService,Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.BetController})">
+            <summary>
+            Bet controller Constructor
+            </summary>
+            <param name="betService">Bet service</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.BetController.GetBetsByAccId">
+            <summary>
+            Get bets on account.
+            </summary>
+            <returns>Bets on account</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.BetController.GetEventBets">
+            <summary>
+            Getting event bet's
+            </summary>
+            <param name="id">Event id</param>
+            <returns>Event bet's</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.BetController.AddBet(ClassicTotalizator.BLL.Contracts.BetDTOs.BetNewDTO)">
+            <summary>
+            Add bet
+            </summary>
+            <param name="bet">New bet from user</param>
+            <returns>Status code, ok if bet done, something another if not</returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Controllers.ChatController">
+            <summary>
+            This controller contains operations with bets for logged in users.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ChatController.#ctor(ClassicTotalizator.BLL.Services.IChatService,Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.ChatController})">
+            <summary>
+            Bet controller Constructor
+            </summary>
+            <param name="chatService">Chat service</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ChatController.GetMessagesInChat">
+            <summary>
+            Get current message list
+            </summary>
+            <returns>List of all messages now in chat(100)</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ChatController.PostMessageInChat(ClassicTotalizator.BLL.Contracts.ChatDTOs.MessageToPostDTO)">
+            <summary>
+            Add message to message pool
+            </summary>
+            <param name="messageToPostDTO">Text dto that user trying to post</param>
+            <returns>True if message was posted or false if smth went wrong</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ChatController.DeleteMessage(System.Guid)">
+            <summary>
+            Only with admin permission(Deleting Messages from chat)
+            </summary>
+            <param name="id">Deletes message from chat action</param>
+            <returns>True if message was deleted</returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Controllers.EventsController">
+            <summary>
+            This controller contains operations with events.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.#ctor(Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.EventsController},ClassicTotalizator.BLL.Services.IEventService)">
+            <summary>
+            Events Controller Constructor
+            </summary>
+            <param name="logger"></param>
+            <param name="eventService"></param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.GetAllEvents">
+            <summary>
+            Get all events.
+            </summary>
+            <returns>List of all events.</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.GetCurrentLine">
+            <summary>
+            Get current line.
+            </summary>
+            <returns>List of all current active events</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.GetAllPossibleOutcomes">
+            <summary>
+            Get all possible outcomes for events.
+            </summary>
+            <returns>List of all possible outcomes</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.GetEventById(System.Guid)">
+            <summary>
+            Get event by id.
+            </summary>
+            <returns>Event by id</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.GetEventPreviewById(System.Guid)">
+            <summary>
+            Get event preview by id
+            </summary>
+            <param name="id">Unique identifier of event</param>
+            <returns>Event preview</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.AddEvent(ClassicTotalizator.BLL.Contracts.EventDTOs.EventRegisterDTO)">
+            <summary>
+            Add new event.
+            </summary>
+            <returns>Event DTO</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.FinishEvent(ClassicTotalizator.BLL.Contracts.EventDTOs.FinishedEventDTO)">
+            <summary>
+            Close event.
+            </summary>
+            <param name="finishedEvent">Event</param>
+            <returns>Bool value, true id closed, another - false</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.PatchEvent(ClassicTotalizator.BLL.Contracts.EventDTOs.EditedEventDTO)">
+            <summary>
+            Edit event.
+            </summary>
+            <returns>Event DTO</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.EventsController.DeleteEvent(System.Guid)">
+            <summary>
+            Deletes event BUT be careful:)
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Controllers.ParticipantsController">
+            <summary>
+            This controller contains operations with participants.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ParticipantsController.#ctor(Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.ParticipantsController},ClassicTotalizator.BLL.Services.IParticipantsService)">
+            <summary>
+            Events Controller Constructor
+            </summary>
+            <param name="logger">Logger</param>
+            <param name="participantsService">Participants service</param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ParticipantsController.GetAllParticipantsAsync">
+            <summary>
+            Get all participants
+            </summary>
+            <returns>Collection of all registered participants for [CURRENT SPORT]</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ParticipantsController.AddParticipant(ClassicTotalizator.BLL.Contracts.ParticipantDTOs.ParticipantRegisterDTO)">
+            <summary>
+            Add new participant
+            </summary>
+            <returns>Event DTO</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.ParticipantsController.DeleteParticipant(System.Guid)">
+            <summary>
+            Deletes participant.
+            </summary>
+            <returns>Deleting state</returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Controllers.SportsController">
+            <summary>
+            This controller contains operations with sports.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.SportsController.#ctor(Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.SportsController},ClassicTotalizator.BLL.Services.ISportService)">
+            <summary>
+            Events Controller Constructor
+            </summary>
+            <param name="logger"></param>
+            <param name="sportService"></param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.SportsController.GetAllSportsInPlatform">
+            <summary>
+            Get all sports.
+            </summary>
+            <returns>List of all possible sports on the platform</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.SportsController.AddSport(ClassicTotalizator.BLL.Contracts.SportDTOs.SportDTO)">
+            <summary>
+            Adds new sport.
+            </summary>
+            <returns>Sport DTO</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.SportsController.DeleteSportSport(System.Int32)">
+            <summary>
+            Deletes sport.
+            </summary>
+            <returns>Deleting state.</returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Controllers.WalletController">
+            <summary>
+            This controller contains operations with wallet.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.WalletController.#ctor(ClassicTotalizator.BLL.Services.IWalletService,Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Controllers.WalletController})">
+            <summary>
+            Wallet Controller Constructor
+            </summary>
+            <param name="walletService">Wallet service</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.WalletController.GetWalletByAccId">
+            <summary>
+            Get account wallet by id.
+            </summary>
+            <returns>Account wallet</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.WalletController.GetTransactionHistory">
+            <summary>
+            Get account transaction history.
+            </summary>
+            <returns>Transaction history</returns>
+        </member>
+        <member name="M:ClassicTotalizator.API.Controllers.WalletController.AddTransaction(ClassicTotalizator.BLL.Contracts.TransactionDTOs.TransactionDTO)">
+            <summary>
+            Make a transaction : deposit or withdraw
+            </summary>
+            <param name="transactionDto">DTO of transaction</param>
+            <returns>Wallet</returns>
+        </member>
+        <member name="T:ClassicTotalizator.API.Middlewares.LoggerMiddleware">
+            <summary>
+             This class responds for logging.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Middlewares.LoggerMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{ClassicTotalizator.API.Middlewares.LoggerMiddleware})">
+            <summary>
+            Logger Middleware Controller
+            </summary>
+            /// <param name="next"></param>
+            /// <param name="logger"></param>
+        </member>
+        <member name="M:ClassicTotalizator.API.Middlewares.LoggerMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Invokes logging
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:ClassicTotalizator.API.Services.ClaimsIdentityService">
+            <summary>
+            Service that gets an account id from token.
+            </summary>
+        </member>
+        <member name="M:ClassicTotalizator.API.Services.ClaimsIdentityService.GetIdFromToken(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Method that gets an account id from token.
+            </summary>
+            <param name="user">User claims principal.</param>
+        </member>
+    </members>
+</doc>

@@ -6,13 +6,11 @@ using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class BetService : IBetService
     {
         private readonly IBetRepository _repository;
-
-        private readonly IAccountRepository _accountRepository;
 
         private readonly IRepository<Wallet> _walletRepository;
 
@@ -20,28 +18,22 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private readonly IRepository<Participant> _participantRepository;
 
-        private readonly IEventService _eventService;
-
         private readonly IRepository<Event> _eventRepository;
 
-        public BetService(IBetRepository repository, 
-            IEventService eventService, 
-            IAccountRepository accountRepository, 
+        public BetService(IBetRepository repository,
             IRepository<Wallet> walletRepository, 
             IRepository<BetPool> betpoolRepository,
             IRepository<Event> eventRepository,
             IRepository<Participant> participantRepository)
         {
             _repository = repository;
-            _eventService = eventService;
-            _accountRepository = accountRepository;
             _walletRepository = walletRepository;
             _betpoolRepository = betpoolRepository;
             _eventRepository = eventRepository;
             _participantRepository = participantRepository;
         }
         
-        public async Task<IEnumerable<BetPreviewForAdminsDTO>> GetAllEventBets()
+        public async Task<IEnumerable<BetPreviewForAdminsDTO>> GetAllEventBetsAsync()
         {
             var bets = await _repository.GetAllAsync();
 
@@ -53,46 +45,43 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 var previewBet = BetMapper.MapPreviewForAdmins(bet);
                 previewBet.EventStartime = currentEvent.StartTime;
 
-                var participantPreview1 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id1);
-                var participantPreview2 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id2);
-
-                previewBet.TeamConfrontation = $"{participantPreview1.Name} - {participantPreview2.Name}";
+                previewBet.TeamConfrontation = await GetTeamConfrontation(currentEvent.Participant_Id1, currentEvent.Participant_Id2);
                 previewBets.Add(previewBet);
             }
 
             return previewBets;
         }
 
-        public async Task<IEnumerable<BetPreviewForUserDTO>> GetBetsByAccId(Guid id)
+        public async Task<IEnumerable<BetPreviewForUserDTO>> GetBetsByAccIdAsync(Guid id)
         {
-            var userBets = await _repository.GetBetsByAccountId(id);
+            if (id == Guid.Empty)
+                return null;
+            
+            var bets = await _repository.GetBetsByAccountIdAsync(id);
 
             var previewBets = new List<BetPreviewForUserDTO>();
 
-            foreach (var bet in userBets)
+            foreach (var bet in bets)
             {
-               var currentEvent = await  _eventRepository.GetByIdAsync(bet.Event_Id);
-               var previewBet = BetMapper.MapPreview(bet);
-               previewBet.EventStartime = currentEvent.StartTime;
+                var currentEvent = await  _eventRepository.GetByIdAsync(bet.Event_Id);
+                var previewBet = BetMapper.MapPreview(bet);
+                previewBet.EventStartime = currentEvent.StartTime;
 
-                var participantPreview1 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id1);
-                var participantPreview2 = await _participantRepository.GetByIdAsync(currentEvent.Participant_Id2);
-
-                previewBet.TeamConfrontation = $"{participantPreview1.Name} - {participantPreview2.Name}";
+                previewBet.TeamConfrontation = await GetTeamConfrontation(currentEvent.Participant_Id1, currentEvent.Participant_Id2);
                 previewBets.Add(previewBet);
             }
 
             return previewBets;
         }
 
-        public async Task<bool> AddBet(BetNewDTO betDto, Guid accountId)
+        public async Task<bool> AddBetAsync(BetNewDTO betDto, Guid accountId)
         {
             if (betDto == null)
                 throw new ArgumentNullException(nameof(betDto));
             if (betDto.Amount <= 0 || betDto.Event_Id == Guid.Empty || string.IsNullOrEmpty(betDto.Choice) || accountId == Guid.Empty)
                 return false;
             
-            var @event = await _eventService.GetById(betDto.Event_Id);
+            var @event = await _eventRepository.GetByIdAsync(betDto.Event_Id);
             if (@event == null)
                 return false;
 
@@ -121,6 +110,14 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             await _repository.AddAsync(bet);
 
             return true;
+        }
+
+        private async Task<string> GetTeamConfrontation(Guid participantId1, Guid participantId2)
+        {
+            var participantPreview1 = await _participantRepository.GetByIdAsync(participantId1);
+            var participantPreview2 = await _participantRepository.GetByIdAsync(participantId2);
+
+            return $"{participantPreview1.Name} - {participantPreview2.Name}";
         }
     }
 }

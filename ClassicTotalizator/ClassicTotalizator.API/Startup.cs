@@ -1,7 +1,6 @@
 using ClassicTotalizator.API.Middlewares;
 using ClassicTotalizator.BLL.Helpers;
 using ClassicTotalizator.BLL.Services;
-using ClassicTotalizator.BLL.Services.IMPL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +14,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using ClassicTotalizator.BLL.Generators;
-using ClassicTotalizator.BLL.Generators.IMPL;
+using ClassicTotalizator.BLL.Generators.Impl;
 using ClassicTotalizator.BLL.Services.Impl;
 
 namespace ClassicTotalizator.API

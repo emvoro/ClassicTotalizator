@@ -7,7 +7,7 @@ using ClassicTotalizator.BLL.Contracts.SportDTOs;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     /// <summary>
     /// Adds sports
@@ -21,7 +21,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _repository = repository;
         }
 
-        public async Task<SportDTO> Add(SportDTO sport)
+        public async Task<SportDTO> AddAsync(SportDTO sport)
         {
             if (sport == null) 
                 throw new ArgumentNullException(nameof(sport));
@@ -40,7 +40,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return sport;
         }
 
-        public async Task<SportsDTO> GetCurrentListOfSports()
+        public async Task<SportsDTO> GetCurrentListOfSportsAsync()
         {
             var sports = await _repository.GetAllAsync() ?? new List<Sport>();
 
@@ -56,6 +56,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return false;
             
             var sport = await _repository.GetByIdAsync(id);
+
             if (sport == null) 
                 return false;
 

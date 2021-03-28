@@ -14,7 +14,7 @@ namespace ClassicTotalizator.BLL.Services
         /// Get last 100 messages
         /// </summary>
         /// <returns>Messages</returns>
-        Task<IEnumerable<MessageDTO>> GetMessages();
+        Task<IEnumerable<MessageDTO>> GetMessagesAsync();
         
         /// <summary>
         ///  Add new message in message pool

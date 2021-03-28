@@ -41,7 +41,7 @@ namespace ClassicTotalizator.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<CurrentChatMessagesDTO>> GetMessagesInChat()
         {
-            var messages = await _chatService.GetMessages();
+            var messages = await _chatService.GetMessagesAsync();
             if (messages == null)
                 return NotFound();
 

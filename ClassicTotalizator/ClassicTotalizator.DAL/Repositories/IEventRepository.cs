@@ -7,6 +7,6 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface IEventRepository : IRepository<Event>
     {
-        Task<IEnumerable<Event>> GetNotEndedEvents();
+        Task<IEnumerable<Event>> GetNotEndedEventsAsync();
     }
 }

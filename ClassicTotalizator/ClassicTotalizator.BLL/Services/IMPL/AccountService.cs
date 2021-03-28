@@ -7,24 +7,25 @@ using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 
-namespace ClassicTotalizator.BLL.Services.IMPL
+namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class AccountService : IAccountService
     {
-        private readonly IAccountRepository _repository;
+        private readonly IAccountRepository _accountRepository;
 
         private readonly IRepository<Wallet> _walletRepository;
 
-        public AccountService(IAccountRepository repository, 
+        public AccountService(IAccountRepository accountRepository, 
             IRepository<Wallet> walletRepository)
         {
-            _repository = repository;
+            _accountRepository = accountRepository;
             _walletRepository = walletRepository;
         }
 
-        public async Task<IEnumerable<AccountForAdminDTO>> GetAllAccounts()
+        public async Task<IEnumerable<AccountForAdminDTO>> GetAllAccountsAsync()
         {
-            var accounts = await _repository.GetAllAsync();
+            var accounts = await _accountRepository.GetAllAsync();
+            
             foreach (var account in accounts)
             {
                 account.Wallet = await _walletRepository.GetByIdAsync(account.Id);
@@ -33,45 +34,47 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return accounts.Select(AccountMapper.MapForAdmin).ToList();
         }
 
-        public async Task<AccountInfoDTO> GetById(Guid id)
+        public async Task<AccountInfoDTO> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 return null;
             
-            var account = await _repository.GetByIdAsync(id);
+            var account = await _accountRepository.GetByIdAsync(id);
 
             return AccountMapper.MapForChatInfo(account);
         }
 
-        public async Task<AccountDTO> GetByEmail(string email)
+        public async Task<AccountDTO> GetByEmailAsync(string email)
         {
             if (string.IsNullOrEmpty(email))
                 return null;
             
-            var account = await _repository.GetAccountByEmail(email);
+            var account = await _accountRepository.GetAccountByEmailAsync(email);
             
             return AccountMapper.Map(account);
         }
 
-        public async Task<AccountDTO> GetByUsername(string username)
+        public async Task<AccountDTO> GetByUsernameAsync(string username)
         {
             if (string.IsNullOrEmpty(username))
                 return null;
 
-            var account = await _repository.GetAccountByUsername(username);
+            var account = await _accountRepository.GetAccountByUsernameAsync(username);
 
             return AccountMapper.Map(account);
         }
 
-        public async Task<bool> Add(AccountDTO registeredAccount)
+        public async Task<bool> AddAsync(AccountDTO registeredAccount)
         {
             if (registeredAccount == null)
                 throw new ArgumentNullException(nameof(registeredAccount));
-
-            if (await GetByEmail(registeredAccount.Email) != null)
+            if (string.IsNullOrEmpty(registeredAccount.Email))
                 return false;
 
-            if (await GetByUsername(registeredAccount.Username) != null)
+            if (await _accountRepository.GetAccountByEmailAsync(registeredAccount.Email) != null)
+                return false;
+
+            if (await _accountRepository.GetAccountByUsernameAsync(registeredAccount.Username) != null)
                 return false;
 
             var account = AccountMapper.Map(registeredAccount);
@@ -86,7 +89,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             };
             account.BetsHistory = new List<Bet>();
 
-            await _repository.AddAsync(account);
+            await _accountRepository.AddAsync(account);
             
             return true;
         }

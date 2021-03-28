@@ -44,7 +44,7 @@ namespace ClassicTotalizator.API.Controllers
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
-            var bets = await _betService.GetBetsByAccId(accountId);
+            var bets = await _betService.GetBetsByAccIdAsync(accountId);
             if (bets == null)
                 return NotFound("Bets not found!");
 
@@ -64,7 +64,7 @@ namespace ClassicTotalizator.API.Controllers
         public async Task<ActionResult> GetEventBets()
         {
             
-            var bets = await _betService.GetAllEventBets();
+            var bets = await _betService.GetAllEventBetsAsync();
             if (bets == null)
                 return NotFound("Bets not found!");
 
@@ -92,7 +92,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                if (await _betService.AddBet(bet, accountId)) 
+                if (await _betService.AddBetAsync(bet, accountId)) 
                     return Ok();
 
                 return BadRequest();

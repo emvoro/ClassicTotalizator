@@ -8,10 +8,10 @@ namespace ClassicTotalizator.BLL.Services
 {
     public interface IWalletService
     {
-        Task<WalletDTO> Transaction(Guid accountId, TransactionDTO transactionDto);
+        Task<WalletDTO> TransactionAsync(Guid accountId, TransactionDTO transactionDto);
 
-        Task<WalletDTO> GetWalletByAccId(Guid id);
+        Task<WalletDTO> GetWalletByAccIdAsync(Guid id);
 
-        Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccId(Guid id);
+        Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccIdAsync(Guid id);
     }
 }

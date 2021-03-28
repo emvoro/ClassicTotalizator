@@ -7,14 +7,14 @@ namespace ClassicTotalizator.BLL.Services
 {
     public interface IAccountService
     {
-        Task<IEnumerable<AccountForAdminDTO>> GetAllAccounts();
+        Task<IEnumerable<AccountForAdminDTO>> GetAllAccountsAsync();
         
-        Task<AccountDTO> GetByEmail(string email);
+        Task<AccountDTO> GetByEmailAsync(string email);
 
-        Task<AccountDTO> GetByUsername(string username);
+        Task<AccountDTO> GetByUsernameAsync(string username);
 
-        Task<bool> Add(AccountDTO registeredAcc);
+        Task<bool> AddAsync(AccountDTO registeredAcc);
 
-        Task<AccountInfoDTO> GetById(Guid id);
+        Task<AccountInfoDTO> GetByIdAsync(Guid id);
     }
 }

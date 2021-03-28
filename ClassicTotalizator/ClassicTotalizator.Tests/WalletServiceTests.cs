@@ -28,11 +28,11 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void Transaction_ThrowArgumentNullException_IfTransactionDtoIsNull()
+        public async Task Transaction_ThrowArgumentNullException_IfTransactionDtoIsNull()
         {
             _service = new WalletService(null, null);
 
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _service.Transaction(Guid.Empty, null));
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _service.TransactionAsync(Guid.Empty, null));
         }
 
         [Theory]
@@ -42,7 +42,7 @@ namespace ClassicTotalizator.Tests
         [InlineData(400)]
         [InlineData(10000)]
         [InlineData(1)]
-        public async void Transaction_AddToWalletAmount_If_TransactionValidDeposit(decimal amount)
+        public async Task Transaction_AddToWalletAmount_If_TransactionValidDeposit(decimal amount)
         {
             var id = Guid.NewGuid();
             var wallet = new Wallet
@@ -62,7 +62,7 @@ namespace ClassicTotalizator.Tests
 
             _service = new WalletService(_mockRepository.Object, _mockTransactionRepository.Object);
 
-            var result = await _service.Transaction(id, transaction);
+            var result = await _service.TransactionAsync(id, transaction);
             
             Assert.Equal(amount ,result.Amount);
         }
@@ -74,7 +74,7 @@ namespace ClassicTotalizator.Tests
         [InlineData(400)]
         [InlineData(10000)]
         [InlineData(1)]
-        public async void Transaction_RemoveFromWalletAmount_If_TransactionValidWithdraw(decimal amount)
+        public async Task Transaction_RemoveFromWalletAmount_If_TransactionValidWithdraw(decimal amount)
         {
             var id = Guid.NewGuid();
             var wallet = new Wallet
@@ -94,7 +94,7 @@ namespace ClassicTotalizator.Tests
 
             _service = new WalletService(_mockRepository.Object, _mockTransactionRepository.Object);
 
-            var result = await _service.Transaction(id, transaction);
+            var result = await _service.TransactionAsync(id, transaction);
             
             Assert.Equal(0 ,result.Amount);
         }
@@ -107,7 +107,7 @@ namespace ClassicTotalizator.Tests
         [InlineData("123r45ghyhtgrfd")]
         [InlineData("")]
         [InlineData(null)]
-        public async void Transaction_ReturnNull_If_TypeInvalid(string type)
+        public async Task Transaction_ReturnNull_If_TypeInvalid(string type)
         {
             var id = Guid.NewGuid();
             var transaction = new TransactionDTO()
@@ -122,7 +122,7 @@ namespace ClassicTotalizator.Tests
 
             _service = new WalletService(_mockRepository.Object, _mockTransactionRepository.Object);
 
-            var result = await _service.Transaction(id, transaction);
+            var result = await _service.TransactionAsync(id, transaction);
             
             Assert.Null(result);
         }
@@ -134,7 +134,7 @@ namespace ClassicTotalizator.Tests
         [InlineData(1, "")]
         [InlineData(0, "")]
         [InlineData(-1, "")]
-        public async void Transaction_ReturnNull_IfTransactionInvalid(decimal amount, string type)
+        public async Task Transaction_ReturnNull_IfTransactionInvalid(decimal amount, string type)
         {
             var id = Guid.NewGuid();
             var transaction = new TransactionDTO()
@@ -149,21 +149,21 @@ namespace ClassicTotalizator.Tests
 
             _service = new WalletService(_mockRepository.Object, _mockTransactionRepository.Object);
 
-            var result = await _service.Transaction(id, transaction);
+            var result = await _service.TransactionAsync(id, transaction);
             
             Assert.Null(result);
         }
 
         [Fact]
-        public async void GetWalletByAccId_ReturnNull_IfIdIsEmpty()
+        public async Task GetWalletByAccId_ReturnNull_IfIdIsEmpty()
         {
             _service = new WalletService(null, null);
             
-            Assert.Null(await _service.GetWalletByAccId(Guid.Empty));
+            Assert.Null(await _service.GetWalletByAccIdAsync(Guid.Empty));
         }
 
         [Fact]
-        public async void GetWalletByAccId_ReturnValidWalletAccount_IfIdEqualToWalletId()
+        public async Task GetWalletByAccId_ReturnValidWalletAccount_IfIdEqualToWalletId()
         {
             var id = Guid.NewGuid();
             var wallet = new Wallet
@@ -175,50 +175,50 @@ namespace ClassicTotalizator.Tests
             _mockRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(wallet);
 
             _service = new WalletService(_mockRepository.Object, null);
-            var walletDto = await _service.GetWalletByAccId(id);
+            var walletDto = await _service.GetWalletByAccIdAsync(id);
             
             Assert.NotNull(walletDto);
             Assert.Equal(wallet.Amount, walletDto.Amount);
         }
         
         [Fact]
-        public async void GetWalletByAccId_ReturnNull_If_IdNotEqualToWalletId()
+        public async Task GetWalletByAccId_ReturnNull_If_IdNotEqualToWalletId()
         {
             var id = Guid.NewGuid();
 
             _mockRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync((Wallet) null);
 
             _service = new WalletService(_mockRepository.Object, null);
-            var walletDto = await _service.GetWalletByAccId(id);
+            var walletDto = await _service.GetWalletByAccIdAsync(id);
             
             Assert.Null(walletDto);
         }
 
         [Fact]
-        public async void GetTransactionHistoryByAccId_ReturnsNull_IfGuidEmpty()
+        public async Task GetTransactionHistoryByAccId_ReturnsNull_IfGuidEmpty()
         {
-            _mockTransactionRepository.Setup(x => x.GetAccountTransaction(Guid.Empty)).ReturnsAsync((IEnumerable<Transaction>) null);
+            _mockTransactionRepository.Setup(x => x.GetAccountTransactionAsync(Guid.Empty)).ReturnsAsync((IEnumerable<Transaction>) null);
 
             _service = new WalletService(null, _mockTransactionRepository.Object);
             
-            Assert.Null(await _service.GetTransactionHistoryByAccId(Guid.Empty));
+            Assert.Null(await _service.GetTransactionHistoryByAccIdAsync(Guid.Empty));
         }
 
         [Fact]
-        public async void GetTransactionHistoryByAccId_ReturnsTwoTransaction_If_IdEqualTo_AccountId()
+        public async Task GetTransactionHistoryByAccId_ReturnsTwoTransaction_If_IdEqualTo_AccountId()
         {
             var id = Guid.NewGuid();
             var transactions = new List<Transaction>
             {
-                new() {Wallet_Id = id},
+                new () {Wallet_Id = id},
                 new () {Wallet_Id = id}
             };
 
-            _mockTransactionRepository.Setup(x => x.GetAccountTransaction(id)).ReturnsAsync(transactions);
+            _mockTransactionRepository.Setup(x => x.GetAccountTransactionAsync(id)).ReturnsAsync(transactions);
 
             _service = new WalletService(null, _mockTransactionRepository.Object);
 
-            var actual = await _service.GetTransactionHistoryByAccId(id);
+            var actual = await _service.GetTransactionHistoryByAccIdAsync(id);
             
             Assert.Equal(2, actual.Count());
         }
