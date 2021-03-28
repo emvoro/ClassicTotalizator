@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassicTotalizator.Tests
+﻿namespace ClassicTotalizator.Tests
 {
-    class ChatServiceTests
+    public class ChatServiceTests
     {
     }
 }

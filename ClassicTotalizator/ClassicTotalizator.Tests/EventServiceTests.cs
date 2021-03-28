@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Services.Impl;
 using Xunit;
+using ClassicTotalizator.BLL.Mappings;
 
 namespace ClassicTotalizator.Tests
 {
@@ -29,7 +30,7 @@ namespace ClassicTotalizator.Tests
         [Fact]
         public async Task GetById_CheckReturnNullIfGuidEmpty_NullReturned()
         {
-            _eventService = new EventService(null,null,null,null,null,null);
+            _eventService = new EventService(null, null, null, null, null, null);
 
             var eventDto = await _eventService.GetById(Guid.Empty);
 
@@ -50,26 +51,26 @@ namespace ClassicTotalizator.Tests
                 Participant2 = null,
                 Participant_Id1 = Guid.NewGuid(),
                 Participant_Id2 = Guid.NewGuid(),
-                PossibleResults = new string[] { "W1","X","W2"},
-                Result =null,
-                Sport = new Sport {Id = 1,Name ="Test" },
-                Sport_Id =1,
+                PossibleResults = new string[] { "W1", "X", "W2" },
+                Result = null,
+                Sport = new Sport { Id = 1, Name = "Test" },
+                Sport_Id = 1,
                 StartTime = new DateTimeOffset()
             };
 
             _eventRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(@event);
 
-            _eventService = new EventService(_eventRepository.Object, null,null,null,null,null);
+            _eventService = new EventService(_eventRepository.Object, null, null, null, null, null);
             var eventDto = await _eventService.GetById(id);
 
             Assert.NotNull(eventDto);
-            Assert.Equal(eventDto.Id, eventDto.Id);
+            Assert.Equal(eventDto.Id, id);
         }
 
         [Fact]
         public async void CreateEventAsync_CheckIfNullArgumentExceptionThrown_ExceptionWasThrown()
         {
-            _eventService = new EventService(null, null,null,null,null,null);
+            _eventService = new EventService(null, null, null, null, null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await _eventService.CreateEventAsync(null));
         }
@@ -88,13 +89,13 @@ namespace ClassicTotalizator.Tests
             };
 
             var badEvent3 = new EventRegisterDTO
-            { 
+            {
                 Margin = -3m
             };
 
             var badEvent4 = new EventRegisterDTO
             {
-                StartTime = new DateTimeOffset()    
+                StartTime = new DateTimeOffset()
             };
 
             _eventService = new EventService(null, null, null, null, null, null);
@@ -111,5 +112,87 @@ namespace ClassicTotalizator.Tests
             Assert.Null(createdBadEvent4);
         }
 
+        [Fact]
+        public async void CreateEventAsync_CheckIfEventWasCreatedNadAddedToDb_EventDtoWasReturned()
+        {
+            var id = Guid.NewGuid();
+
+            var newEvent = new EventRegisterDTO
+            {
+                Participant_Id1 = Guid.NewGuid(),
+                Participant_Id2 = Guid.NewGuid(),
+                Margin = 5,
+                SportId = 1,
+                StartTime = new DateTime(2021, 10, 5, 11, 30, 0),
+                PossibleResults = new string[] { "W1", "W2", "X" }
+            };
+
+            _eventRepository.Setup(x => x.AddAsync(EventMapper.Map(newEvent))).Returns(Task.CompletedTask);
+
+            _eventService = new EventService(_eventRepository.Object, null, null, null, null, null);
+
+            var createdEvent = await _eventService.CreateEventAsync(newEvent);
+
+            Assert.Equal(newEvent.Participant_Id1, createdEvent.Participant_Id1);
+        }
+
+        [Fact]
+        public async void EditEventAsync_CheckIfNullWasReturned_NullWasReturned()
+        {
+            var badEvent1 = new EditedEventDTO
+            {
+                Margin = -345m
+            };
+
+            var badEvent2 = new EditedEventDTO
+            {
+                StartTime = new DateTime(2002, 10, 14)
+            };
+
+            _eventService = new EventService(null, null, null, null, null, null);
+
+            var editedBadEvent1 = await _eventService.EditEventAsync(badEvent1);
+            var editedBadEvent2 = await _eventService.EditEventAsync(badEvent2);
+
+            Assert.Null(editedBadEvent1);
+            Assert.Null(editedBadEvent2);
+        }
+
+        [Fact]
+        public async void EditEventAsync_EventWasCreatedNadAddedToDb_EventDtoWasReturned()
+        {
+            var id = Guid.NewGuid();
+
+            var newEvent = new EventRegisterDTO
+            {
+                Participant_Id1 = Guid.NewGuid(),
+                Participant_Id2 = Guid.NewGuid(),
+                Margin = 5,
+                SportId = 1,
+                StartTime = new DateTime(2021, 10, 5, 11, 30, 0),
+                PossibleResults = new string[] { "W1", "W2", "X" }
+            };
+
+            var eventToEdit = new EditedEventDTO
+            {
+                Margin = 10,
+                StartTime = new DateTime(2021, 11, 5, 11, 30, 0)
+            };
+
+            _eventRepository.Setup(x => x.AddAsync(EventMapper.Map(newEvent))).Returns(Task.CompletedTask);
+
+            _eventService = new EventService(_eventRepository.Object, null, null, null, null, null);
+
+            var createdEvent = await _eventService.CreateEventAsync(newEvent);
+
+            eventToEdit.Id = createdEvent.Id;
+
+            _eventRepository.Setup(x => x.GetByIdAsync(createdEvent.Id)).ReturnsAsync(EventMapper.Map(createdEvent));
+            _eventRepository.Setup(x => x.UpdateAsync(EventMapper.Map(createdEvent))).Returns(Task.CompletedTask);
+
+            var editedEvent = await _eventService.EditEventAsync(eventToEdit);
+
+            Assert.NotEqual(newEvent.Margin, editedEvent.Margin);
+        }
     }
 }
