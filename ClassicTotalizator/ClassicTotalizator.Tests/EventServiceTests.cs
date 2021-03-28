@@ -1,13 +1,15 @@
 ﻿using ClassicTotalizator.BLL.Contracts.EventDTOs;
+using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.BLL.Services;
+using ClassicTotalizator.BLL.Services.Impl;
 using ClassicTotalizator.DAL.Entities;
 using ClassicTotalizator.DAL.Repositories;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using ClassicTotalizator.BLL.Services.Impl;
 using Xunit;
-using ClassicTotalizator.BLL.Mappings;
 
 namespace ClassicTotalizator.Tests
 {
@@ -20,11 +22,13 @@ namespace ClassicTotalizator.Tests
 
         private readonly Mock<IRepository<Wallet>> _walletRepository = new Mock<IRepository<Wallet>>();
 
-        private readonly Mock<IRepository<BetPool>> _betpoolRepository = new Mock<IRepository<BetPool>>();
+        private readonly Mock<IBetRepository> _betRepository = new Mock<IBetRepository>();
 
         private readonly Mock<IRepository<Participant>> _participantRepository = new Mock<IRepository<Participant>>();
 
         private readonly Mock<IEventRepository> _eventRepository = new Mock<IEventRepository>();
+
+        private readonly Mock<IParameterRepository> _paramRepository = new Mock<IParameterRepository>();
 
         [Fact]
         public async Task GetById_CheckReturnNullIfGuidEmpty_NullReturned()
@@ -193,5 +197,87 @@ namespace ClassicTotalizator.Tests
 
             Assert.NotEqual(newEvent.Margin, editedEvent.Margin);
         }
+
+        [Fact]
+        public async void GetEventsAsync_GetCurrentFeed_CheckIfReturnsFullListOfEvents_EventListReturned()
+        {
+            var id = Guid.NewGuid();
+            _eventRepository.Setup(x => x.GetAllAsync()).ReturnsAsync(new List<Event>
+            {
+                new Event
+                {
+                    Id = id,
+                    Participant_Id1 = id,
+                    Participant_Id2 =id,
+                    Sport_Id =1,
+                    IsEnded =true
+                },
+                new Event
+                {
+                    Id = id,
+                    Participant_Id1 = id,
+                    Participant_Id2 =id,
+                    Sport_Id =1,
+                    IsEnded =true
+                }
+            });
+
+            _eventRepository.Setup(x => x.GetNotEndedEventsAsync()).ReturnsAsync(new List<Event>
+             {
+                new Event
+                {
+                  Id = id,
+                    Participant_Id1 = id,
+                    Participant_Id2 =id,
+                    Sport_Id =1,
+                    IsEnded = false
+                }
+            });
+
+            _participantRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(new Participant());
+            _sportRepository.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(new Sport());
+            _betRepository.Setup(x => x.GetBetsByEventIdAsync(id)).ReturnsAsync(new List<Bet>
+            {
+            new Bet
+            {
+               Event_Id = id
+            },
+            new Bet
+            {
+               Event_Id = id
+            }
+            });
+            _paramRepository.Setup(x => x.GetParametersByParticipantIdAsync(id)).ReturnsAsync(new List<Parameter>
+            {
+                new Parameter
+                {
+                    Id = id
+                }
+            });
+
+            _eventService = new EventService(_eventRepository.Object, _participantRepository.Object,
+                _sportRepository.Object, _betRepository.Object, null, _paramRepository.Object);
+
+            var events = await _eventService.GetEventsAsync();
+
+            var feed = await _eventService.GetCurrentLineOfEventsAsync();
+
+            var listOfEvents = events.Events.ToList();
+
+            var feedList = feed.Events.ToList();
+
+            Assert.Equal(2, listOfEvents.Count());
+            Assert.Single(feedList);
+        }
+
+        [Fact]
+        public async void FinishEvent_CheckIfNullArgumentExceptionThrown_ExceptionWasThrown()
+        {
+            _eventService = new EventService(null, null, null, null, null, null);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _eventService.FinishEventAsync(null));
+        }
+   
+    
     }
 }
