@@ -402,11 +402,11 @@ namespace ClassicTotalizator.Tests
             _eventRepository.Setup(x => x.UpdateAsync(@event)).Returns(Task.CompletedTask);
 
             _betRepository.Setup(x => x.GetBetsByEventIdAsync(id)).ReturnsAsync(betList);
-            foreach (var bet in betList)
+            foreach (var settledBet in betList)
             {
-                _betRepository.Setup(x => x.UpdateAsync(bet)).Returns(Task.CompletedTask);
-                _walletRepository.Setup(x => x.GetByIdAsync(bet.Account_Id))
-                    .ReturnsAsync(wallets.FirstOrDefault(wallet => wallet.Account_Id == bet.Account_Id));
+                _betRepository.Setup(x => x.UpdateAsync(settledBet)).Returns(Task.CompletedTask);
+                _walletRepository.Setup(x => x.GetByIdAsync(settledBet.Account_Id))
+                    .ReturnsAsync(wallets.FirstOrDefault(wallet => wallet.Account_Id == settledBet.Account_Id));
             }
            
 
@@ -417,7 +417,13 @@ namespace ClassicTotalizator.Tests
 
             var wallet = wallets.FirstOrDefault(wallet => wallet.Amount != 0);
 
+            var bet = betList.FirstOrDefault(x => x.Status != "Bet lost");
+
             Assert.Equal(1970m, wallet.Amount);
+            Assert.Equal($"Win: 1970", bet.Status);
         }
+
+        //[Fact]
+        //public async Task 
     }
 }
