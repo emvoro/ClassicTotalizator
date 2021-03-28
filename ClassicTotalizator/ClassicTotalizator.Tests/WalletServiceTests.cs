@@ -28,7 +28,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void Transaction_ThrowArgumentNullException_IfTransactionDtoIsNull()
+        public async Task Transaction_ThrowArgumentNullException_IfTransactionDtoIsNull()
         {
             _service = new WalletService(null, null);
 
@@ -42,7 +42,7 @@ namespace ClassicTotalizator.Tests
         [InlineData(400)]
         [InlineData(10000)]
         [InlineData(1)]
-        public async void Transaction_AddToWalletAmount_If_TransactionValidDeposit(decimal amount)
+        public async Task Transaction_AddToWalletAmount_If_TransactionValidDeposit(decimal amount)
         {
             var id = Guid.NewGuid();
             var wallet = new Wallet
@@ -74,7 +74,7 @@ namespace ClassicTotalizator.Tests
         [InlineData(400)]
         [InlineData(10000)]
         [InlineData(1)]
-        public async void Transaction_RemoveFromWalletAmount_If_TransactionValidWithdraw(decimal amount)
+        public async Task Transaction_RemoveFromWalletAmount_If_TransactionValidWithdraw(decimal amount)
         {
             var id = Guid.NewGuid();
             var wallet = new Wallet
@@ -107,7 +107,7 @@ namespace ClassicTotalizator.Tests
         [InlineData("123r45ghyhtgrfd")]
         [InlineData("")]
         [InlineData(null)]
-        public async void Transaction_ReturnNull_If_TypeInvalid(string type)
+        public async Task Transaction_ReturnNull_If_TypeInvalid(string type)
         {
             var id = Guid.NewGuid();
             var transaction = new TransactionDTO()
@@ -134,7 +134,7 @@ namespace ClassicTotalizator.Tests
         [InlineData(1, "")]
         [InlineData(0, "")]
         [InlineData(-1, "")]
-        public async void Transaction_ReturnNull_IfTransactionInvalid(decimal amount, string type)
+        public async Task Transaction_ReturnNull_IfTransactionInvalid(decimal amount, string type)
         {
             var id = Guid.NewGuid();
             var transaction = new TransactionDTO()
@@ -155,7 +155,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void GetWalletByAccId_ReturnNull_IfIdIsEmpty()
+        public async Task GetWalletByAccId_ReturnNull_IfIdIsEmpty()
         {
             _service = new WalletService(null, null);
             
@@ -163,7 +163,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void GetWalletByAccId_ReturnValidWalletAccount_IfIdEqualToWalletId()
+        public async Task GetWalletByAccId_ReturnValidWalletAccount_IfIdEqualToWalletId()
         {
             var id = Guid.NewGuid();
             var wallet = new Wallet
@@ -182,7 +182,7 @@ namespace ClassicTotalizator.Tests
         }
         
         [Fact]
-        public async void GetWalletByAccId_ReturnNull_If_IdNotEqualToWalletId()
+        public async Task GetWalletByAccId_ReturnNull_If_IdNotEqualToWalletId()
         {
             var id = Guid.NewGuid();
 
@@ -195,7 +195,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void GetTransactionHistoryByAccId_ReturnsNull_IfGuidEmpty()
+        public async Task GetTransactionHistoryByAccId_ReturnsNull_IfGuidEmpty()
         {
             _mockTransactionRepository.Setup(x => x.GetAccountTransactionAsync(Guid.Empty)).ReturnsAsync((IEnumerable<Transaction>) null);
 
@@ -205,7 +205,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void GetTransactionHistoryByAccId_ReturnsTwoTransaction_If_IdEqualTo_AccountId()
+        public async Task GetTransactionHistoryByAccId_ReturnsTwoTransaction_If_IdEqualTo_AccountId()
         {
             var id = Guid.NewGuid();
             var transactions = new List<Transaction>
