@@ -77,10 +77,10 @@ namespace ClassicTotalizator.Tests
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await _eventService.CreateEventAsync(null));
         }
+        
         [Fact]
         public async Task CreateEventAsync_CheckIfNullWasReturned_NullReturned()
         {
-
             var badEvent1 = new EventRegisterDTO
             {
                 Participant_Id1 = Guid.Empty
