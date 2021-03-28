@@ -15,7 +15,6 @@ namespace ClassicTotalizator.Tests
 {
     public class EventServiceTests
     {
-
         private IEventService _eventService;
 
         private readonly Mock<ISportRepository> _sportRepository = new Mock<ISportRepository>();
@@ -71,13 +70,13 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void CreateEventAsync_CheckIfNullArgumentExceptionThrown_ExceptionWasThrown()
+        public async Task CreateEventAsync_CheckIfNullArgumentExceptionThrown_ExceptionWasThrown()
         {
             _eventService = new EventService(null, null, null, null, null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await _eventService.CreateEventAsync(null));
         }
-        
+
         [Fact]
         public async Task CreateEventAsync_CheckIfNullWasReturned_NullReturned()
         {
@@ -116,7 +115,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void CreateEventAsync_CheckIfEventWasCreatedNadAddedToDb_EventDtoWasReturned()
+        public async Task CreateEventAsync_CheckIfEventWasCreatedNadAddedToDb_EventDtoWasReturned()
         {
             var id = Guid.NewGuid();
 
@@ -140,7 +139,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void EditEventAsync_CheckIfNullWasReturned_NullWasReturned()
+        public async Task EditEventAsync_CheckIfNullWasReturned_NullWasReturned()
         {
             var badEvent1 = new EditedEventDTO
             {
@@ -162,7 +161,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void EditEventAsync_EventWasCreatedNadAddedToDb_EventDtoWasReturned()
+        public async Task EditEventAsync_EventWasCreatedNadAddedToDb_EventDtoWasReturned()
         {
             var id = Guid.NewGuid();
 
@@ -199,7 +198,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void GetEventsAsync_GetCurrentFeed_CheckIfReturnsFullListOfEvents_EventListReturned()
+        public async Task GetEventsAsync_GetCurrentFeed_CheckIfReturnsFullListOfEvents_EventListReturned()
         {
             var id = Guid.NewGuid();
             _eventRepository.Setup(x => x.GetAllAsync()).ReturnsAsync(new List<Event>
@@ -271,13 +270,153 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async void FinishEvent_CheckIfNullArgumentExceptionThrown_ExceptionWasThrown()
+        public async Task FinishEvent_CheckIfNullArgumentExceptionThrown_ExceptionWasThrown()
         {
             _eventService = new EventService(null, null, null, null, null, null);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await _eventService.FinishEventAsync(null));
         }
-   
-    
+
+        [Fact]
+        public async Task FinishEvent_CheckIfFalseWasReturnedIfNoSuchEventToCloseOrBadEventResult_FalseReturned()
+        {
+            var id = Guid.NewGuid();
+
+            var finishedEvent = new FinishedEventDTO
+            {
+                Id = id,
+                Result = "F"
+            };
+
+            _eventRepository.Setup(x => x.GetByIdAsync(Guid.NewGuid())).ReturnsAsync((Event)null);
+
+
+            _eventService = new EventService(_eventRepository.Object, null, null, null, null, null);
+
+            var finished = await _eventService.FinishEventAsync(finishedEvent);
+
+            Assert.False(finished);
+        }
+
+        [Fact]
+        public async Task FinishEvent_CheckIfFalseWasReturnedIfBadEventResult_FalseReturned()
+        {
+            var id = Guid.NewGuid();
+
+            var finishedEvent = new FinishedEventDTO
+            {
+                Id = id,
+                Result = "F"
+            };
+
+            _eventRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(
+               new Event
+               {
+                   Id = id,
+                   PossibleResults = new string[] { "W1", "W2" }
+               }
+               );
+
+            _eventService = new EventService(_eventRepository.Object, null, null, null, null, null);
+
+            var badEventResult = await _eventService.FinishEventAsync(finishedEvent);
+
+            Assert.False(badEventResult);
+        }
+
+        [Fact]
+        public async Task FinishEvent_CheckIfFalseWasReturnedIfEventAlreadyEnded_FalseReturned()
+        {
+            var id = Guid.NewGuid();
+
+            var eventToFinish = new FinishedEventDTO
+            {
+                Id = id,
+                Result = "W1"
+            };
+
+            _eventRepository.Setup(x => x.GetByIdAsync(eventToFinish.Id)).ReturnsAsync(new Event
+            {
+                Id = id,
+                IsEnded = true,
+                PossibleResults = new string[] { "W1", "W2" }
+            });
+
+            _eventService = new EventService(_eventRepository.Object, null, null, null, null, null);
+
+            var eventAlreadyFinished = await _eventService.FinishEventAsync(eventToFinish);
+
+            Assert.False(eventAlreadyFinished);
+        }
+
+        [Fact]
+        public async Task FinishEvent_CheckIfTrueWasReturnedIfEventSuccessfullyFinished_TrueReturned()
+        {
+            var id = Guid.NewGuid();
+            var defaultWalletId = Guid.NewGuid();
+
+            var wallets = new List<Wallet>
+            {
+                new Wallet
+                {
+                    Account_Id = id,
+                    Amount =0
+                },
+                new Wallet
+                {
+                    Account_Id =defaultWalletId,
+                    Amount = 0
+                }
+            };
+
+            var eventToFinish = new FinishedEventDTO
+            {
+                Id = id,
+                Result = "W1"
+            };
+            var @event = new Event
+            {
+                Id = id,
+                PossibleResults = new string[] { "W1", "W2" }
+            };
+            var betList = new List<Bet>
+            {
+            new Bet
+            {
+               Account_Id = id,
+               Event_Id = id,
+               Choice = "W1",
+               Amount = 1000
+            },
+            new Bet
+            {
+               Account_Id = defaultWalletId,
+               Event_Id = id,
+               Choice = "W2",
+               Amount = 1000
+            }
+            };
+
+            _eventRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(@event);
+            _eventRepository.Setup(x => x.UpdateAsync(@event)).Returns(Task.CompletedTask);
+
+            _betRepository.Setup(x => x.GetBetsByEventIdAsync(id)).ReturnsAsync(betList);
+            foreach (var bet in betList)
+            {
+                _betRepository.Setup(x => x.UpdateAsync(bet)).Returns(Task.CompletedTask);
+                _walletRepository.Setup(x => x.GetByIdAsync(bet.Account_Id))
+                    .ReturnsAsync(wallets.FirstOrDefault(wallet => wallet.Account_Id == bet.Account_Id));
+            }
+           
+
+            _eventService = new EventService(_eventRepository.Object, _participantRepository.Object,
+                _sportRepository.Object, _betRepository.Object, _walletRepository.Object, _paramRepository.Object);
+
+            var finishedEvent = _eventService.FinishEventAsync(eventToFinish);
+
+            var wallet = wallets.FirstOrDefault(wallet => wallet.Amount != 0);
+
+            Assert.Equal(1970m, wallet.Amount);
+        }
     }
 }
