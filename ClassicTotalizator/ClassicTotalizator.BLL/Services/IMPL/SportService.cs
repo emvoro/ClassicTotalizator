@@ -56,6 +56,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 return false;
             
             var sport = await _repository.GetByIdAsync(id);
+
             if (sport == null) 
                 return false;
 
