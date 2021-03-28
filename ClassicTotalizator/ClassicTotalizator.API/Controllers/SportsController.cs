@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.SportDTOs;
+using System;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -59,9 +60,16 @@ namespace ClassicTotalizator.API.Controllers
                 return BadRequest();
             }
 
-            var createdSport = await _sportService.AddAsync(sportDTO);
-
-            return Ok(createdSport);
+            try 
+            {
+                var createdSport = await _sportService.AddAsync(sportDTO);
+                return Ok(createdSport);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogWarning(e.Message);
+                return BadRequest();
+            }
         }
 
         /// <summary>
