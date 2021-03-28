@@ -178,7 +178,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<bool> DeleteEventAsync(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
+            if (id == Guid.Empty)
                 throw new ArgumentException();
 
             var eventToDelete = await _repository.GetByIdAsync(id);
