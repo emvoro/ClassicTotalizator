@@ -57,7 +57,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (id == Guid.Empty)
                 return null;
             
-            var bets = await _repository.GetBetsByAccountId(id);
+            var bets = await _repository.GetBetsByAccountIdAsync(id);
 
             var previewBets = new List<BetPreviewForUserDTO>();
 

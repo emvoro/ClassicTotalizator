@@ -120,9 +120,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             };
         }
 
-        public async Task<EventsFeedDTO> GetCurrentLineOfEvents()
+        public async Task<EventsFeedDTO> GetCurrentLineOfEventsAsync()
         {
-            var currentLine = await _repository.GetNotEndedEvents();
+            var currentLine = await _repository.GetNotEndedEventsAsync();
 
             var eventPreviewDtOs = new List<EventPreviewDTO>();
 
@@ -140,7 +140,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             };
         }
 
-        public async Task<bool> FinishEvent(FinishedEventDTO eventToClose)
+        public async Task<bool> FinishEventAsync(FinishedEventDTO eventToClose)
         {
             if (eventToClose == null)
                 throw new ArgumentNullException(nameof(eventToClose));
@@ -163,7 +163,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return await CashSettlementOfBetsOnEvents(closingEvent);
         }
 
-        public async Task<EventPreviewDTO> GetEventPreview(Guid id)
+        public async Task<EventPreviewDTO> GetEventPreviewAsync(Guid id)
         {
             var eventInBase = await _repository.GetByIdAsync(id);
             if (eventInBase == null)
@@ -176,7 +176,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return await GetAmountsOnResults(eventInBase);
         }
 
-        public async Task<bool> DeleteEvent(Guid id)
+        public async Task<bool> DeleteEventAsync(Guid id)
         {
             if (string.IsNullOrEmpty(id.ToString()))
                 throw new ArgumentException();
@@ -185,7 +185,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (eventToDelete == null)
                 return false;
 
-            var betPool = await _betRepository.GetBetsByEventId(id);
+            var betPool = await _betRepository.GetBetsByEventIdAsync(id);
 
             foreach (var bet in betPool)
             {
@@ -204,7 +204,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
 
         private async Task<EventPreviewDTO> GetAmountsOnResults(Event @event)
         {
-            var bets = await _betRepository.GetBetsByEventId(@event.Id);
+            var bets = await _betRepository.GetBetsByEventIdAsync(@event.Id);
             var eventRes = EventMapper.MapPreview(@event);
 
             foreach (var bet in bets)
@@ -225,8 +225,8 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 }
             }
 
-            var parameters1 = await _parameterRepository.GetParametersByParticipantId(eventRes.Participant1.Id);
-            var parameters2 = await _parameterRepository.GetParametersByParticipantId(eventRes.Participant2.Id);
+            var parameters1 = await _parameterRepository.GetParametersByParticipantIdAsync(eventRes.Participant1.Id);
+            var parameters2 = await _parameterRepository.GetParametersByParticipantIdAsync(eventRes.Participant2.Id);
             foreach (var parameter in parameters1)
             {
                 eventRes.Participant1.Parameters.Add(ParameterMapper.Map(parameter));
@@ -245,7 +245,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             decimal winningAmount = 0;
             decimal losingAmount = 0;
 
-            var betsInPool = await _betRepository.GetBetsByEventId(closedEvent.Id);
+            var betsInPool = await _betRepository.GetBetsByEventIdAsync(closedEvent.Id);
 
             var winningBets = new List<Bet>();
 

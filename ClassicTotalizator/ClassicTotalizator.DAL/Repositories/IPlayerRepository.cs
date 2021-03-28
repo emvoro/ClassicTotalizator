@@ -7,6 +7,6 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface IPlayerRepository : IRepository<Player>
     {
-        Task<IEnumerable<Player>> GetPlayersByParticipantId(Guid partId);
+        Task<IEnumerable<Player>> GetPlayersByParticipantIdAsync(Guid partId);
     }
 }

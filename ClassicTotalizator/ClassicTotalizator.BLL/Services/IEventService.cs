@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.EventDTOs;
 
@@ -41,26 +40,26 @@ namespace ClassicTotalizator.BLL.Services
         /// Produces list of all not ended events
         /// </summary>
         /// <returns>List of current active events</returns>
-        Task<EventsFeedDTO> GetCurrentLineOfEvents();
+        Task<EventsFeedDTO> GetCurrentLineOfEventsAsync();
 
         /// <summary>
         /// Finishing event
         /// </summary>
         /// <returns>True  if event closed and bets were calculated; Fasle if smth went wrong</returns>
-        Task<bool> FinishEvent(FinishedEventDTO eventToClose);
+        Task<bool> FinishEventAsync(FinishedEventDTO eventToClose);
 
         /// <summary>
         ///  Searching for an event in the database and backs detailed object
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
         /// <returns>Details</returns>
-        Task<EventPreviewDTO> GetEventPreview(Guid id);
+        Task<EventPreviewDTO> GetEventPreviewAsync(Guid id);
 
         /// <summary>
         /// Deletes event from database
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
         /// <returns>True if event was deleted; false if event wasnt deleted </returns>
-        Task<bool> DeleteEvent(Guid id);
+        Task<bool> DeleteEventAsync(Guid id);
     }
 }

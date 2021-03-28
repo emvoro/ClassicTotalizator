@@ -7,6 +7,6 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface ITransactionRepository : IRepository<Transaction>
     {
-        Task<IEnumerable<Transaction>> GetAccountTransaction(Guid accountId);
+        Task<IEnumerable<Transaction>> GetAccountTransactionAsync(Guid accountId);
     }
 }

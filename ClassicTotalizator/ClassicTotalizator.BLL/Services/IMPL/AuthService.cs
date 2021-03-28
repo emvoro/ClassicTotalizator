@@ -27,7 +27,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (accountLoginDTO == null)
                 throw new ArgumentNullException(nameof(accountLoginDTO));
             
-            var accountFromBase = await _accountService.GetByEmail(accountLoginDTO.Login);
+            var accountFromBase = await _accountService.GetByEmailAsync(accountLoginDTO.Login);
 
             if (accountFromBase == null || accountFromBase.AccountType != Roles.Admin)
                 return null;
@@ -46,7 +46,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             if (string.IsNullOrEmpty(accountLoginDTO.Login) || string.IsNullOrEmpty(accountLoginDTO.Password))
                 return null;
 
-            var accFromBase = await _accountService.GetByEmail(accountLoginDTO.Login);
+            var accFromBase = await _accountService.GetByEmailAsync(accountLoginDTO.Login);
 
             if (accFromBase == null)
                 return null;
@@ -80,7 +80,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
                 AvatarLink =$"https://avatars.dicebear.com/api/human/{newId}.png"
             };
 
-            if (await _accountService.Add(accountForRegister))
+            if (await _accountService.AddAsync(accountForRegister))
                 return new JwtGenerator().GenerateJwt(accountForRegister, SecurityKey);
             
             return null;

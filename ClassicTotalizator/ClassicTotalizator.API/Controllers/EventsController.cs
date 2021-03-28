@@ -55,7 +55,7 @@ namespace ClassicTotalizator.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<EventsFeedDTO>> GetCurrentLine()
         {
-            var currentLine = await _eventService.GetCurrentLineOfEvents();
+            var currentLine = await _eventService.GetCurrentLineOfEventsAsync();
             if (currentLine == null)
                 return NotFound();
 
@@ -101,7 +101,7 @@ namespace ClassicTotalizator.API.Controllers
             if (id == Guid.Empty)
                 return BadRequest($"This guid: [{id}] not valid!");
             
-            var eventPreview = await _eventService.GetEventPreview(id);
+            var eventPreview = await _eventService.GetEventPreviewAsync(id);
             if (eventPreview == null)
                 return NotFound($"Event by this id [{id}] was not found");
 
@@ -153,7 +153,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var finished = await _eventService.FinishEvent(finishedEvent);
+                var finished = await _eventService.FinishEventAsync(finishedEvent);
                 if (!finished)
                     BadRequest();
 
@@ -197,7 +197,7 @@ namespace ClassicTotalizator.API.Controllers
         {
             try
             {
-                var deleted = await _eventService.DeleteEvent(id);
+                var deleted = await _eventService.DeleteEventAsync(id);
                 if (!deleted)
                     return NotFound(deleted);
 

@@ -14,12 +14,12 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
         {
         }
 
-        public async Task<IEnumerable<Bet>> GetBetsByAccountId(Guid accId)
+        public async Task<IEnumerable<Bet>> GetBetsByAccountIdAsync(Guid accId)
         {
             return await Set.Where(x => x.Account_Id == accId).ToListAsync();
         }
 
-        public async Task<IEnumerable<Bet>> GetBetsByEventId(Guid eventId)
+        public async Task<IEnumerable<Bet>> GetBetsByEventIdAsync(Guid eventId)
         {
             return await Set.Where(x => x.Event_Id == eventId).ToListAsync();
         }

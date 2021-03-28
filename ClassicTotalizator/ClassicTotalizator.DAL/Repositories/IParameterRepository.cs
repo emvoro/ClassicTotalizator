@@ -7,6 +7,6 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface IParameterRepository : IRepository<Parameter>
     {
-        Task<IEnumerable<Parameter>> GetParametersByParticipantId(Guid partId);
+        Task<IEnumerable<Parameter>> GetParametersByParticipantIdAsync(Guid partId);
     }
 }

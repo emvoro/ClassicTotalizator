@@ -45,7 +45,7 @@ namespace ClassicTotalizator.API.Controllers
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
-            var wallet = await _walletService.GetWalletByAccId(accountId);
+            var wallet = await _walletService.GetWalletByAccIdAsync(accountId);
             if (wallet == null)
                 return NotFound();
 
@@ -63,7 +63,7 @@ namespace ClassicTotalizator.API.Controllers
             if (accountId == Guid.Empty)
                 return BadRequest("Token value is invalid!");
 
-            var transactionHistoryByAccId = await _walletService.GetTransactionHistoryByAccId(accountId);
+            var transactionHistoryByAccId = await _walletService.GetTransactionHistoryByAccIdAsync(accountId);
             if (transactionHistoryByAccId == null)
                 return NotFound();
 
@@ -87,7 +87,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var wallet = await _walletService.Transaction(accountId, transactionDto);
+                var wallet = await _walletService.TransactionAsync(accountId, transactionDto);
                 if (wallet == null)
                     return BadRequest("Invalid transaction!");
 

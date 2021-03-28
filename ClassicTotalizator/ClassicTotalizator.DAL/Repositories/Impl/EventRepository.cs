@@ -14,7 +14,7 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
         {
         }
 
-        public async Task<IEnumerable<Event>> GetNotEndedEvents()
+        public async Task<IEnumerable<Event>> GetNotEndedEventsAsync()
         {
             return await Set.Where(x => x.IsEnded == false).ToListAsync();
         }

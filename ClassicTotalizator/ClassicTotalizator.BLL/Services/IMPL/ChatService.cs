@@ -31,9 +31,9 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return true;
         }
 
-        public async Task<IEnumerable<MessageDTO>> GetMessages()
+        public async Task<IEnumerable<MessageDTO>> GetMessagesAsync()
         {
-            var messages = await _repository.GetLastMessages();
+            var messages = await _repository.GetLastMessagesAsync();
             var messagesDto = messages.Select(ChatMessageMapper.Map).ToList();
             
             foreach (var message in messagesDto)

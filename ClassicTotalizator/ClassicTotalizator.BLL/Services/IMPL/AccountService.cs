@@ -22,7 +22,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             _walletRepository = walletRepository;
         }
 
-        public async Task<IEnumerable<AccountForAdminDTO>> GetAllAccounts()
+        public async Task<IEnumerable<AccountForAdminDTO>> GetAllAccountsAsync()
         {
             var accounts = await _repository.GetAllAsync();
             foreach (var account in accounts)
@@ -33,7 +33,7 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return accounts.Select(AccountMapper.MapForAdmin).ToList();
         }
 
-        public async Task<AccountInfoDTO> GetById(Guid id)
+        public async Task<AccountInfoDTO> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 return null;
@@ -43,35 +43,35 @@ namespace ClassicTotalizator.BLL.Services.IMPL
             return AccountMapper.MapForChatInfo(account);
         }
 
-        public async Task<AccountDTO> GetByEmail(string email)
+        public async Task<AccountDTO> GetByEmailAsync(string email)
         {
             if (string.IsNullOrEmpty(email))
                 return null;
             
-            var account = await _repository.GetAccountByEmail(email);
+            var account = await _repository.GetAccountByEmailAsync(email);
             
             return AccountMapper.Map(account);
         }
 
-        public async Task<AccountDTO> GetByUsername(string username)
+        public async Task<AccountDTO> GetByUsernameAsync(string username)
         {
             if (string.IsNullOrEmpty(username))
                 return null;
 
-            var account = await _repository.GetAccountByUsername(username);
+            var account = await _repository.GetAccountByUsernameAsync(username);
 
             return AccountMapper.Map(account);
         }
 
-        public async Task<bool> Add(AccountDTO registeredAccount)
+        public async Task<bool> AddAsync(AccountDTO registeredAccount)
         {
             if (registeredAccount == null)
                 throw new ArgumentNullException(nameof(registeredAccount));
 
-            if (await GetByEmail(registeredAccount.Email) != null)
+            if (await GetByEmailAsync(registeredAccount.Email) != null)
                 return false;
 
-            if (await GetByUsername(registeredAccount.Username) != null)
+            if (await GetByUsernameAsync(registeredAccount.Username) != null)
                 return false;
 
             var account = AccountMapper.Map(registeredAccount);

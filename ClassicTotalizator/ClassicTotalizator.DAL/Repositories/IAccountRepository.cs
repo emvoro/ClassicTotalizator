@@ -5,8 +5,8 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface IAccountRepository : IRepository<Account>
     {
-        Task<Account> GetAccountByEmail(string email);
+        Task<Account> GetAccountByEmailAsync(string email);
 
-        Task<Account> GetAccountByUsername(string username);
+        Task<Account> GetAccountByUsernameAsync(string username);
     }
 }

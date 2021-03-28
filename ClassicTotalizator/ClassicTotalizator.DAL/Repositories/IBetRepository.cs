@@ -7,8 +7,8 @@ namespace ClassicTotalizator.DAL.Repositories
 {
     public interface IBetRepository : IRepository<Bet>
     {
-        Task<IEnumerable<Bet>> GetBetsByAccountId(Guid accId);
+        Task<IEnumerable<Bet>> GetBetsByAccountIdAsync(Guid accId);
         
-        Task<IEnumerable<Bet>> GetBetsByEventId(Guid eventId);
+        Task<IEnumerable<Bet>> GetBetsByEventIdAsync(Guid eventId);
     }
 }

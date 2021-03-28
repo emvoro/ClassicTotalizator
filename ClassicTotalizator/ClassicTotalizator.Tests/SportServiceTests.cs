@@ -25,7 +25,7 @@ namespace ClassicTotalizator.Tests
         {
             _sportService = new SportService(null);
 
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _sportService.Add(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _sportService.AddAsync(null));
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace ClassicTotalizator.Tests
 
             _sportService = new SportService(_repository.Object);
 
-            var sports = await _sportService.GetCurrentListOfSports();
+            var sports = await _sportService.GetCurrentListOfSportsAsync();
 
             Assert.Empty(sports.Sports);
         }

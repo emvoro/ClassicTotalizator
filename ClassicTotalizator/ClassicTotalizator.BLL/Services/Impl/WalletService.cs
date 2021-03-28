@@ -23,7 +23,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
             _transactionRepository = transactionRepository;
         }
 
-        public async Task<WalletDTO> Transaction(Guid accountId, TransactionDTO transactionDto)
+        public async Task<WalletDTO> TransactionAsync(Guid accountId, TransactionDTO transactionDto)
         {
             if (transactionDto == null) 
                 throw new ArgumentNullException(nameof(transactionDto));
@@ -58,7 +58,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
             return WalletMapping.Map(wallet);
         }
 
-        public async Task<WalletDTO> GetWalletByAccId(Guid id)
+        public async Task<WalletDTO> GetWalletByAccIdAsync(Guid id)
         {
             if (id == Guid.Empty) 
                 return null;
@@ -68,12 +68,12 @@ namespace ClassicTotalizator.BLL.Services.Impl
             return WalletMapping.Map(wallet);
         }
 
-        public async Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccId(Guid id)
+        public async Task<IEnumerable<TransactionWithTimeDTO>> GetTransactionHistoryByAccIdAsync(Guid id)
         {
             if (id == Guid.Empty) 
                 return null;
 
-            var transactions = await _transactionRepository.GetAccountTransaction(id);
+            var transactions = await _transactionRepository.GetAccountTransactionAsync(id);
 
             return transactions.Select(TransactionMapper.MapWithTime).ToList();
         }

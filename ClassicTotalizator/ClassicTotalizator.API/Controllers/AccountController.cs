@@ -41,7 +41,7 @@ namespace ClassicTotalizator.API.Controllers
         [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult<IEnumerable<AccountForAdminDTO>>> GetAllAccounts()
         {
-            var accounts = await _accountService.GetAllAccounts();
+            var accounts = await _accountService.GetAllAccountsAsync();
             if (accounts == null)
                 return NotFound();
 
@@ -62,7 +62,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var account = await _accountService.GetById(accountId);
+                var account = await _accountService.GetByIdAsync(accountId);
                 if (account == null)
                     return BadRequest("Invalid user account!");
 
