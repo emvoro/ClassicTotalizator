@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using ClassicTotalizator.BLL.Contracts.SportDTOs;
+using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.BLL.Services;
 using ClassicTotalizator.BLL.Services.Impl;
 using ClassicTotalizator.DAL.Entities;
@@ -14,8 +17,6 @@ namespace ClassicTotalizator.Tests
     {
         private ISportService _sportService;
 
-        private readonly Mock<IRepository<Sport>> _mockRepository = new Mock<IRepository<Sport>>();
-
         private readonly Mock<ISportRepository> _repository = new Mock<ISportRepository>();
 
         [Fact]
@@ -27,9 +28,21 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async Task AddSport_Returns_SportObject_IfAddedSuccessfully()
+        public async Task AddSport_Returns_NotNullObject_IfAddedSuccessfully()
         {
+            var sport = new SportDTO
+            {
+                Id = 19020,
+                Name = "Biathlon"
+            };
 
+            _repository.Setup(x => x.AddAsync(SportMapper.Map(sport))).Returns(Task.CompletedTask);
+
+            _sportService = new SportService(_repository.Object);
+
+            var sportAdd = await _sportService.AddAsync(sport);
+
+            Assert.NotNull(sportAdd);
         }
 
         [Fact]
@@ -42,6 +55,22 @@ namespace ClassicTotalizator.Tests
             var sports = await _sportService.GetCurrentListOfSportsAsync();
 
             Assert.Empty(sports.Sports);
+        }
+
+        [Fact]
+        public async Task GetCurrentListOfSports_ReturnListWithTwoElements_Because_RepositoryHaveTwoSports()
+        {
+            _repository.Setup(x => x.GetAllAsync()).ReturnsAsync(new List<Sport>
+            {
+                new Sport(),
+                new Sport()
+            });
+
+            _sportService = new SportService(_repository.Object);
+
+            var sports = await _sportService.GetCurrentListOfSportsAsync();
+
+            Assert.Equal(2, sports.Sports.ToList().Count);
         }
 
         [Fact]
@@ -78,34 +107,6 @@ namespace ClassicTotalizator.Tests
             _sportService = new SportService(_repository.Object);
 
             Assert.False(await _sportService.DeleteSportAsync(id));
-        }
-
-        public static IEnumerable<object[]> Sports()
-        {
-            return new List<object[]>
-            {
-                new object[]
-                {
-                    new Sport
-                    {
-                        
-                    }
-                },
-                new object[]
-                {
-                    new Sport
-                    {
-                        
-                    }
-                },
-                new object[]
-                {
-                    new Sport
-                    {
-                        
-                    }
-                },
-            };
         }
     }
 }
