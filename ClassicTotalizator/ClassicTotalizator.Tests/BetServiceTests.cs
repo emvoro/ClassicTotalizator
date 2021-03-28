@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.BetDTOs;
+using ClassicTotalizator.BLL.Mappings;
 using ClassicTotalizator.BLL.Services;
 using ClassicTotalizator.BLL.Services.IMPL;
 using ClassicTotalizator.DAL.Entities;
@@ -159,6 +160,96 @@ namespace ClassicTotalizator.Tests
             _betService = new BetService(null, null, null, _eventRepository.Object, null);
 
             Assert.False(await _betService.AddBetAsync(new BetNewDTO{Event_Id = Guid.NewGuid()}, id));
+        }
+
+        [Fact]
+        public async Task AddBetAsync_ReturnFalse_If_BetPoolNotFound()
+        {
+            var id = Guid.NewGuid();
+            _eventRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(new Event
+            {
+                Id = id, IsEnded = false, StartTime = new DateTimeOffset(2022, 9, 5, 4, 4, 4, TimeSpan.Zero)
+            });
+            
+            _betpoolRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync((BetPool) null);
+            
+            _betService = new BetService(null, null, _betpoolRepository.Object, _eventRepository.Object, null);
+            
+            Assert.False(await _betService.AddBetAsync(new BetNewDTO{Event_Id = id, Amount = 1, Choice = "W1"}, id));
+        }
+        
+        [Theory]
+        [MemberData(nameof(Wallets))]
+        public async Task AddBetAsync_ReturnFalse_If_WalletNotFound_OrLessAmount(Wallet wallet, decimal amount)
+        {
+            var id = Guid.NewGuid();
+            _eventRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(new Event
+            {
+                Id = id, IsEnded = false, StartTime = new DateTimeOffset(2022, 9, 5, 4, 4, 4, TimeSpan.Zero)
+            });
+            
+            _betpoolRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(new BetPool{TotalAmount = 0});
+
+            _walletRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(wallet);
+            
+            _betService = new BetService(null, _walletRepository.Object, _betpoolRepository.Object,
+                _eventRepository.Object, null);
+            
+            Assert.False(await _betService.AddBetAsync(new BetNewDTO{Event_Id = id, Amount = amount, Choice = "W1"}, id));
+        }
+
+        [Fact]
+        public async Task AddBetAsync_ReturnTrue_If_AllParameters_Is_Valid()
+        {
+            var id = Guid.NewGuid();
+            var betPool = new BetPool
+                {TotalAmount = 0, Bets = new List<Bet>(), Event_Id = id};
+            var wallet = new Wallet {Amount = 1000};
+            var @event = new Event
+            {
+                Id = id, IsEnded = false, StartTime = new DateTimeOffset(2022, 9, 5, 4, 4, 4, TimeSpan.Zero)
+            };
+            var bet = new BetNewDTO
+            {
+                Amount = 1,
+                Choice = "W1",
+                Event_Id = id
+            };
+            
+            _eventRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(@event);
+            
+            _betpoolRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(betPool);
+            _betpoolRepository.Setup(x => x.UpdateAsync(betPool)).Returns(Task.CompletedTask);
+            
+            _walletRepository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(wallet);
+            _walletRepository.Setup(x => x.UpdateAsync(wallet)).Returns(Task.CompletedTask);
+
+            _repository.Setup(x => x.AddAsync(BetMapper.Map(bet))).Returns(Task.CompletedTask);
+
+            _betService = new BetService(_repository.Object, _walletRepository.Object, _betpoolRepository.Object,
+                _eventRepository.Object, null);
+            
+            Assert.True(await _betService.AddBetAsync(bet, id));
+        }
+
+        public static IEnumerable<object[]> Wallets()
+        {
+            return new List<object[]>
+            {
+                new object[]
+                {
+                    new Wallet
+                    {
+                        Amount = 100
+                    },
+                    120
+                },
+                new object[]
+                {
+                    null,
+                    100
+                }
+            };
         }
         
         public static IEnumerable<object[]> Events()
