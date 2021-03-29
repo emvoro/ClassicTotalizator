@@ -24,7 +24,7 @@ namespace ClassicTotalizator.Tests
         private readonly Mock<IPlayerRepository> _playerRepository = new Mock<IPlayerRepository>();
 
         [Fact]
-        public async Task AddSport_Throws_ArgumentNullException()
+        public async Task AddParticipant_Throws_ArgumentNullException()
         {
             _participantsService = new ParticipantsService(null, null, null);
 
@@ -32,7 +32,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async Task AddSport_Returns_NotNullObject_IfAddedSuccessfully()
+        public async Task AddParticipant_Returns_NotNullObject_IfAddedSuccessfully()
         {
             var participant = new ParticipantRegisterDTO
             {
@@ -52,7 +52,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async Task GetCurrentListOfSports_Returns_EmptyList_If_RepositoryIsEmpty()
+        public async Task GetAllParticipantsAsync_Returns_EmptyList_If_RepositoryIsEmpty()
         {
             _repository.Setup(x => x.GetAllAsync()).ReturnsAsync(new List<Participant>());
 
@@ -80,7 +80,7 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async Task DeleteSport_ReturnFalse_If_SportNotFound()
+        public async Task DeleteParticipant_ReturnFalse_If_ParticipantNotFound()
         {
             var id = Guid.NewGuid();
 
@@ -92,11 +92,13 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async Task DeleteSport_ReturnTrue_If_SportIsFound()
+        public async Task DeleteParticipant_ReturnTrue_If_ParticipantIsFound()
         {
             var id = new Guid("08d81915-5af5-448d-b49b-a6f658c379aa");
 
             _repository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(new Participant());
+
+            _repository.Setup(x => x.RemoveByIdAsync(id));
 
             _participantsService = new ParticipantsService(_repository.Object, _parameterRepository.Object, _playerRepository.Object);
 

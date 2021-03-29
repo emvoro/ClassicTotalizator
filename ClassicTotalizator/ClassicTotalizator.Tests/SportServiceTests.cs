@@ -92,6 +92,8 @@ namespace ClassicTotalizator.Tests
 
             _repository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(new Sport());
 
+            _repository.Setup(x => x.RemoveByIdAsync(id));
+
             _sportService = new SportService(_repository.Object);
 
             Assert.True(await _sportService.DeleteSportAsync(id));
@@ -108,5 +110,7 @@ namespace ClassicTotalizator.Tests
 
             Assert.False(await _sportService.DeleteSportAsync(id));
         }
+
+
     }
 }
