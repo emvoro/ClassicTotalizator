@@ -13,6 +13,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class ParticipantsService : IParticipantsService
     {
+
         private readonly IRepository<Participant> _repository;
 
         private readonly IParameterRepository _parameterRepository;

@@ -11,6 +11,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class EventService : IEventService
     {
+
         private readonly IEventRepository _repository;
 
         private readonly IRepository<Participant> _participantRepository;

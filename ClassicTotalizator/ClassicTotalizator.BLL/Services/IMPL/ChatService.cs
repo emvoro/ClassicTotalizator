@@ -33,6 +33,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<IEnumerable<MessageDTO>> GetMessagesAsync()
         {
+
             var messages = await _repository.GetLastMessagesAsync();
             var messagesDto = messages.Select(ChatMessageMapper.Map).ToList();
             

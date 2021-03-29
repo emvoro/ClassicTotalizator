@@ -12,6 +12,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class WalletService : IWalletService
     {
+
         private readonly IRepository<Wallet> _repository;
 
         private readonly ITransactionRepository _transactionRepository;

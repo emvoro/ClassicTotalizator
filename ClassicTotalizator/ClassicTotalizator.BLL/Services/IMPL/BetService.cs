@@ -10,6 +10,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class BetService : IBetService
     {
+
         private readonly IBetRepository _repository;
 
         private readonly IRepository<Wallet> _walletRepository;

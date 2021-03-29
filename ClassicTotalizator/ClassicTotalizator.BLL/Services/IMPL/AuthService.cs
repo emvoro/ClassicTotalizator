@@ -8,6 +8,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 {
     public class AuthService : IAuthService
     {
+
         public string SecurityKey { get; set; }
 
         private readonly IAccountService _accountService;

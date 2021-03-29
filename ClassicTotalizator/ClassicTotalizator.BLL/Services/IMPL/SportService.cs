@@ -14,6 +14,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
     /// </summary>
     public class SportService : ISportService
     {
+
         private readonly ISportRepository _repository;
 
         public SportService(ISportRepository repository)

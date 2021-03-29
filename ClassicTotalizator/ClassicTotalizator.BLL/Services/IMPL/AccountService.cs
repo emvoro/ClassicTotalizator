@@ -9,6 +9,7 @@ using ClassicTotalizator.DAL.Repositories;
 
 namespace ClassicTotalizator.BLL.Services.Impl
 {
+
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
