@@ -45,21 +45,21 @@
             <summary>
             Registration action
             </summary>
-            <param name="registerDTO">Requested dto for registration on platform</param>
+            <param name="registerDto">Requested dto for registration on platform</param>
             <returns>Returns JWT</returns>
         </member>
         <member name="M:ClassicTotalizator.API.Controllers.AuthController.LoginAsync(ClassicTotalizator.BLL.Contracts.AccountDTOs.AccountLoginDTO)">
             <summary>
             Login action
             </summary>
-            <param name="loginDTO">Requested dto for login on platform</param>
+            <param name="loginDto">Requested dto for login on platform</param>
             <returns>Returns JWT</returns>
         </member>
         <member name="M:ClassicTotalizator.API.Controllers.AuthController.AdminLoginAsync(ClassicTotalizator.BLL.Contracts.AccountDTOs.AccountLoginDTO)">
             <summary>
             Admin login action
             </summary>
-            <param name="loginDTO">Requested dto for login on platform</param>
+            <param name="loginDto">Requested dto for login on platform</param>
             <returns>Returns JWT</returns>
         </member>
         <member name="T:ClassicTotalizator.API.Controllers.BetController">
@@ -84,7 +84,6 @@
             <summary>
             Getting event bet's
             </summary>
-            <param name="id">Event id</param>
             <returns>Event bet's</returns>
         </member>
         <member name="M:ClassicTotalizator.API.Controllers.BetController.AddBet(ClassicTotalizator.BLL.Contracts.BetDTOs.BetNewDTO)">
@@ -116,7 +115,7 @@
             <summary>
             Add message to message pool
             </summary>
-            <param name="messageToPostDTO">Text dto that user trying to post</param>
+            <param name="messageToPostDto">Text dto that user trying to post</param>
             <returns>True if message was posted or false if smth went wrong</returns>
         </member>
         <member name="M:ClassicTotalizator.API.Controllers.ChatController.DeleteMessage(System.Guid)">
@@ -190,9 +189,9 @@
         </member>
         <member name="M:ClassicTotalizator.API.Controllers.EventsController.DeleteEvent(System.Guid)">
             <summary>
-            Deletes event BUT be careful:)
+            Deletes event
             </summary>
-            <param name="id"></param>
+            <param name="id">Event id</param>
             <returns></returns>
         </member>
         <member name="T:ClassicTotalizator.API.Controllers.ParticipantsController">
