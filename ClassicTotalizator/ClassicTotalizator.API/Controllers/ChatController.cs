@@ -54,13 +54,13 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Add message to message pool
         /// </summary>
-        /// <param name="messageToPostDTO">Text dto that user trying to post</param>
+        /// <param name="messageToPostDto">Text dto that user trying to post</param>
         /// <returns>True if message was posted or false if smth went wrong</returns>
         [HttpPost]
         [Authorize(Roles = Roles.AdminOrUser)]
-        public async Task<ActionResult<bool>> PostMessageInChat([FromBody] MessageToPostDTO messageToPostDTO)
+        public async Task<ActionResult<bool>> PostMessageInChat([FromBody] MessageToPostDTO messageToPostDto)
         {
-            if (!ModelState.IsValid || messageToPostDTO == null)
+            if (!ModelState.IsValid || messageToPostDto == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest($"You tried to post invalid message");
@@ -70,11 +70,10 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var posted = await _chatService.PostMessageAsync(messageToPostDTO, accountId);
-                if (!posted)
+                if (!await _chatService.PostMessageAsync(messageToPostDto, accountId))
                     return BadRequest("The message was not memorized");
 
-                return Ok(posted);
+                return Ok(true);
             }
             catch (ArgumentNullException ex)
             {
@@ -94,13 +93,12 @@ namespace ClassicTotalizator.API.Controllers
         {
             try
             {
-                var deleted = await _chatService.DeleteMessageAsync(id);
-                if (!deleted)
-                    return NotFound(deleted);
+                if (!await _chatService.DeleteMessageAsync(id))
+                    return NotFound(false);
 
-                return Ok(deleted);
+                return Ok(true);
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentException e)
             {
                 _logger.LogWarning(e.Message);
                 return BadRequest();

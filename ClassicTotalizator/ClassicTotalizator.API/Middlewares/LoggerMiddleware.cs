@@ -34,7 +34,6 @@ namespace ClassicTotalizator.API.Middlewares
         /// <param name="context"></param>
         public async Task InvokeAsync(HttpContext context)
         {
-            _logger.LogInformation("=======================================");
             _logger.LogInformation(await PrintSomeInfoAboutRequest(context));
 
             var originalBodyStream = context.Response.Body;
@@ -44,7 +43,6 @@ namespace ClassicTotalizator.API.Middlewares
             await _next(context);
 
             _logger.LogInformation(await PrintSomeInfoAboutResponse(context));
-            _logger.LogInformation("=======================================");
             await responseBody.CopyToAsync(originalBodyStream);
         }
 

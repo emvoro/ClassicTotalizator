@@ -12,9 +12,9 @@ namespace ClassicTotalizator.BLL.Services
         /// <summary>
         /// Creates event for backoffice.
         /// </summary>
-        /// <param name="eventDTO">Contract for event.</param>
+        /// <param name="eventDto">Contract for event.</param>
         /// <returns>Returns jwt token or <c>null</c> if login already existed.</returns>
-        Task<EventDTO> CreateEventAsync(EventRegisterDTO eventDTO);
+        Task<EventDTO> CreateEventAsync(EventRegisterDTO eventDto);
 
         /// <summary>
         /// Registers user and assigns unique account id.
@@ -45,7 +45,7 @@ namespace ClassicTotalizator.BLL.Services
         /// <summary>
         /// Finishing event
         /// </summary>
-        /// <returns>True  if event closed and bets were calculated; Fasle if smth went wrong</returns>
+        /// <returns>True  if event closed and bets were calculated; False if smth went wrong</returns>
         Task<bool> FinishEventAsync(FinishedEventDTO eventToClose);
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace ClassicTotalizator.BLL.Services
         /// Deletes event from database
         /// </summary>
         /// <param name="id">Unique identifier of event</param>
-        /// <returns>True if event was deleted; false if event wasnt deleted </returns>
+        /// <returns>True if event was deleted; false if event was not deleted </returns>
         Task<bool> DeleteEventAsync(Guid id);
     }
 }

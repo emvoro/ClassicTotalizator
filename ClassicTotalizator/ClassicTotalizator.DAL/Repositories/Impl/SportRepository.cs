@@ -47,12 +47,5 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
 
             await _context.SaveChangesAsync();
         }
-
-        public async Task UpdateAsync(Sport obj)
-        {
-            _set.Update(obj);
-
-            await _context.SaveChangesAsync();
-        }
     }
 }

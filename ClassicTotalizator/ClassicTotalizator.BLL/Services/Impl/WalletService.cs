@@ -78,9 +78,9 @@ namespace ClassicTotalizator.BLL.Services.Impl
             return transactions.Select(TransactionMapper.MapWithTime).ToList();
         }
 
-        private static bool ValidateTransactionDto(TransactionDTO transactionDTO)
+        private static bool ValidateTransactionDto(TransactionDTO transactionDto)
         {
-            if (transactionDTO.Amount <= 0 || string.IsNullOrEmpty(transactionDTO.Type)) 
+            if (transactionDto.Amount <= 0 || string.IsNullOrEmpty(transactionDto.Type)) 
                 return false;
 
             return true;

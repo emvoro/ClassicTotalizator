@@ -5,95 +5,70 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class AccountMapper
     {
-        public static Account Map(AccountRegisterDTO accountRegisterDTO)
+        public static Account Map(AccountDTO obj)
         {
-            return accountRegisterDTO == null
+            return obj == null
                 ? null
                 : new Account
                 {
-                    Username = accountRegisterDTO.Username,
-                    Email = accountRegisterDTO.Email,
-                    PasswordHash = accountRegisterDTO.Password,
-                    DOB = accountRegisterDTO.DOB,
-                    AccountCreationTime = accountRegisterDTO.AccountCreationTime
+                    Id = obj.Id,
+                    Email = obj.Email,
+                    Username = obj.Username,
+                    PasswordHash = obj.PasswordHash,
+                    AccountCreationTime = obj.AccountCreationTime,
+                    AccountType = obj.AccountType,
+                    AvatarLink = obj.AvatarLink,
+                    DOB = obj.DOB,
+                    Wallet = WalletMapping.Map(obj.Wallet)
                 };
         }
 
-        public static Account Map(AccountLoginDTO accountLoginDTO)
+        public static AccountDTO Map(Account obj)
         {
-            return accountLoginDTO == null
-                ? null
-                : new Account
-                {
-                    Email = accountLoginDTO.Login,
-                    PasswordHash = accountLoginDTO.Password
-                };
-        }
-
-        public static Account Map(AccountDTO accountDTO)
-        {
-            return accountDTO == null
-                ? null
-                : new Account
-                {
-                    Id = accountDTO.Id,
-                    Email = accountDTO.Email,
-                    Username = accountDTO.Username,
-                    PasswordHash = accountDTO.PasswordHash,
-                    AccountCreationTime = accountDTO.AccountCreationTime,
-                    AccountType = accountDTO.AccountType,
-                    AvatarLink = accountDTO.AvatarLink,
-                    DOB = accountDTO.DOB,
-                    Wallet = WalletMapping.Map(accountDTO.Wallet)
-                };
-        }
-
-        public static AccountDTO Map(Account account)
-        {
-            return account == null
+            return obj == null
                 ? null
                 : new AccountDTO
                 {
-                    Id = account.Id,
-                    Email = account.Email,
-                    Username = account.Username,
-                    PasswordHash = account.PasswordHash,
-                    AccountCreationTime = account.AccountCreationTime,
-                    AccountType = account.AccountType,
-                    AvatarLink = account.AvatarLink,
-                    DOB = account.DOB,
-                    Wallet = WalletMapping.Map(account.Wallet)
+                    Id = obj.Id,
+                    Email = obj.Email,
+                    Username = obj.Username,
+                    PasswordHash = obj.PasswordHash,
+                    AccountCreationTime = obj.AccountCreationTime,
+                    AccountType = obj.AccountType,
+                    AvatarLink = obj.AvatarLink,
+                    DOB = obj.DOB,
+                    Wallet = WalletMapping.Map(obj.Wallet)
                 };
         }
         
-        public static AccountForAdminDTO MapForAdmin(Account account)
+        public static AccountForAdminDTO MapForAdmin(Account obj)
         {
-            if (account == null)
+            if (obj == null)
                 return null;
 
             var accountForAdmin = new AccountForAdminDTO
             {
-                Email = account.Email,
-                Username = account.Username,
-                DOB = account.DOB
+                Email = obj.Email,
+                Username = obj.Username,
+                DOB = obj.DOB
             };
 
-            if (account.Wallet != null)
-                accountForAdmin.WalletAmount = account.Wallet.Amount;
+            if (obj.Wallet != null)
+                accountForAdmin.WalletAmount = obj.Wallet.Amount;
 
             return accountForAdmin;
         }
 
-        public static AccountInfoDTO MapForChatInfo(Account account)
+        public static AccountInfoDTO MapForChatInfo(Account obj)
         {
-            if (account == null)
+            if (obj == null)
                 return null;
 
             var accountInfo = new AccountInfoDTO
             {
-                Id = account.Id,
-                Username = account.Username,
-                AvatarLink = account.AvatarLink
+                Id = obj.Id,
+                Username = obj.Username,
+                AvatarLink = obj.AvatarLink
             };
 
             return accountInfo;

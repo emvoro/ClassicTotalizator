@@ -25,6 +25,8 @@ namespace ClassicTotalizator.BLL.Services.Impl
         public async Task<IEnumerable<AccountForAdminDTO>> GetAllAccountsAsync()
         {
             var accounts = await _accountRepository.GetAllAsync();
+            if (accounts == null)
+                return null;
             
             foreach (var account in accounts)
             {
@@ -69,12 +71,6 @@ namespace ClassicTotalizator.BLL.Services.Impl
             if (registeredAccount == null)
                 throw new ArgumentNullException(nameof(registeredAccount));
             if (string.IsNullOrEmpty(registeredAccount.Email))
-                return false;
-
-            if (await _accountRepository.GetAccountByEmailAsync(registeredAccount.Email) != null)
-                return false;
-
-            if (await _accountRepository.GetAccountByUsernameAsync(registeredAccount.Username) != null)
                 return false;
 
             var account = AccountMapper.Map(registeredAccount);

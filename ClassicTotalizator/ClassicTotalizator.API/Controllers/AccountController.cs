@@ -71,7 +71,7 @@ namespace ClassicTotalizator.API.Controllers
             catch (ArgumentNullException e)
             {
                 _logger.LogWarning(e.Message);
-                return Conflict();
+                return BadRequest();
             }
         }
     }

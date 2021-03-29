@@ -23,8 +23,8 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<bool> DeleteMessageAsync(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
-                throw new ArgumentNullException();
+            if (id == Guid.Empty)
+                throw new ArgumentException();
 
             await _repository.RemoveByIdAsync(id);
 
@@ -48,7 +48,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<bool> PostMessageAsync(MessageToPostDTO messageToPost, Guid accountId)
         {
-            if (messageToPost == null || string.IsNullOrEmpty(accountId.ToString()))
+            if (messageToPost == null || accountId == Guid.Empty)
                 throw new ArgumentNullException();
 
             var newMessage = ChatMessageMapper.Map(messageToPost);

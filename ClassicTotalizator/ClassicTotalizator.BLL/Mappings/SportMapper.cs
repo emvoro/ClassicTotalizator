@@ -5,25 +5,25 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class SportMapper
     {
-        public static SportDTO Map(Sport sport)
+        public static SportDTO Map(Sport obj)
         {
-            return sport == null
+            return obj == null
                 ? null
                 : new SportDTO
                 {
-                    Id = sport.Id,
-                    Name = sport.Name
+                    Id = obj.Id,
+                    Name = obj.Name
                 };
         }
 
-        public static Sport Map(SportDTO sportDTO)
+        public static Sport Map(SportDTO obj)
         {
-            return sportDTO == null
+            return obj == null
                 ? null
                 : new Sport
                 {
-                    Id = sportDTO.Id,
-                    Name = sportDTO.Name
+                    Id = obj.Id,
+                    Name = obj.Name
                 };
         }
     }

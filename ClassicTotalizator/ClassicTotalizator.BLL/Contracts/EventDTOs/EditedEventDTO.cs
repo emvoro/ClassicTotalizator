@@ -9,9 +9,9 @@ namespace ClassicTotalizator.BLL.Contracts.EventDTOs
         public Guid Id { get; set; }
 
         [Required]
-        public DateTimeOffset StartTime { get; set; }
+        public decimal Margin { get; set; }
 
         [Required]
-        public decimal Margin { get; set; }
+        public DateTimeOffset StartTime { get; set; }
     }
 }

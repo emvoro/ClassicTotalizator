@@ -3,7 +3,6 @@ using ClassicTotalizator.BLL.Contracts;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.AccountDTOs;
 using ClassicTotalizator.BLL.Generators;
-using ClassicTotalizator.BLL.Generators.Impl;
 
 namespace ClassicTotalizator.BLL.Services.Impl
 {
@@ -15,73 +14,88 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         private readonly IHashGenerator _hashGenerator;
 
+        private readonly IJwtGenerator _jwtGenerator; 
+
         public AuthService(IAccountService accountService, 
-            IHashGenerator hashGenerator)
+            IHashGenerator hashGenerator, 
+            IJwtGenerator jwtGenerator)
         {
             _accountService = accountService;
             _hashGenerator = hashGenerator;
+            _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<string> AdminLoginAsync(AccountLoginDTO accountLoginDTO)
+        public async Task<string> AdminLoginAsync(AccountLoginDTO accountLoginDto)
         {
-            if (accountLoginDTO == null)
-                throw new ArgumentNullException(nameof(accountLoginDTO));
+            if (accountLoginDto == null)
+                throw new ArgumentNullException(nameof(accountLoginDto));
             
-            var accountFromBase = await _accountService.GetByEmailAsync(accountLoginDTO.Login);
-
+            if (string.IsNullOrEmpty(accountLoginDto.Login) || string.IsNullOrEmpty(accountLoginDto.Password))
+                return null;
+            
+            var accountFromBase = await _accountService.GetByEmailAsync(accountLoginDto.Login);
             if (accountFromBase == null || accountFromBase.AccountType != Roles.Admin)
                 return null;
             
-            if (!CheckPasswords(accountFromBase.PasswordHash, accountLoginDTO.Password))
+            if (!CheckPasswords(accountFromBase.PasswordHash, accountLoginDto.Password))
                 return null;
-            
-            return new JwtGenerator().GenerateJwt(accountFromBase, SecurityKey);
+
+            return _jwtGenerator.GenerateJwt(accountFromBase, SecurityKey);
         }
 
-        public async Task<string> LoginAsync(AccountLoginDTO accountLoginDTO)
+        public async Task<string> LoginAsync(AccountLoginDTO accountLoginDto)
         {
-            if (accountLoginDTO == null)
-                throw new ArgumentNullException(nameof(accountLoginDTO));
+            if (accountLoginDto == null)
+                throw new ArgumentNullException(nameof(accountLoginDto));
             
-            if (string.IsNullOrEmpty(accountLoginDTO.Login) || string.IsNullOrEmpty(accountLoginDTO.Password))
+            if (string.IsNullOrEmpty(accountLoginDto.Login) || string.IsNullOrEmpty(accountLoginDto.Password))
                 return null;
 
-            var accFromBase = await _accountService.GetByEmailAsync(accountLoginDTO.Login);
-
+            var accFromBase = await _accountService.GetByEmailAsync(accountLoginDto.Login);
             if (accFromBase == null)
                 return null;
             
-            if (!CheckPasswords(accFromBase.PasswordHash, accountLoginDTO.Password))
+            if (!CheckPasswords(accFromBase.PasswordHash, accountLoginDto.Password))
                 return null;
             
-            return new JwtGenerator().GenerateJwt(accFromBase, SecurityKey);
+            return _jwtGenerator.GenerateJwt(accFromBase, SecurityKey);
         }
 
-        public async Task<string> RegisterAsync(AccountRegisterDTO accountRegisterDTO)
+        public async Task<string> RegisterAsync(AccountRegisterDTO accountRegisterDto)
         {
-            if (string.IsNullOrEmpty(accountRegisterDTO.Email) || string.IsNullOrEmpty(accountRegisterDTO.Password))
+            if (accountRegisterDto == null)
+                throw new ArgumentNullException(nameof(accountRegisterDto));
+            
+            if (string.IsNullOrEmpty(accountRegisterDto.Email) || string.IsNullOrEmpty(accountRegisterDto.Password))
                 return null;
             
             var age = DateTime.UtcNow.Year + (double) DateTime.UtcNow.Month / 12 -
-                        (accountRegisterDTO.DOB.Year + (double) accountRegisterDTO.DOB.Month / 12);
+                        (accountRegisterDto.DOB.Year + (double) accountRegisterDto.DOB.Month / 12);
 
-            if (age < 18) return null;
+            if (age < 18) 
+                return null;
+            
+            if (await _accountService.GetByEmailAsync(accountRegisterDto.Email) != null)
+                return null;
+
+            if (await _accountService.GetByUsernameAsync(accountRegisterDto.Username) != null)
+                return null;
 
             var newId = Guid.NewGuid();
             var accountForRegister = new AccountDTO
             {
                 Id = newId,
                 AccountType = Roles.User,
-                PasswordHash = _hashGenerator.GenerateHash(accountRegisterDTO.Password),
-                Email = accountRegisterDTO.Email,
-                Username = accountRegisterDTO.Username,
-                DOB = accountRegisterDTO.DOB,
-                AccountCreationTime = accountRegisterDTO.AccountCreationTime,
+                PasswordHash = _hashGenerator.GenerateHash(accountRegisterDto.Password),
+                Email = accountRegisterDto.Email,
+                Username = accountRegisterDto.Username,
+                DOB = accountRegisterDto.DOB,
+                AccountCreationTime = accountRegisterDto.AccountCreationTime,
                 AvatarLink =$"https://avatars.dicebear.com/api/human/{newId}.png"
             };
 
             if (await _accountService.AddAsync(accountForRegister))
-                return new JwtGenerator().GenerateJwt(accountForRegister, SecurityKey);
+                return _jwtGenerator.GenerateJwt(accountForRegister, SecurityKey);
             
             return null;
         }

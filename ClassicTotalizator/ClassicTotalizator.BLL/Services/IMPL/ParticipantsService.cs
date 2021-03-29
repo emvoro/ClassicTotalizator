@@ -51,7 +51,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
         public async Task<ParticipantDTO> AddNewParticipantAsync(ParticipantRegisterDTO participantRegisterDto)
         {
             if (participantRegisterDto == null) 
-                return null;
+                throw new ArgumentNullException(nameof(participantRegisterDto));
             
             var newGuid = Guid.NewGuid();
             var participant = ParticipantsMapper.Map(participantRegisterDto);

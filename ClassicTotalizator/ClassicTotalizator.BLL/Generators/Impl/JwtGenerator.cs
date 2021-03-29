@@ -14,8 +14,8 @@ namespace ClassicTotalizator.BLL.Generators.Impl
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimTypes.Role, account.AccountType)
+                new (ClaimTypes.NameIdentifier, account.Id.ToString()),
+                new (ClaimTypes.Role, account.AccountType)
             };
 
             var identity = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,

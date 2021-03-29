@@ -15,7 +15,7 @@ namespace ClassicTotalizator.BLL.Contracts.EventDTOs
         public DateTimeOffset StartTime { get; set; }
 
         [Required]
-        public int SportId { get; set; }
+        public int Sport_Id { get; set; }
 
         [Required]
         public decimal Margin { get; set; }

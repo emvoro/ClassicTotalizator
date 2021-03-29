@@ -73,7 +73,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
                 Participant_Id1 = eventDto.Participant_Id1,
                 Participant_Id2 = eventDto.Participant_Id2,
                 PossibleResults = eventDto.PossibleResults,
-                Sport_Id = eventDto.SportId,
+                Sport_Id = eventDto.Sport_Id,
                 StartTime = eventDto.StartTime,
                 Result = null
             };
@@ -178,7 +178,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<bool> DeleteEventAsync(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
+            if (id == Guid.Empty)
                 throw new ArgumentException();
 
             var eventToDelete = await _repository.GetByIdAsync(id);
@@ -297,7 +297,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
                 await _walletRepository.UpdateAsync(pendingWallet);
 
-                bet.Status = $"Win: {Math.Round(moneyForDep,2)}";
+                bet.Status = $"Win: {Math.Round(moneyForDep + bet.Amount,2)}";
                 await _betRepository.UpdateAsync(bet);                
             }
 

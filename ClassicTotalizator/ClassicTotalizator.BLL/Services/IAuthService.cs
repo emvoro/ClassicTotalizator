@@ -32,6 +32,6 @@ namespace ClassicTotalizator.BLL.Services
         /// <returns>Returns jwt token or <c>null</c> if login already existed and role is admin</returns>
         Task<string> AdminLoginAsync(AccountLoginDTO loginDto);
 
-        string SecurityKey { get; set; }
+        string SecurityKey { set; }
     }
 }

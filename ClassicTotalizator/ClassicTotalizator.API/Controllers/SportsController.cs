@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.SportDTOs;
+using System;
 
 namespace ClassicTotalizator.API.Controllers
 {
@@ -51,17 +52,25 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Sport DTO</returns>
         [HttpPost]
-        public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDTO)
+        public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDto)
         {
-            if (!ModelState.IsValid || sportDTO == null)
+            if (!ModelState.IsValid || sportDto == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 
-            var createdSport = await _sportService.AddAsync(sportDTO);
-
-            return Ok(createdSport);
+            try 
+            {
+                var createdSport = await _sportService.AddAsync(sportDto);
+                
+                return Ok(createdSport);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogWarning(e.Message);
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -71,11 +80,10 @@ namespace ClassicTotalizator.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteSportSport([FromRoute] int id)
         {
-            var deleted = await _sportService.DeleteSportAsync(id);
-            if (!deleted)
-                return NotFound(deleted);
+            if (!await _sportService.DeleteSportAsync(id))
+                return NotFound(false);
 
-            return Ok(deleted);
+            return Ok(true);
         }
     }
 }
