@@ -1,5 +1,4 @@
-﻿using ClassicTotalizator.BLL.Contracts;
-using ClassicTotalizator.BLL.Contracts.PlayerDTOs;
+﻿using ClassicTotalizator.BLL.Contracts.PlayerDTOs;
 using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Mappings
@@ -18,25 +17,13 @@ namespace ClassicTotalizator.BLL.Mappings
                 };
         }
 
-        public static Player Map(PlayerDTO playerDTO)
+        public static Player Map(PlayerRegisterDTO obj)
         {
-            return playerDTO == null
+            return obj == null
                 ? null
                 : new Player
                 {
-                    Id = playerDTO.Id,
-                    Participant_Id = playerDTO.Participant_Id,
-                    Name = playerDTO.Name
-                };
-        }
-
-        public static Player Map(PlayerRegisterDTO playerRegisterDTO)
-        {
-            return playerRegisterDTO == null
-                ? null
-                : new Player
-                {
-                    Name = playerRegisterDTO.Name
+                    Name = obj.Name
                 };
         }
     }

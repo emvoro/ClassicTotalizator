@@ -21,7 +21,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 ? null
                 : new MessageDTO
                 {
-                    Id =obj.Id,
+                    Id = obj.Id,
                     Account_Id = obj.Account_Id,
                     Text = obj.Text,
                     Time = obj.Time

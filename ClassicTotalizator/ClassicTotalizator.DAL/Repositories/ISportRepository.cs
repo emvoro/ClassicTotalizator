@@ -15,7 +15,5 @@ namespace ClassicTotalizator.DAL.Repositories
         Task RemoveByIdAsync(int id);
         
         Task RemoveAsync(Sport obj);
-
-        Task UpdateAsync(Sport obj);
     }
 }

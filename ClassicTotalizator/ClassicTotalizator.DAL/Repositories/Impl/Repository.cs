@@ -9,6 +9,7 @@ namespace ClassicTotalizator.DAL.Repositories.Impl
     public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly DbSet<T> Set;
+        
         protected readonly DatabaseContext Context;
 
         public Repository(DatabaseContext context)

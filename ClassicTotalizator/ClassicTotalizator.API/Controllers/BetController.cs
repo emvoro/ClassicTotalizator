@@ -57,13 +57,11 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Getting event bet's
         /// </summary>
-        /// <param name="id">Event id</param>
         /// <returns>Event bet's</returns>
         [HttpGet("history/admin")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult> GetEventBets()
         {
-            
             var bets = await _betService.GetAllEventBetsAsync();
             if (bets == null)
                 return NotFound("Bets not found!");
@@ -100,7 +98,7 @@ namespace ClassicTotalizator.API.Controllers
             catch (ArgumentNullException e)
             {
                 _logger.LogWarning(e.Message);
-                return BadRequest("Argument null exception!");
+                return BadRequest();
             }
         }
     }

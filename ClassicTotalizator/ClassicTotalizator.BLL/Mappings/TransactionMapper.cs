@@ -5,40 +5,17 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class TransactionMapper
     {
-        public static TransactionDTO Map(Transaction transaction)
+        public static Transaction Map(TransactionDTO obj)
         {
-            return transaction == null
-                ? null
-                : new TransactionDTO
-                {
-                    Amount = transaction.Amount,
-                    Type = transaction.Type
-                };
-        } 
-        
-        public static Transaction Map(TransactionDTO transactionDTO)
-        {
-            return transactionDTO == null
+            return obj == null
                 ? null
                 : new Transaction
                 {
-                    Amount = transactionDTO.Amount,
-                    Type = transactionDTO.Type
-                };
-        } 
-        
-        public static Transaction Map(TransactionWithTimeDTO transactionWithTimeDTO)
-        {
-            return transactionWithTimeDTO == null
-                ? null
-                : new Transaction
-                {
-                    DateTime = transactionWithTimeDTO.DateTime,
-                    Amount = transactionWithTimeDTO.Amount,
-                    Type = transactionWithTimeDTO.Type
+                    Amount = obj.Amount,
+                    Type = obj.Type
                 };
         }
-        
+
         public static TransactionWithTimeDTO MapWithTime(Transaction transaction)
         {
             return transaction == null

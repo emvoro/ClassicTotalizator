@@ -52,9 +52,9 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Sport DTO</returns>
         [HttpPost]
-        public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDTO)
+        public async Task<ActionResult<SportDTO>> AddSport([FromBody] SportDTO sportDto)
         {
-            if (!ModelState.IsValid || sportDTO == null)
+            if (!ModelState.IsValid || sportDto == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
@@ -62,7 +62,8 @@ namespace ClassicTotalizator.API.Controllers
 
             try 
             {
-                var createdSport = await _sportService.AddAsync(sportDTO);
+                var createdSport = await _sportService.AddAsync(sportDto);
+                
                 return Ok(createdSport);
             }
             catch (ArgumentNullException e)
@@ -79,11 +80,10 @@ namespace ClassicTotalizator.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteSportSport([FromRoute] int id)
         {
-            var deleted = await _sportService.DeleteSportAsync(id);
-            if (!deleted)
-                return NotFound(deleted);
+            if (!await _sportService.DeleteSportAsync(id))
+                return NotFound(false);
 
-            return Ok(deleted);
+            return Ok(true);
         }
     }
 }

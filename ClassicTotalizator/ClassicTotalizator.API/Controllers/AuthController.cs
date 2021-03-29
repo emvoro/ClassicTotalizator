@@ -42,25 +42,25 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Registration action
         /// </summary>
-        /// <param name="registerDTO">Requested dto for registration on platform</param>
+        /// <param name="registerDto">Requested dto for registration on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("register")]
-        public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDTO)
+        public async Task<ActionResult<JwtDTO>> RegisterAsync([FromBody] AccountRegisterDTO registerDto)
         {
-            if (!ModelState.IsValid || registerDTO == null)
+            if (!ModelState.IsValid || registerDto == null)
             {
                 return BadRequest();
             }
 
             try
             {
-                var token = await _authService.RegisterAsync(registerDTO);
-                var jwtReturnedDTO = new JwtDTO
+                var token = await _authService.RegisterAsync(registerDto);
+                var jwtReturnedDto = new JwtDTO
                 {
                     JwtString = token
                 };
                 
-                return CheckTokenAndReturn(jwtReturnedDTO, "Register failed!");
+                return CheckTokenAndReturn(jwtReturnedDto, "Register failed!");
             }
             catch (ArgumentNullException e)
             {
@@ -72,25 +72,25 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Login action
         /// </summary>
-        /// <param name="loginDTO">Requested dto for login on platform</param>
+        /// <param name="loginDto">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("login")]
-        public async Task<ActionResult<JwtDTO>> LoginAsync([FromBody] AccountLoginDTO loginDTO)
+        public async Task<ActionResult<JwtDTO>> LoginAsync([FromBody] AccountLoginDTO loginDto)
         {
-            if (!ModelState.IsValid || loginDTO == null)
+            if (!ModelState.IsValid || loginDto == null)
             {
                 return BadRequest();
             }
 
             try
             {
-                var token = await _authService.LoginAsync(loginDTO);
-                var jwtReturnedDTO = new JwtDTO
+                var token = await _authService.LoginAsync(loginDto);
+                var jwtReturnedDto = new JwtDTO
                 {
                     JwtString = token
                 };
             
-                return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
+                return CheckTokenAndReturn(jwtReturnedDto, "Login failed!");
             }
             catch (ArgumentNullException e)
             {
@@ -102,23 +102,23 @@ namespace ClassicTotalizator.API.Controllers
         /// <summary>
         /// Admin login action
         /// </summary>
-        /// <param name="loginDTO">Requested dto for login on platform</param>
+        /// <param name="loginDto">Requested dto for login on platform</param>
         /// <returns>Returns JWT</returns>
         [HttpPost("login/admin")]
-        public async Task<ActionResult<JwtDTO>> AdminLoginAsync([FromBody] AccountLoginDTO loginDTO)
+        public async Task<ActionResult<JwtDTO>> AdminLoginAsync([FromBody] AccountLoginDTO loginDto)
         {
-            if (!ModelState.IsValid || loginDTO == null)
+            if (!ModelState.IsValid || loginDto == null)
             {
                 return BadRequest();
             }
 
-            var token = await _authService.AdminLoginAsync(loginDTO);
-            var jwtReturnedDTO = new JwtDTO
+            var token = await _authService.AdminLoginAsync(loginDto);
+            var jwtReturnedDto = new JwtDTO
             {
                 JwtString = token
             };
             
-            return CheckTokenAndReturn(jwtReturnedDTO, "Login failed!");
+            return CheckTokenAndReturn(jwtReturnedDto, "Login failed!");
         }
 
         private ActionResult<JwtDTO> CheckTokenAndReturn(JwtDTO jwt, string message)
@@ -129,7 +129,7 @@ namespace ClassicTotalizator.API.Controllers
             if (!string.IsNullOrEmpty(message)) 
                 _logger.LogWarning(message);
                 
-            return BadRequest("Authorization failed.");
+            return BadRequest("Authorization failed");
         }
     }
 }

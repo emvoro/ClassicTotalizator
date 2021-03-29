@@ -73,7 +73,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
                 Participant_Id1 = eventDto.Participant_Id1,
                 Participant_Id2 = eventDto.Participant_Id2,
                 PossibleResults = eventDto.PossibleResults,
-                Sport_Id = eventDto.SportId,
+                Sport_Id = eventDto.Sport_Id,
                 StartTime = eventDto.StartTime,
                 Result = null
             };

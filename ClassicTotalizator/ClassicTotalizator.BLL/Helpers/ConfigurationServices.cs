@@ -22,7 +22,6 @@ namespace ClassicTotalizator.BLL.Helpers
             services.AddTransient<IRepository<Wallet>, Repository<Wallet>>();
             services.AddTransient<IRepository<Participant>, Repository<Participant>>();
             services.AddTransient<IBetRepository, BetRepository>();
-            services.AddTransient<IRepository<Event>, Repository<Event>>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IParameterRepository, ParameterRepository>();
             services.AddTransient<IPlayerRepository, PlayerRepository>();

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ClassicTotalizator.BLL.Contracts.PlayerDTOs;
 
 namespace ClassicTotalizator.BLL.Contracts.ParticipantDTOs
@@ -14,10 +10,10 @@ namespace ClassicTotalizator.BLL.Contracts.ParticipantDTOs
         public string Name { get; set; }
 
         [Required]
-        public IEnumerable<PlayerRegisterDTO> Players { get; set; }
+        public string PhotoLink { get; set; }
 
         [Required]
-        public string PhotoLink { get; set; }
+        public IEnumerable<PlayerRegisterDTO> Players { get; set; }
 
         public IEnumerable<ParameterDTO> Parameters { get; set; }
 

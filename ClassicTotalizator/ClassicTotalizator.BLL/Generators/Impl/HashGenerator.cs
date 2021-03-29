@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace ClassicTotalizator.BLL.Generators.Impl

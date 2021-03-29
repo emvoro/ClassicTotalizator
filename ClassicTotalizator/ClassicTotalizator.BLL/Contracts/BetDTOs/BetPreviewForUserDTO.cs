@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClassicTotalizator.BLL.Contracts.BetDTOs
 {
@@ -17,7 +13,7 @@ namespace ClassicTotalizator.BLL.Contracts.BetDTOs
         public Guid Bet_Id { get; set; }
 
         /// <summary>
-        /// Full naem of event (Name_participant1 - Name_Participant2)
+        /// Full name of event (Name_participant1 - Name_Participant2)
         /// </summary>
         public string TeamConfrontation { get; set; }
 

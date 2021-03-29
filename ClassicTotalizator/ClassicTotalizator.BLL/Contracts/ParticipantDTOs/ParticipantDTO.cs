@@ -14,10 +14,10 @@ namespace ClassicTotalizator.BLL.Contracts.ParticipantDTOs
         public string Name { get; set; }
 
         [Required]
-        public ICollection<PlayerDTO> Players { get; set; }
+        public string PhotoLink { get; set; }
 
         [Required]
-        public string PhotoLink { get; set; }
+        public ICollection<PlayerDTO> Players { get; set; }
 
         public ICollection<ParameterDTO> Parameters { get; set; }
 

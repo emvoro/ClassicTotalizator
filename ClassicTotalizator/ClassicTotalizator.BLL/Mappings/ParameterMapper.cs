@@ -5,25 +5,25 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class ParameterMapper
     {
-        public static ParameterDTO Map(Parameter parameter)
+        public static ParameterDTO Map(Parameter obj)
         {
-            return parameter == null
+            return obj == null
                 ? null
                 : new ParameterDTO
                 {
-                    Value = parameter.Value,
-                    Type = parameter.Type
+                    Value = obj.Value,
+                    Type = obj.Type
                 };
         }
         
-        public static Parameter Map(ParameterDTO parameter)
+        public static Parameter Map(ParameterDTO obj)
         {
-            return parameter == null
+            return obj == null
                 ? null
                 : new Parameter
                 {
-                    Value = parameter.Value,
-                    Type = parameter.Type
+                    Value = obj.Value,
+                    Type = obj.Type
                 };
         }
     }

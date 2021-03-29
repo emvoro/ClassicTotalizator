@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.DAL.Repositories;
-using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Services.Impl
 {
@@ -34,7 +33,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<IEnumerable<MessageDTO>> GetMessagesAsync()
         {
-            var messages = await _repository.GetLastMessagesAsync() ;
+            var messages = await _repository.GetLastMessagesAsync();
             var messagesDto = messages.Select(ChatMessageMapper.Map).ToList();
             
             foreach (var message in messagesDto)

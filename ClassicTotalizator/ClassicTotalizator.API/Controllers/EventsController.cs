@@ -113,9 +113,9 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPost]
-        public async Task<ActionResult<EventDTO>> AddEvent([FromBody] EventRegisterDTO registerDTO)
+        public async Task<ActionResult<EventDTO>> AddEvent([FromBody] EventRegisterDTO registerDto)
         {
-            if (!ModelState.IsValid || registerDTO == null)
+            if (!ModelState.IsValid || registerDto == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
@@ -123,7 +123,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var createdEvent = await _eventService.CreateEventAsync(registerDTO);
+                var createdEvent = await _eventService.CreateEventAsync(registerDto);
                 if (createdEvent == null)
                     return BadRequest();
 
@@ -132,10 +132,9 @@ namespace ClassicTotalizator.API.Controllers
             catch (ArgumentNullException e)
             {
                 _logger.LogWarning(e.Message);
-                return Forbid();
+                return BadRequest();
             }
         }
-
 
         /// <summary>
         /// Close event.
@@ -161,26 +160,25 @@ namespace ClassicTotalizator.API.Controllers
             }
             catch (ArgumentNullException e)
             {
-                _logger.LogWarning("Argument null exception. " + e.ParamName);
+                _logger.LogWarning(e.Message);
                 return BadRequest();
             }
         }
-
 
         /// <summary>
         /// Edit event.
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPut("{id}/edit")]
-        public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDTO)
+        public async Task<ActionResult<EventDTO>> PatchEvent([FromBody] EditedEventDTO eventDto)
         {
-            if (!ModelState.IsValid || eventDTO == null)
+            if (!ModelState.IsValid || eventDto == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
             }
 			
-            var editedEvent = await _eventService.EditEventAsync(eventDTO);
+            var editedEvent = await _eventService.EditEventAsync(eventDto);
             if (editedEvent == null)
                 return BadRequest();
 
@@ -188,20 +186,19 @@ namespace ClassicTotalizator.API.Controllers
         }
 
         /// <summary>
-        /// Deletes event BUT be careful:)
+        /// Deletes event
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Event id</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteEvent([FromRoute]Guid id)
         {
             try
             {
-                var deleted = await _eventService.DeleteEventAsync(id);
-                if (!deleted)
-                    return NotFound(deleted);
+                if (!await _eventService.DeleteEventAsync(id))
+                    return NotFound(false);
 
-                return Ok(deleted);
+                return Ok(true);
             }
             catch (ArgumentException e)
             {

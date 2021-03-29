@@ -5,41 +5,15 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class BetMapper
     {
-        public static BetDTO Map(Bet bet)
+        public static Bet Map(BetNewDTO obj)
         {
-            return bet == null
-                ? null
-                : new BetDTO
-                {
-                    Account_Id = bet.Account_Id,
-                    Amount = bet.Amount,
-                    Choice = bet.Choice,
-                    Event_Id = bet.Event_Id
-                };
-        }
-        
-        public static Bet Map(BetDTO betDTO)
-        {
-            return betDTO == null
+            return obj == null
                 ? null
                 : new Bet
                 {
-                    Account_Id = betDTO.Account_Id,
-                    Amount = betDTO.Amount,
-                    Choice = betDTO.Choice,
-                    Event_Id = betDTO.Event_Id
-                };
-        }
-
-        public static Bet Map(BetNewDTO betNewDTO)
-        {
-            return betNewDTO == null
-                ? null
-                : new Bet
-                {
-                    Amount = betNewDTO.Amount,
-                    Choice = betNewDTO.Choice,
-                    Event_Id = betNewDTO.Event_Id
+                    Amount = obj.Amount,
+                    Choice = obj.Choice,
+                    Event_Id = obj.Event_Id
                 };
         }
 
@@ -64,7 +38,7 @@ namespace ClassicTotalizator.BLL.Mappings
                 : new BetPreviewForAdminsDTO
                 {
                     Bet_Id = obj.Id,
-                    Account_Id =obj.Account_Id,
+                    Account_Id = obj.Account_Id,
                     Status = obj.Status,
                     Choice = obj.Choice,
                     BetTime = obj.BetTime,

@@ -52,9 +52,9 @@ namespace ClassicTotalizator.API.Controllers
         /// </summary>
         /// <returns>Event DTO</returns>
         [HttpPost]
-        public async Task<ActionResult<ParticipantDTO>> AddParticipant([FromBody] ParticipantRegisterDTO registerDTO)
+        public async Task<ActionResult<ParticipantDTO>> AddParticipant([FromBody] ParticipantRegisterDTO registerDto)
         {
-            if (!ModelState.IsValid || registerDTO == null)
+            if (!ModelState.IsValid || registerDto == null)
             {
                 _logger.LogWarning("Model invalid!");
                 return BadRequest();
@@ -62,7 +62,7 @@ namespace ClassicTotalizator.API.Controllers
 
             try
             {
-                var createdParticipant = await _participantsService.AddNewParticipantAsync(registerDTO);
+                var createdParticipant = await _participantsService.AddNewParticipantAsync(registerDto);
                 if (createdParticipant == null)
                     return BadRequest();
 
@@ -82,11 +82,10 @@ namespace ClassicTotalizator.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteParticipant([FromRoute] Guid id)
         {
-            var deleted = await _participantsService.DeleteParticipantAsync(id);
-            if (!deleted)
-                return NotFound(deleted);
+            if (!await _participantsService.DeleteParticipantAsync(id))
+                return NotFound(false);
 
-            return Ok(deleted);
+            return Ok(true);
         }
     }
 }

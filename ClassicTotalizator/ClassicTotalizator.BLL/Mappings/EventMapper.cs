@@ -5,66 +5,65 @@ namespace ClassicTotalizator.BLL.Mappings
 {
     public static class EventMapper
     {
-        public static Event Map(EventDTO eventDTO)
+        public static Event Map(EventDTO obj)
         {
-            return eventDTO == null
+            return obj == null
                 ? null
                 : new Event
                 {
-                    Id = eventDTO.Id,
-                    StartTime = eventDTO.StartTime,
-                    Result = eventDTO.EventResult,
-                    IsEnded =eventDTO.IsEnded,
-                    Margin = eventDTO.Margin,
-                    PossibleResults = eventDTO.PossibleResults
+                    Id = obj.Id,
+                    StartTime = obj.StartTime,
+                    Result = obj.EventResult,
+                    IsEnded = obj.IsEnded,
+                    Margin = obj.Margin,
+                    PossibleResults = obj.PossibleResults
                 };
         }
 
-        public static Event Map(EventRegisterDTO eventRegisterDTO)
+        public static Event Map(EventRegisterDTO obj)
         {
-            return eventRegisterDTO == null
+            return obj == null
                 ? null
                 : new Event
                 {
-                    StartTime = eventRegisterDTO.StartTime,
-                    Margin = eventRegisterDTO.Margin,
-                    PossibleResults = eventRegisterDTO.PossibleResults
+                    StartTime = obj.StartTime,
+                    Margin = obj.Margin,
+                    PossibleResults = obj.PossibleResults
                 };
         }
 
-        public static EventPreviewDTO MapPreview(Event @event)
+        public static EventPreviewDTO MapPreview(Event obj)
         {
-            return @event == null
+            return obj == null
                 ? null
                 : new EventPreviewDTO
                 {
-                    Id = @event.Id,
-                    Participant1 = ParticipantsMapper.Map(@event.Participant1),
-                    Participant2 = ParticipantsMapper.Map(@event.Participant2),
-                    StartTime = @event.StartTime,
-                    SportName = @event.Sport.Name,
-                    IsEnded = @event.IsEnded,
-                    Margin = @event.Margin,
-                    PossibleResults = @event.PossibleResults
+                    Id = obj.Id,
+                    Participant1 = ParticipantsMapper.Map(obj.Participant1),
+                    Participant2 = ParticipantsMapper.Map(obj.Participant2),
+                    StartTime = obj.StartTime,
+                    SportName = obj.Sport.Name,
+                    IsEnded = obj.IsEnded,
+                    Margin = obj.Margin,
+                    PossibleResults = obj.PossibleResults
                 };
         }
 
-
-        public static EventDTO Map(Event @event)
+        public static EventDTO Map(Event obj)
         {
-            return @event == null
+            return obj == null
                 ? null
                 : new EventDTO
                 {
-                    Id = @event.Id,
-                    Participant_Id1 = @event.Participant_Id1,
-                    Participant_Id2 = @event.Participant_Id2,
-                    StartTime = @event.StartTime,
-                    Sport_Id = @event.Sport_Id,
-                    EventResult = @event.Result,
-                    IsEnded = @event.IsEnded,
-                    Margin = @event.Margin,
-                    PossibleResults = @event.PossibleResults
+                    Id = obj.Id,
+                    Participant_Id1 = obj.Participant_Id1,
+                    Participant_Id2 = obj.Participant_Id2,
+                    StartTime = obj.StartTime,
+                    Sport_Id = obj.Sport_Id,
+                    EventResult = obj.Result,
+                    IsEnded = obj.IsEnded,
+                    Margin = obj.Margin,
+                    PossibleResults = obj.PossibleResults
                 };
         }
     }
