@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassicTotalizator.DAL.Repositories;
+using ClassicTotalizator.DAL.Entities;
 
 namespace ClassicTotalizator.BLL.Services.Impl
 {
@@ -23,8 +24,8 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<bool> DeleteMessageAsync(Guid id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
-                throw new ArgumentNullException();
+            if (id == Guid.Empty)
+                throw new ArgumentException();
 
             await _repository.RemoveByIdAsync(id);
 
@@ -33,7 +34,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<IEnumerable<MessageDTO>> GetMessagesAsync()
         {
-            var messages = await _repository.GetLastMessagesAsync();
+            var messages = await _repository.GetLastMessagesAsync() ;
             var messagesDto = messages.Select(ChatMessageMapper.Map).ToList();
             
             foreach (var message in messagesDto)
@@ -48,7 +49,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         public async Task<bool> PostMessageAsync(MessageToPostDTO messageToPost, Guid accountId)
         {
-            if (messageToPost == null || string.IsNullOrEmpty(accountId.ToString()))
+            if (messageToPost == null || accountId == Guid.Empty)
                 throw new ArgumentNullException();
 
             var newMessage = ChatMessageMapper.Map(messageToPost);

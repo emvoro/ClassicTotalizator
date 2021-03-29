@@ -100,7 +100,7 @@ namespace ClassicTotalizator.API.Controllers
 
                 return Ok(deleted);
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentException e)
             {
                 _logger.LogWarning(e.Message);
                 return BadRequest();
