@@ -25,7 +25,7 @@ namespace ClassicTotalizator.Tests
 
         private readonly Mock<IRepository<Participant>> _mockParticipantRepository = new Mock<IRepository<Participant>>();
 
-        private readonly Mock<IRepository<Event>> _mockEventRepository = new Mock<IRepository<Event>>();
+        private readonly Mock<IEventRepository> _mockEventRepository = new Mock<IEventRepository>();
 
         [Fact]
         public async Task GetAllEventBets_Returns_EmptyList_If_RepositoryIsEmpty()

@@ -32,6 +32,11 @@ namespace ClassicTotalizator.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigurationServices.ConfigureServices(services, Configuration);
+
+            services.AddTransient<IHashGenerator, HashGenerator>(provider =>
+                new HashGenerator(Configuration.GetSection("HashOptions").GetValue<string>("Salt")));
+            services.AddTransient<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IBetService, BetService>();
@@ -40,12 +45,7 @@ namespace ClassicTotalizator.API
             services.AddTransient<IParticipantsService, ParticipantsService>();
             services.AddTransient<IWalletService, WalletService>();
             services.AddTransient<IChatService, ChatService>();
-            
-            services.AddTransient<IHashGenerator, HashGenerator>(provider =>
-                new HashGenerator(Configuration.GetSection("HashOptions").GetValue<string>("Salt")));
-            
-            ConfigurationServices.ConfigureServices(services, Configuration);
-            
+
             services.AddControllers();
 
             var documenation = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -86,14 +86,13 @@ namespace ClassicTotalizator.API
                 if (File.Exists(documentationPath))
                     c.IncludeXmlComments(documenation, includeControllerXmlComments: true);
             });
-            
-            services.AddCors();
 
+            services.AddCors();
             services.AddAuthentication(options =>
             {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(x =>
             {
