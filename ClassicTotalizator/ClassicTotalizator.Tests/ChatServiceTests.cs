@@ -120,7 +120,7 @@ namespace ClassicTotalizator.Tests
                     Text ="Default message"
                 }
             };
-            _messageRepository.Setup(x => x.GetAllAsync()).ReturnsAsync(messagesInList);
+            _messageRepository.Setup(x => x.GetLastMessagesAsync()).ReturnsAsync(messagesInList);
 
             messagesInList.ForEach(message =>
             _accountRepository.Setup(x => x.GetByIdAsync(message.Account_Id)).ReturnsAsync(new Account
