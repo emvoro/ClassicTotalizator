@@ -297,7 +297,7 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
                 await _walletRepository.UpdateAsync(pendingWallet);
 
-                bet.Status = $"Win: {Math.Round(moneyForDep,2)}";
+                bet.Status = $"Win: {Math.Round(moneyForDep + bet.Amount,2)}";
                 await _betRepository.UpdateAsync(bet);                
             }
 
