@@ -191,41 +191,6 @@ namespace ClassicTotalizator.Tests
         }
 
         [Fact]
-        public async Task AddAsync_ReturnsFalse_If_ThisEmail_WasRegisteredInSystem()
-        {
-            var email = "email@email.em";
-            var account = new AccountDTO
-            {
-                Email = email
-            };
-
-            _mockAccountRepository.Setup(x => x.GetAccountByEmailAsync(email)).ReturnsAsync(new Account());
-
-            _accountService = new AccountService(_mockAccountRepository.Object, null);
-            
-            Assert.False(await _accountService.AddAsync(account));
-        }
-        
-        [Fact]
-        public async Task AddAsync_ReturnsFalse_If_ThisUsername_WasRegisteredInSystem()
-        {
-            var username = "username";
-            var email = "email@email.em";
-            var account = new AccountDTO
-            {
-                Username = username,
-                Email = email
-            };
-
-            _mockAccountRepository.Setup(x => x.GetAccountByEmailAsync(email)).ReturnsAsync((Account) null);
-            _mockAccountRepository.Setup(x => x.GetAccountByUsernameAsync(username)).ReturnsAsync(new Account());
-
-            _accountService = new AccountService(_mockAccountRepository.Object, null);
-            
-            Assert.False(await _accountService.AddAsync(account));
-        }
-        
-        [Fact]
         public async Task AddAsync_ReturnsTrue_If_ParameterIsValid_InSystemNotFound_ThisEmailAndUsernames()
         {
             var username = "username";
