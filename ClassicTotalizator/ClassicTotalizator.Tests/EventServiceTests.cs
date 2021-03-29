@@ -124,7 +124,7 @@ namespace ClassicTotalizator.Tests
                 Participant_Id1 = Guid.NewGuid(),
                 Participant_Id2 = Guid.NewGuid(),
                 Margin = 5,
-                SportId = 1,
+                Sport_Id = 1,
                 StartTime = new DateTime(2021, 10, 5, 11, 30, 0),
                 PossibleResults = new string[] { "W1", "W2", "X" }
             };
@@ -170,7 +170,7 @@ namespace ClassicTotalizator.Tests
                 Participant_Id1 = Guid.NewGuid(),
                 Participant_Id2 = Guid.NewGuid(),
                 Margin = 5,
-                SportId = 1,
+                Sport_Id = 1,
                 StartTime = new DateTime(2021, 10, 5, 11, 30, 0),
                 PossibleResults = new string[] { "W1", "W2", "X" }
             };
