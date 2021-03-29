@@ -19,12 +19,12 @@ namespace ClassicTotalizator.BLL.Services.Impl
 
         private readonly IRepository<Participant> _participantRepository;
 
-        private readonly IRepository<Event> _eventRepository;
+        private readonly IEventRepository _eventRepository;
 
         public BetService(IBetRepository repository,
             IRepository<Wallet> walletRepository,
             IRepository<BetPool> betpoolRepository,
-            IRepository<Event> eventRepository,
+            IEventRepository eventRepository,
             IRepository<Participant> participantRepository)
         {
             _repository = repository;
